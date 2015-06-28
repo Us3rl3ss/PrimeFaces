@@ -11,7 +11,9 @@
 	<title><ui:insert name="title">CinePlex</ui:insert></title>
 </h:head>
 <h:body>
+
 	<h:form>
+
 		<h:panelGrid columns="1" cellpadding="5">
 			<h:outputLabel for="username" value="Korisničko ime: *" />
 			<p:inputText id="username" value="#{loginMB.username}"
@@ -27,6 +29,7 @@
 			<p:commandButton value="Registracija" type="button"
 				onclick="PF('registracija').show();" />
 		</h:panelGrid>
+		
 	</h:form>
 
 	<p:dialog header="Registracija" widgetVar="registracija" modal="true"
