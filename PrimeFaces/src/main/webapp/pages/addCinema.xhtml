@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<p:growl id="messages"></p:growl>
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Naziv:"></p:outputLabel>
+					<p:inputText value="#{addCinemaMB.cinema.name}"></p:inputText>
+					<!-- 					<p:outputLabel value="Broj sjedećih mjesta:"></p:outputLabel> -->
+					<!-- 					<p:inputText value="#{addCinemaMB.cinema.number_of_seats}"></p:inputText> -->
+					<p:outputLabel value="Broj redova:"></p:outputLabel>
+					<p:inputText value="#{addCinemaMB.cinema.number_of_rows}"></p:inputText>
+					<p:outputLabel value="Broj sjedala u svakom redu:"></p:outputLabel>
+					<p:inputText value="#{addCinemaMB.cinema.number_of_seats_in_row}"></p:inputText>
+					<p:outputLabel value="Kino:"></p:outputLabel>
+					<p:autoComplete id="searchTheater" minQueryLength="3"
+						maxResults="5" placeholder="Pretraži"
+						value="#{addCinemaMB.cinema.theater}"
+						completeMethod="#{addCinemaMB.completeTheater}" effect="fade"
+						var="theater" itemLabel="#{theater.name}" itemValue="#{theater}"
+						converter="#{theaterConverter}" forceSelection="true">
+
+						<p:ajax event="itemSelect" listener="#{addCinemaMB.onItemSelect}"></p:ajax>
+					</p:autoComplete>
+
+				</p:panelGrid>
+
+				<p:commandButton value="Spremi" action="#{addCinemaMB.spremi}"
+					update="messages"></p:commandButton>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

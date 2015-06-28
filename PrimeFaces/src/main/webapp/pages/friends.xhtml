@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+
+			<h:form id="form">
+				<p:growl id="messages"></p:growl>
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Korisnici:"></p:outputLabel>
+					<p:autoComplete id="searchUser" minQueryLength="3" maxResults="5"
+						placeholder="Pretraži" value="#{friendsMB.user}"
+						completeMethod="#{friendsMB.completeUser}" effect="fade"
+						var="user" itemLabel="#{user.username}" itemValue="#{user}"
+						converter="#{userConverter}" forceSelection="true">
+
+						<p:ajax event="itemSelect" listener="#{friendsMB.onItemSelect}"
+							update="userInormations"></p:ajax>
+					</p:autoComplete>
+
+				</p:panelGrid>
+
+
+				<p:panelGrid columns="1" id="userInormations">
+
+					<p:panel id="userInfo" header="#{friendsMB.user.username}"
+						style="margin-bottom:20px">
+						<h:panelGrid columns="2" cellpadding="10">
+
+							<h:outputText value="Ime:" />
+							<h:outputText value="#{friendsMB.user.firstname}" />
+
+							<h:outputText value="Prezime:" />
+							<h:outputText value="#{friendsMB.user.lastname}" />
+
+							<h:outputText value="Godina rođenja:" />
+							<h:outputText value="#{friendsMB.user.date_of_birth}">
+								<f:convertDateTime pattern="dd.MM.yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Email:" />
+							<h:outputText value="#{friendsMB.user.email}" />
+
+						</h:panelGrid>
+
+						<f:facet name="actions">
+							<h:commandLink disabled="#{friendsMB.inFollowList}"
+								styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+								<h:outputText styleClass="ui-icon ui-icon-check" />
+								<f:ajax listener="#{friendsMB.addToFollowList}" />
+							</h:commandLink>
+						</f:facet>
+					</p:panel>
+
+					<p:dataList value="#{friendsMB.userMovieRateList}" var="rate"
+						type="unordered" itemType="none" paginator="true" rows="5"
+						styleClass="paginated">
+						<f:facet name="header">
+			            Ocjene
+			        </f:facet>
+						<p:commandLink update=":form:rateDetail"
+							action="#{friendsMB.calculateAverageRate}"
+							oncomplete="PF('rateDialog').show()" title="Detalji"
+							styleClass="ui-icon ui-icon-search"
+							style="float:left;margin-right:10px">
+							<f:setPropertyActionListener value="#{rate}"
+								target="#{friendsMB.selectedRate}" />
+						</p:commandLink>
+						<p:rating value="#{rate.rate}" stars="10" cancel="false"
+							style="display:inline-block" readonly="#{true}">
+						</p:rating>
+						<h:outputText value="#{rate.created}">
+							<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
+						</h:outputText>
+						<h:outputText value="&#160;-&#160;#{rate.movie.name}"
+							style="display:inline-block" />
+					</p:dataList>
+
+					<p:dataList value="#{friendsMB.userFavoriteMovieList}"
+						var="favorite" type="unordered" itemType="none" paginator="true"
+						rows="5" styleClass="paginated">
+						<f:facet name="header">
+			            Favoriti
+			        </f:facet>
+						<p:commandLink update=":form:favoriteDetail"
+							oncomplete="PF('favoriteDialog').show()" title="Detalji"
+							styleClass="ui-icon ui-icon-search"
+							style="float:left;margin-right:10px">
+							<f:setPropertyActionListener value="#{favorite}"
+								target="#{friendsMB.selectedFavorite}" />
+						</p:commandLink>
+						<h:outputText value="#{favorite.created}">
+							<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
+						</h:outputText>
+						<h:outputText value="&#160;-&#160;#{favorite.movie.name}"
+							style="display:inline-block" />
+					</p:dataList>
+
+					<p:dataList value="#{friendsMB.userMovieReviewList}" var="review"
+						type="unordered" itemType="none" paginator="true" rows="5"
+						styleClass="paginated">
+						<f:facet name="header">
+			            Recenzije
+			        </f:facet>
+						<p:commandLink update=":form:reviewDetail"
+							oncomplete="PF('reviewDialog').show()" title="Detalji"
+							styleClass="ui-icon ui-icon-search"
+							style="float:left;margin-right:10px">
+							<f:setPropertyActionListener value="#{review}"
+								target="#{friendsMB.selectedReview}" />
+						</p:commandLink>
+						<h:outputText value="#{review.created}">
+							<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
+						</h:outputText>
+						<h:outputText value="&#160;-&#160;#{review.movie.name}"
+							style="display:inline-block" />
+					</p:dataList>
+				</p:panelGrid>
+
+
+				<p:dialog header="Ocjena" widgetVar="rateDialog" modal="true"
+					showEffect="blind" hideEffect="explode" resizable="false">
+					<p:outputPanel id="rateDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty friendsMB.selectedRate}"
+							columnClasses="label,value">
+							<f:facet name="header">
+								<!-- 								<p:graphicImage -->
+								<!-- 									name="demo/images/car/#{dataListView.selectedCar.brand}-big.gif" /> -->
+							</f:facet>
+
+							<h:outputText value="Naziv:" />
+							<h:outputText value="#{friendsMB.selectedRate.movie.name}" />
+
+							<h:outputText value="Redatelj:" />
+							<h:outputText
+								value="#{friendsMB.selectedRate.movie.director_name}" />
+
+							<h:outputText value="Godina:" />
+							<h:outputText
+								value="#{friendsMB.selectedRate.movie.year_of_creation}" />
+
+							<h:outputText value="Trajanje:" />
+							<h:outputText value="#{friendsMB.selectedRate.movie.duration}" />
+
+							<h:outputText value="Informacije:" />
+							<h:outputText value="#{friendsMB.selectedRate.movie.info}" />
+
+							<h:outputText value="Ukupna ocjena" />
+							<h:outputText value="#{friendsMB.averageRate}/10" />
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+
+				<p:dialog header="Favoriti" widgetVar="favoriteDialog" modal="true"
+					showEffect="blind" hideEffect="explode" resizable="false">
+					<p:outputPanel id="favoriteDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty friendsMB.selectedFavorite}"
+							columnClasses="label,value">
+							<f:facet name="header">
+								<!-- 								<p:graphicImage -->
+								<!-- 									name="demo/images/car/#{dataListView.selectedCar.brand}-big.gif" /> -->
+							</f:facet>
+
+							<h:outputText value="Naziv:" />
+							<h:outputText value="#{friendsMB.selectedFavorite.movie.name}" />
+
+							<h:outputText value="Redatelj:" />
+							<h:outputText
+								value="#{friendsMB.selectedFavorite.movie.director_name}" />
+
+							<h:outputText value="Godina:" />
+							<h:outputText
+								value="#{friendsMB.selectedFavorite.movie.year_of_creation}" />
+
+							<h:outputText value="Trajanje:" />
+							<h:outputText
+								value="#{friendsMB.selectedFavorite.movie.duration}" />
+
+							<h:outputText value="Informacije:" />
+							<h:outputText value="#{friendsMB.selectedFavorite.movie.info}" />
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+
+				<p:dialog header="Recenzije" widgetVar="reviewDialog" modal="true"
+					showEffect="blind" hideEffect="explode" resizable="false">
+					<p:outputPanel id="reviewDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty friendsMB.selectedReview}"
+							columnClasses="label,value">
+							<f:facet name="header">
+								<!-- 								<p:graphicImage -->
+								<!-- 									name="demo/images/car/#{dataListView.selectedCar.brand}-big.gif" /> -->
+							</f:facet>
+
+							<h:outputText value="Naziv:" />
+							<h:outputText value="#{friendsMB.selectedReview.movie.name}" />
+
+							<h:outputText value="Redatelj:" />
+							<h:outputText
+								value="#{friendsMB.selectedReview.movie.director_name}" />
+
+							<h:outputText value="Godina:" />
+							<h:outputText
+								value="#{friendsMB.selectedReview.movie.year_of_creation}" />
+
+							<h:outputText value="Trajanje:" />
+							<h:outputText value="#{friendsMB.selectedReview.movie.duration}" />
+
+							<h:outputText value="Informacije:" />
+							<h:outputText value="#{friendsMB.selectedReview.movie.info}" />
+
+							<h:outputText value="Recenzija:" />
+							<h:outputText value="#{friendsMB.selectedReview.review}" />
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

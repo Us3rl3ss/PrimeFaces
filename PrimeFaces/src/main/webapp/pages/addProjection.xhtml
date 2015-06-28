@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<p:growl id="messages"></p:growl>
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Kino:"></p:outputLabel>
+					<p:selectOneMenu id="theater" value="#{addProjectionMB.projection.theater}"
+						valueChangeListener="#{addProjectionMB.postaviCinemaList}"
+						converter="#{theaterConverter}" panelStyle="width:180px"
+						effect="fade" var="theater" style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItems value="#{addProjectionMB.theaterList}" var="theater"
+							itemLabel="#{theater.name}" itemValue="#{theater}" />
+
+						<p:column>
+							<h:outputText value="#{theater.name}" />
+						</p:column>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Kino dvorana:"></p:outputLabel>
+					<p:selectOneMenu id="cinema"
+						value="#{addProjectionMB.projection.cinema}"
+						converter="#{cinemaConverter}" panelStyle="width:180px"
+						effect="fade" var="cinema" style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItems value="#{addProjectionMB.cinemaList}" var="cinema"
+							itemLabel="#{cinema.name}" itemValue="#{cinema}" />
+
+						<p:column>
+							<h:outputText value="#{cinema.name}" />
+						</p:column>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Film:"></p:outputLabel>
+					<p:selectOneMenu id="movie"
+						value="#{addProjectionMB.projection.movie}"
+						converter="#{movieConverter}" panelStyle="width:180px"
+						effect="fade" var="movie" style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItems value="#{addProjectionMB.movieList}" var="movie"
+							itemLabel="#{movie.name}" itemValue="#{movie}" />
+
+						<p:column>
+							<h:outputText value="#{movie.name}" />
+						</p:column>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Datum:"></p:outputLabel>
+					<p:calendar value="#{addProjectionMB.projection.date}"
+						pattern="dd.MM.yyyy" mask="true" />
+
+					<p:outputLabel for="timeFrom" value="Početak" />
+					<p:calendar id="timeFrom"
+						value="#{addProjectionMB.projection.start_time}" pattern="HH:mm"
+						timeOnly="true" />
+
+					<p:outputLabel for="timeTo" value="Kraj:" />
+					<p:calendar id="timeTo" value="#{addProjectionMB.projection.end_time}"
+						pattern="HH:mm" timeOnly="true" />
+
+				</p:panelGrid>
+
+				<p:commandButton value="Spremi" action="#{addProjectionMB.spremi}"
+					update="messages"></p:commandButton>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

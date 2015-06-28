@@ -1,0 +1,168 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+				http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+				http://www.springframework.org/schema/tx 
+		        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		        http://www.springframework.org/schema/context 
+		        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- Beans Declaration -->
+	<bean id="User" class="hr.primefaces.model.User"/>
+	<bean id="Movie" class="hr.primefaces.model.Movie"/>
+	<bean id="Actor" class="hr.primefaces.model.Actor"/>
+	<bean id="Genre" class="hr.primefaces.model.Genre"/>
+	<bean id="Theater" class="hr.primefaces.model.Theater"/>
+	<bean id="Cinema" class="hr.primefaces.model.Cinema"/>
+	<bean id="CinemaMovie" class="hr.primefaces.model.CinemaMovie"/>
+	<bean id="Projection" class="hr.primefaces.model.Projection"/>
+	<bean id="CinemaSeats" class="hr.primefaces.model.CinemaSeats"/>
+	<bean id="ProjectionReservedSeats" class="hr.primefaces.model.ProjectionReservedSeats"/>
+	<bean id="UserMovieRate" class="hr.primefaces.model.UserMovieRate"/>
+	<bean id="UserMovieReview" class="hr.primefaces.model.UserMovieReview"/>
+	<bean id="UserFavoriteMovie" class="hr.primefaces.model.UserFavoriteMovie"/>
+	<bean id="UserFollowing" class="hr.primefaces.model.UserFollowing"/>
+	
+	
+	<!-- Service Declaration -->
+	<bean id="UserService" class="hr.primefaces.service.impl.UserService">
+		<property name="userDAO" ref="UserDAO" />
+	</bean>
+	<bean id="MovieService" class="hr.primefaces.service.impl.MovieService">
+		<property name="movieDAO" ref="MovieDAO" />
+	</bean>
+	<bean id="ActorService" class="hr.primefaces.service.impl.ActorService">
+		<property name="actorDAO" ref="ActorDAO" />
+	</bean>
+	<bean id="GenreService" class="hr.primefaces.service.impl.GenreService">
+		<property name="genreDAO" ref="GenreDAO" />
+	</bean>
+	<bean id="TheaterService" class="hr.primefaces.service.impl.TheaterService">
+		<property name="theaterDAO" ref="TheaterDAO" />
+	</bean>
+	<bean id="CinemaService" class="hr.primefaces.service.impl.CinemaService">
+		<property name="cinemaDAO" ref="CinemaDAO" />
+	</bean>
+	<bean id="CinemaMovieService" class="hr.primefaces.service.impl.CinemaMovieService">
+		<property name="cinemaMovieDAO" ref="CinemaMovieDAO" />
+	</bean>
+	<bean id="ProjectionService" class="hr.primefaces.service.impl.ProjectionService">
+		<property name="projectionDAO" ref="ProjectionDAO" />
+	</bean>
+	<bean id="CinemaSeatsService" class="hr.primefaces.service.impl.CinemaSeatsService">
+		<property name="cinemaSeatsDAO" ref="CinemaSeatsDAO" />
+	</bean>
+	<bean id="ProjectionReservedSeatsService" class="hr.primefaces.service.impl.ProjectionReservedSeatsService">
+		<property name="projectionReservedSeatsDAO" ref="ProjectionReservedSeatsDAO" />
+	</bean>
+	<bean id="UserMovieRateService" class="hr.primefaces.service.impl.UserMovieRateService">
+		<property name="userMovieRateDAO" ref="UserMovieRateDAO" />
+	</bean>
+	<bean id="UserMovieReviewService" class="hr.primefaces.service.impl.UserMovieReviewService">
+		<property name="userMovieReviewDAO" ref="UserMovieReviewDAO" />
+	</bean>
+	<bean id="UserFavoriteMovieService" class="hr.primefaces.service.impl.UserFavoriteMovieService">
+		<property name="userFavoriteMovieDAO" ref="UserFavoriteMovieDAO" />
+	</bean>
+	<bean id="UserFollowingService" class="hr.primefaces.service.impl.UserFollowingService">
+		<property name="userFollowingDAO" ref="UserFollowingDAO" />
+	</bean>
+	
+	
+	<!-- DAO Declaration -->
+	<bean id="UserDAO" class="hr.primefaces.dao.impl.UserDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="MovieDAO" class="hr.primefaces.dao.impl.MovieDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ActorDAO" class="hr.primefaces.dao.impl.ActorDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="GenreDAO" class="hr.primefaces.dao.impl.GenreDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="TheaterDAO" class="hr.primefaces.dao.impl.TheaterDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="CinemaDAO" class="hr.primefaces.dao.impl.CinemaDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="CinemaMovieDAO" class="hr.primefaces.dao.impl.CinemaMovieDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ProjectionDAO" class="hr.primefaces.dao.impl.ProjectionDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="CinemaSeatsDAO" class="hr.primefaces.dao.impl.CinemaSeatsDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ProjectionReservedSeatsDAO" class="hr.primefaces.dao.impl.ProjectionReservedSeatsDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="UserMovieRateDAO" class="hr.primefaces.dao.impl.UserMovieRateDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="UserMovieReviewDAO" class="hr.primefaces.dao.impl.UserMovieReviewDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="UserFavoriteMovieDAO" class="hr.primefaces.dao.impl.UserFavoriteMovieDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="UserFollowingDAO" class="hr.primefaces.dao.impl.UserFollowingDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	
+	
+	<!-- Data Source Declaration -->
+	<bean id="DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />	
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/primefaces" />	
+		<property name="user" value="root" />	
+		<property name="password" value="root" />	
+		<property name="maxPoolSize" value="10" />
+		<property name="maxStatements" value="0" />
+		<property name="minPoolSize" value="5" /> 
+	</bean>
+	
+	<!-- Session Factory Declaration -->
+	<bean id="SessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="DataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>hr.primefaces.model.User</value>
+				<value>hr.primefaces.model.Role</value>
+				<value>hr.primefaces.model.Movie</value>
+				<value>hr.primefaces.model.Actor</value>
+				<value>hr.primefaces.model.Genre</value>
+				<value>hr.primefaces.model.Theater</value>
+				<value>hr.primefaces.model.Cinema</value>
+				<value>hr.primefaces.model.CinemaMovie</value>
+				<value>hr.primefaces.model.Projection</value>
+				<value>hr.primefaces.model.CinemaSeats</value>
+				<value>hr.primefaces.model.ProjectionReservedSeats</value>
+				<value>hr.primefaces.model.UserMovieRate</value>
+				<value>hr.primefaces.model.UserMovieReview</value>
+				<value>hr.primefaces.model.UserFavoriteMovie</value>
+				<value>hr.primefaces.model.UserFollowing</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- Enable the configuration of transactional behavior based on annotations -->
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+	<!-- Transaction Manager is defined -->
+    <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+       <property name="sessionFactory" ref="SessionFactory"/>
+    </bean>
+  
+</beans>

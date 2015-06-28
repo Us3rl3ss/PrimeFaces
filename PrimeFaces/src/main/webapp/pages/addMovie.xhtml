@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<p:growl id="messages"></p:growl>
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Naziv filma:"></p:outputLabel>
+					<p:inputText value="#{addMovieMB.movie.name}"></p:inputText>
+					<p:outputLabel value="Redatelj:"></p:outputLabel>
+					<p:inputText value="#{addMovieMB.movie.director_name}"></p:inputText>
+					<p:outputLabel value="Godina:"></p:outputLabel>
+					<p:inputText value="#{addMovieMB.movie.year_of_creation}"></p:inputText>
+					<p:outputLabel value="Trajanje (min):"></p:outputLabel>
+					<p:inputText value="#{addMovieMB.movie.duration}"></p:inputText>
+					<p:outputLabel value="Informacije:"></p:outputLabel>
+					<p:inputTextarea value="#{addMovieMB.movie.info}" rows="5"
+						cols="30" counter="display" maxlength="1000"
+						counterTemplate="{0} preostalih znakova." autoResize="false" />
+					<p:outputLabel></p:outputLabel>
+					<h:outputText id="display" />
+
+					<p:outputLabel value="Glumci:"></p:outputLabel>
+					<p:autoComplete id="searchActor2" multiple="true"
+						value="#{addMovieMB.movie.actorList}"
+						completeMethod="#{addMovieMB.completeActor}" var="actor"
+						itemLabel="#{(actor.firstname).concat(' ').concat(actor.lastname)}"
+						itemValue="#{actor}" converter="#{actorConverter}"
+						forceSelection="true">
+						<p:column>
+							<h:outputText
+								value="#{(actor.firstname).concat(' ').concat(actor.lastname)}" />
+						</p:column>
+						<p:ajax event="itemSelect" listener="#{addMovieMB.onItemSelect}"></p:ajax>
+					</p:autoComplete>
+
+					<p:outputLabel value="Žanr/ovi:"></p:outputLabel>
+					<p:autoComplete id="genres" multiple="true"
+						value="#{addMovieMB.movie.genreList}"
+						completeMethod="#{addMovieMB.completeGenre}" var="genre"
+						itemLabel="#{genre.name}" itemValue="#{genre}"
+						converter="#{genreConverter}" forceSelection="true">
+						<p:column>
+							<h:outputText value="#{genre.name}" />
+						</p:column>
+						<p:ajax event="itemSelect" listener="#{addMovieMB.onItemSelect}"></p:ajax>
+					</p:autoComplete>
+
+					<p:outputLabel value="Naslovna slika:"></p:outputLabel>
+					<p:fileUpload fileUploadListener="#{addMovieMB.handleFileUpload}"
+						mode="advanced" dragDropSupport="true" update="uploadFilesList"
+						sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+						multiple="false" />
+
+					<p:outputLabel value="Uploadano:"></p:outputLabel>
+					<p:inputText id="uploadFilesList" value="#{addMovieMB.uploadedFileNames}" readonly="#{true}"></p:inputText>
+
+				</p:panelGrid>
+
+				<p:commandButton value="Spremi" action="#{addMovieMB.spremi}"
+					update="messages"></p:commandButton>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

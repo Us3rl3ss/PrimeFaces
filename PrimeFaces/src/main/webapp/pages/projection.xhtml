@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+
+			<h:form id="form">
+				<p:growl id="messages"></p:growl>
+				<p:panelGrid columns="5">
+
+					<p:outputLabel value="Kino:"></p:outputLabel>
+					<p:selectOneMenu id="theater" value="#{projectionMB.theater}"
+						valueChangeListener="#{projectionMB.postaviCinemaList}"
+						converter="#{theaterConverter}" panelStyle="width:180px"
+						effect="fade" var="theater" style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItems value="#{projectionMB.theaterList}" var="theater"
+							itemLabel="#{theater.name}" itemValue="#{theater}" />
+
+						<p:column>
+							<h:outputText value="#{theater.name}" />
+						</p:column>
+
+						<f:ajax listener="#{projectionMB.pretrazi}" render="projection" />
+					</p:selectOneMenu>
+
+<!-- 					<p:outputLabel value="Film:"></p:outputLabel> -->
+<!-- 					<p:selectOneMenu id="movie" -->
+<!-- 						value="#{projectionMB.projection.movie}" -->
+<!-- 						converter="#{movieConverter}" panelStyle="width:180px" -->
+<!-- 						effect="fade" var="movie" style="width:160px" filter="true" -->
+<!-- 						filterMatchMode="startsWith"> -->
+<!-- 						<f:selectItems value="#{projectionMB.movieList}" var="movie" -->
+<!-- 							itemLabel="#{movie.name}" itemValue="#{movie}" /> -->
+
+<!-- 						<p:column> -->
+<!-- 							<h:outputText value="#{movie.name}" /> -->
+<!-- 						</p:column> -->
+<!-- 					</p:selectOneMenu> -->
+
+					<p:commandButton value="Pretraži" action="#{projectionMB.pretrazi}"
+						update="projection"></p:commandButton>
+				</p:panelGrid>
+
+				<p:dataGrid var="projection" value="#{projectionMB.projectionList}"
+					columns="2" layout="grid" rows="2" paginator="true" id="projection"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="6,12,16">
+
+<!-- 					<f:facet name="header"> -->
+<!-- 		            	Projekcije -->
+<!-- 		        	</f:facet> -->
+
+					<!--  header="#{projection.movie.name}" -->
+					<p:panel style="text-align:center">
+					
+					<h:panelGrid columns="2" style="width:40%; float:left;">
+							<p:graphicImage value="#{movieImageMB.image}" width="100" height="150">
+								<f:param value="#{projection.movie.id}" name="movie_id"></f:param>
+							</p:graphicImage>
+							</h:panelGrid>
+						<h:panelGrid columns="2" style="width:40%">
+
+							<h:outputText value="Film:" />
+							<h:outputText value="#{projection.movie.name}" />
+							<h:outputText value="Redatelj:" />
+							<h:outputText value="#{projection.movie.director_name}" />
+							<h:outputText value="Godina: " />
+							<h:outputText value="#{projection.movie.year_of_creation}" />
+							<h:outputText value="Trajanje:" />
+							<h:outputText value="#{projection.movie.duration}" />
+							<h:outputText value="Glumci:" />
+							<h:outputText value="#{projection.movie.listOfActorsText}" />
+							<h:outputText value="Žanr:" />
+							<h:outputText value="#{projection.movie.listOfGenresText}" />
+
+							<!-- 								action="#{projectionMB.doViewReserveSeats}" -->
+							<p:commandLink update=":form:projectionDetail"
+								action="#{projectionMB.doViewDistinctMovieProjections}"
+								oncomplete="PF('projectionDialog').show()" title="View Detail">
+								<h:outputText styleClass="ui-icon ui-icon-search"
+									style="margin:0 auto;" />
+								<f:setPropertyActionListener value="#{projection}"
+									target="#{projectionMB.selectedProjection}" />
+							</p:commandLink>
+						</h:panelGrid>
+					</p:panel>
+				</p:dataGrid>
+
+				<p:dialog header="Projection Info" widgetVar="projectionDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="projectionDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty projectionMB.projection}"
+							columnClasses="label,value">
+
+							<!-- 							<h:outputText value="Id: " /> -->
+							<!-- 							<h:outputText value="#{projectionMB.projection.id}" /> -->
+
+							<p:dataList value="#{projectionMB.distinctMovieProjectionList}"
+								var="distinctProjection" type="unordered" itemType="none"
+								paginator="true" rows="5" styleClass="paginated">
+								<!-- 								<f:facet name="header"> -->
+								<!-- 						            Popis projekcija -->
+								<!-- 						        </f:facet> -->
+								<p:commandLink action="#{projectionMB.doViewReserveSeats}"
+									title="View Detail" styleClass="ui-icon ui-icon-search"
+									style="float:left;margin-right:10px">
+									<f:setPropertyActionListener value="#{distinctProjection}"
+										target="#{projectionMB.projection}" />
+									<h:outputText
+										value="#{distinctProjection.numberOfFreeSeatsText}, #{distinctProjection.date}, #{distinctProjection.cinema.number_of_seats}, #{distinctProjection.cinema.name}" />
+								</p:commandLink>
+
+								<h:outputText value="#{distinctProjection.date}">
+									<f:convertDateTime pattern="dd.MM.yyyy" />
+								</h:outputText>
+
+
+								<h:outputText
+									value=", #{distinctProjection.cinema.name} (#{distinctProjection.numberOfFreeSeatsText})">
+								</h:outputText>
+
+								<!-- 								<h:outputText -->
+<!-- 									value="#{distinctProjection.numberOfFreeSeatsText}, , #{distinctProjection.cinema.number_of_seats}, #{distinctProjection.cinema.name}" -->
+<!-- 									style="display:inline-block" /> -->
+							</p:dataList>
+
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+
+			</h:form>
+
+
+			<h:panelGroup id="filter">
+				<h:panelGroup rendered="#{projectionMB.render}">
+				test
+				</h:panelGroup>
+			</h:panelGroup>
+
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

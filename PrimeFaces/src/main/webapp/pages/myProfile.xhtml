@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<p:growl id="messages"></p:growl>
+				<p:panelGrid columns="2">
+					<h:outputLabel for="firstname" value="Ime:" />
+					<p:inplace id="firstname" editor="true">
+						<p:inputText value="#{myProfileMB.user.firstname}" required="true"
+							label="text" />
+					</p:inplace>
+
+					<h:outputLabel for="lastname" value="Prezime:" />
+					<p:inplace id="lastname" editor="true">
+						<p:inputText value="#{myProfileMB.user.lastname}" required="true"
+							label="text" />
+					</p:inplace>
+
+					<h:outputLabel for="password" value="Lozinka:" />
+					<p:inplace id="password" editor="true">
+						<p:inputText value="#{myProfileMB.user.password}" required="true"
+							label="text" />
+					</p:inplace>
+
+					<h:outputLabel for="email" value="Email:" />
+					<p:inplace id="email" editor="true">
+						<p:inputText value="#{myProfileMB.user.email}" required="true"
+							label="text" />
+					</p:inplace>
+				</p:panelGrid>
+
+				<p:commandButton value="Spremi" action="#{myProfileMB.spremi}"
+					update="messages"></p:commandButton>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

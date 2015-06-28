@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition>
+	
+		<h:form>
+		
+			<p:tabMenu activeIndex="#{navigationController.activeParam}">
+			
+				<p:menuitem 
+						value="Početna" 
+						icon="ui-icon-star"
+						action="#{navigationController.doViewHome}">
+					<f:param name="i" value="0" />
+				</p:menuitem>
+				
+				<p:menuitem 
+						value="Projekcije" 
+						icon="ui-icon-search"
+						action="#{navigationController.doViewProjection}">
+					<f:param name="i" value="1" />
+				</p:menuitem>
+				
+				<p:menuitem 
+						value="Filmovi" 
+						icon="ui-icon-star"
+						action="#{navigationController.doViewMovie}">
+					<f:param name="i" value="2" />
+				</p:menuitem>
+				
+				<p:menuitem 
+						value="Prijatelji" 
+						icon="ui-icon-person"
+						action="#{navigationController.doViewFriends}">
+					<f:param name="i" value="3" />
+				</p:menuitem>
+				
+				<p:menuitem 
+						value="Moji filmovi" 
+						icon="ui-icon-star"
+						action="#{navigationController.doViewMyMovies}">
+					<f:param name="i" value="4" />
+				</p:menuitem>
+				
+				<p:menuitem 
+						value="Moji prijatelji" 
+						icon="ui-icon-star"
+						action="#{navigationController.doViewMyFriends}">
+					<f:param name="i" value="5" />
+				</p:menuitem>
+				
+				<p:menuitem 
+						value="Moj profil" 
+						icon="ui-icon-star"
+						action="#{navigationController.doViewMyProfile}">
+					<f:param name="i" value="6" />
+				</p:menuitem>
+				
+				<p:menuitem 
+						value="Kontakt" 
+						icon="ui-icon-document"
+						action="#{navigationController.doViewContact}">
+					<f:param name="i" value="7" />
+				</p:menuitem>
+				
+				<p:menuitem 
+						value="O nama" 
+						icon="ui-icon-wrench"
+						action="#{navigationController.doViewAboutUs}">
+					<f:param name="i" value="8" />
+				</p:menuitem>
+				
+				<p:menuitem 
+						value="Odjava" 
+						icon="ui-icon-wrench"
+						action="#{loginMB.logout}">
+					<f:param name="i" value="9" />
+				</p:menuitem>
+				
+			</p:tabMenu>
+			
+		</h:form>
+
+	</ui:composition>
+
+</h:body>
+</html>

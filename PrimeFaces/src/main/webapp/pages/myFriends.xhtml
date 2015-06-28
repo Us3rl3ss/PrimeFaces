@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+			<h:form id="form">
+				<p:growl id="messages"></p:growl>
+
+				<p:dataList value="#{myFriendsMB.userFollowList}" var="user"
+					type="unordered" itemType="none" paginator="true" rows="5"
+					styleClass="paginated">
+					<f:facet name="header">
+			            Prijatelji
+			        </f:facet>
+					<p:commandLink update=":form:userDetail"  action="#{myFriendsMB.calculateNumberOfFollowers}"
+						oncomplete="PF('userDialog').show()" title="Detalji"
+						styleClass="ui-icon ui-icon-search"
+						style="float:left;margin-right:10px">
+						<f:setPropertyActionListener value="#{user}"
+							target="#{myFriendsMB.selectedUser}" />
+					</p:commandLink>
+					<h:outputText value="#{user.username}">
+					</h:outputText>
+				</p:dataList>
+
+
+				<p:dialog header="Korisnik" widgetVar="userDialog" modal="true"
+					showEffect="blind" hideEffect="explode" resizable="false">
+					<p:outputPanel id="userDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty myFriendsMB.selectedUser}"
+							columnClasses="label,value">
+							<f:facet name="header">
+								<!-- 								<p:graphicImage -->
+								<!-- 									name="demo/images/car/#{dataListView.selectedCar.brand}-big.gif" /> -->
+							</f:facet>
+
+							<h:outputText value="Ime:" />
+							<h:outputText value="#{myFriendsMB.selectedUser.firstname}" />
+
+							<h:outputText value="Prezime:" />
+							<h:outputText value="#{myFriendsMB.selectedUser.lastname}" />
+
+							<h:outputText value="Godina rođenja:" />
+							<h:outputText value="#{myFriendsMB.selectedUser.date_of_birth}">
+								<f:convertDateTime pattern="dd.MM.yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Email:" />
+							<h:outputText value="#{myFriendsMB.selectedUser.email}" />
+							
+							<h:outputText value="Ukupno pratitelja:" />
+							<h:outputText value="#{myFriendsMB.numberOfFollowers}" />
+
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

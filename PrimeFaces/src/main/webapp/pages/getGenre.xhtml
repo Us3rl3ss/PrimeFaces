@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<p:dataTable id="genreList" var="genreList"
+					value="#{getGenreMB.genreList}" rows="10" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Ime žanra" />
+						</f:facet>
+						<h:outputText value="#{genreList.name}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Kreirano" />
+						</f:facet>
+						<h:outputText value="#{genreList.created}">
+							<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+
+				<h3>Export dokumenata</h3>
+
+				<h:commandLink>
+					<p:graphicImage name="images/pdf.png" />
+					<p:dataExporter type="pdf" target="genreList"
+						fileName="popis_zanrova" pageOnly="false" />
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage name="images/excel.png" />
+					<p:dataExporter type="xls" target="genreList"
+						fileName="popis_zanrova" pageOnly="false" />
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage name="images/csv.png" />
+					<p:dataExporter type="csv" target="genreList"
+						fileName="popis_zanrova" pageOnly="false" />
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage name="images/xml.png" />
+					<p:dataExporter type="xml" target="genreList"
+						fileName="popis_zanrova" pageOnly="false" />
+				</h:commandLink>
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

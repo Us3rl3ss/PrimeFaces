@@ -1,0 +1,5 @@
+Database query documentation:
+
+-- Postavljanje defaultnog vremena inserta u tablici
+ALTER TABLE `primefaces`.`user` 
+ADD COLUMN `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `role_id`;

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<p:growl id="messages"></p:growl>
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Ime:"></p:outputLabel>
+					<p:inputText value="#{addActorMB.actor.firstname}"></p:inputText>
+					<p:outputLabel value="Prezime:"></p:outputLabel>
+					<p:inputText value="#{addActorMB.actor.lastname}"></p:inputText>
+					<p:outputLabel value="Datum rođenja:"></p:outputLabel>
+					<p:calendar value="#{addActorMB.actor.date_of_birth}"
+						pattern="dd.MM.yyyy" mask="true" />
+					<p:outputLabel value="Mjesto rođenja:"></p:outputLabel>
+					<p:inputText value="#{addActorMB.actor.place_of_birth}"></p:inputText>
+					<p:outputLabel value="Informacije:"></p:outputLabel>
+					<p:inputTextarea value="#{addActorMB.actor.info}" rows="5"
+						cols="30" counter="display" maxlength="1000"
+						counterTemplate="{0} preostalih znakova." autoResize="false" />
+					<p:outputLabel></p:outputLabel>
+					<h:outputText id="display" />
+
+					<p:outputLabel value="Filmovi:"></p:outputLabel>
+					<p:autoComplete id="searchMovie" multiple="true"
+						value="#{addActorMB.actor.movieList}"
+						completeMethod="#{addActorMB.completeMovie}" var="movie"
+						itemLabel="#{movie.name}" itemValue="#{movie}"
+						converter="#{movieConverter}" forceSelection="true">
+						<p:column>
+							<h:outputText value="#{movie.name}" />
+						</p:column>
+					</p:autoComplete>
+
+					<p:outputLabel value="Slika:"></p:outputLabel>
+					<p:fileUpload fileUploadListener="#{addActorMB.handleFileUpload}"
+						mode="advanced" dragDropSupport="true" update="uploadFilesList"
+						sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+						multiple="false" />
+
+					<p:outputLabel value="Uploadano:"></p:outputLabel>
+					<p:inputText id="uploadFilesList"
+						value="#{addActorMB.uploadedFileNames}" readonly="#{true}"></p:inputText>
+
+				</p:panelGrid>
+
+
+				<p:commandButton value="Spremi" action="#{addActorMB.spremi}"
+					update="messages"></p:commandButton>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+	<f:metadata>
+		<f:event type="preRenderView"
+			listener="#{reserveSeatsMB.pullValuesFromFlash}" />
+	</f:metadata>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+
+			<h:form id="form">
+
+				<h:outputText value="Projection: " />
+				<h:outputText value="#{reserveSeatsMB.projection.id}" />
+
+
+				<p:outputLabel value="Kino:"></p:outputLabel>
+				
+					<p:panelGrid columns="10">
+				<p:selectManyButton id="cinemaSeats"
+					value="#{reserveSeatsMB.selectedCinemaSeatsList}">
+					<f:selectItems value="#{reserveSeatsMB.cinemaSeatsList}"
+						var="cinemaSeats"
+						itemLabel="#{(cinemaSeats.seats_row).concat(cinemaSeats.seats_number)}"
+						itemValue="#{cinemaSeats.id}" />
+				</p:selectManyButton>
+				</p:panelGrid>
+
+				<p:commandButton value="#{reserveSeatsMB.test}" action="#{reserveSeatsMB.test}"></p:commandButton>
+
+				<p:commandButton value="Pokaži selektirane"
+					action="#{reserveSeatsMB.showSelected}"></p:commandButton>
+
+				<p:commandButton value="Rezerviraj"
+					action="#{reserveSeatsMB.reserveSeats}"></p:commandButton>
+
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

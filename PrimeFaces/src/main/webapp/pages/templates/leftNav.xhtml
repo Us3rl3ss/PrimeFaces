@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition>
+	
+		<h:form>
+			<p:growl autoUpdate="true" />
+
+			<p:panelMenu>
+			
+				<p:submenu label="Kina">
+					<p:menuitem 
+						value="Popis kina"
+						action="#{navigationController.doViewGetTheater}"
+						icon="ui-icon-disk" />
+					<p:menuitem 
+					value="Dodaj kino"
+						action="#{navigationController.doViewAddTheater}"
+						icon="ui-icon-plus" />
+				</p:submenu>
+				
+				<p:submenu label="Kino dvorane">
+					<p:menuitem 
+						value="Popis kino dvorana"
+						action="#{navigationController.doViewGetCinema}"
+						icon="ui-icon-disk" />
+					<p:menuitem 
+						value="Dodaj kino dvoranu"
+						action="#{navigationController.doViewAddCinema}"
+						icon="ui-icon-plus" />
+				</p:submenu>
+				
+				<p:submenu label="Projekcije">
+					<p:menuitem 
+						value="Popis projekcija"
+						action="#{navigationController.doViewGetProjection}"
+						icon="ui-icon-disk" />
+					<p:menuitem 
+						value="Dodaj projekciju"
+						action="#{navigationController.doViewAddProjection}"
+						icon="ui-icon-plus" />
+				</p:submenu>
+				
+				<p:submenu label="Filmovi">
+					<p:menuitem 
+						value="Popis filmova"
+						action="#{navigationController.doViewGetMovie}"
+						icon="ui-icon-disk" />
+					<p:menuitem 
+					value="Dodaj film"
+						action="#{navigationController.doViewAddMovie}"
+						icon="ui-icon-plus" />
+				</p:submenu>
+				
+				<p:submenu label="Žanrovi">
+					<p:menuitem 
+						value="Popis žanrova"
+						action="#{navigationController.doViewGetGenre}"
+						icon="ui-icon-disk" />
+					<p:menuitem 
+						value="Dodaj žanr"
+						action="#{navigationController.doViewAddGenre}"
+						icon="ui-icon-plus" />
+				</p:submenu>
+				
+				<p:separator />
+				
+				<p:submenu label="Glumci">
+					<p:menuitem 
+						value="Popis glumaca"
+						action="#{navigationController.doViewGetActor}"
+						icon="ui-icon-disk" />
+					<p:menuitem 
+						value="Dodaj glumca"
+						action="#{navigationController.doViewAddActor}"
+						icon="ui-icon-plus" />
+				</p:submenu>
+				
+				<p:submenu label="Korisnici">
+					<p:menuitem 
+						value="Popis korisnika"
+						action="#{navigationController.doViewListOfUsers}"
+						icon="ui-icon-disk" />
+				</p:submenu>
+				
+				<p:submenu label="Statistike">
+				</p:submenu>
+				
+			</p:panelMenu>
+			
+		</h:form>
+		
+	</ui:composition>
+
+</h:body>
+</html>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<p:growl id="messages"></p:growl>
+				<p:panelGrid columns="2">
+
+					<p:outputLabel value="Film:"></p:outputLabel>
+					<p:selectOneMenu id="movie" value="#{movieMB.movie}"
+						converter="#{movieConverter}" panelStyle="width:180px"
+						effect="fade" var="movie" style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItems value="#{movieMB.movieList}" var="movie"
+							itemLabel="#{movie.name}" itemValue="#{movie}" />
+
+						<p:column>
+							<h:outputText value="#{movie.name}" />
+						</p:column>
+
+						<f:ajax listener="#{movieMB.pretrazi}" render="movieInfo" />
+					</p:selectOneMenu>
+
+				</p:panelGrid>
+
+
+				<p:panel id="movieInfo" header="#{movieMB.movie.name}"
+					style="margin-bottom:20px">
+					<h:panelGrid columns="2" cellpadding="10">
+
+						<!-- 						<p:graphicImage name="demo/images/godfather/godfather3.jpg" /> -->
+						<h:outputText value="Naslov:" />
+						<h:outputText value="#{movieMB.movie.name}" />
+
+						<h:outputText value="Redatelj:" />
+						<h:outputText value="#{movieMB.movie.director_name}" />
+
+						<h:outputText value="Godina:" />
+						<h:outputText value="#{movieMB.movie.year_of_creation}" />
+
+						<h:outputText value="Trajanje:" />
+						<h:outputText value="#{movieMB.movie.duration}" />
+
+						<h:outputText value="Informacije:" />
+						<h:outputText value="#{movieMB.movie.info}" />
+
+						<h:outputText value="Ukupna ocjena:" />
+						<p:rating value="#{movieMB.averageRate}" stars="10" cancel="false"
+							readonly="#{true}">
+						</p:rating>
+
+						<!-- 						<h3>Recenzija:</h3> -->
+						<!-- 						<p:inputTextarea value="#{movieMB.userMovieReview.review}" -->
+						<!-- 							rows="5" cols="100" counter="display" maxlength="5000" -->
+						<!-- 							counterTemplate="{0} characters remaining." autoResize="true" -->
+						<!-- 							readonly="#{movieMB.reviewDisabled}" /> -->
+						<!-- 						<h:outputText id="display" /> -->
+
+						<!-- 						<p:commandButton value="Dodaj recenziju" -->
+						<!-- 							action="#{movieMB.addReview}" -->
+						<!-- 							disabled="#{movieMB.reviewDisabled}" update="messages"></p:commandButton> -->
+
+						<!-- 						<h:outputText value="" /> -->
+						<!-- 						<h:outputText value="Ocjena:" /> -->
+						<!-- 						<p:rating value="#{movieMB.userMovieRate.rate}" stars="10" -->
+						<!-- 							cancel="false" readonly="#{movieMB.rateDisabled}"> -->
+						<!-- 							<p:ajax event="rate" listener="#{movieMB.onRate}" -->
+						<!-- 								update="messages" /> -->
+						<!-- 							<p:ajax event="cancel" listener="#{movieMB.onCancel}" -->
+						<!-- 								update="messages" /> -->
+						<!-- 						</p:rating> -->
+
+
+						<p:carousel value="#{movieMB.userMovieReviewList}"
+							headerText="Recenzije" var="reviews"
+							itemStyle="height:200px;width:600px;" numVisible="1"
+							easing="easeOutBounce" styleClass="carouselAdvanced">
+							<p:panelGrid columns="2" style="width:100%"
+								columnClasses="label,value">
+
+								<h:outputText value="Korisnik:" />
+								<h:outputText value="#{reviews.id}" />
+
+								<h:outputText value="Kreirano:" />
+								<h:outputText value="#{reviews.created}">
+									<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
+								</h:outputText>
+
+								<h:outputText value="Recenzija:" />
+								<p:inputTextarea value="#{reviews.review}" rows="5" cols="100"
+									autoResize="true" readonly="#{true}" />
+							</p:panelGrid>
+						</p:carousel>
+						<h:outputText value="" />
+
+						<p:commandButton value="Moja recenzija" type="button"
+							onclick="PF('myReview').show();" />
+
+						<p:commandButton value="Moja ocjena" type="button"
+							onclick="PF('myRate').show();" />
+					</h:panelGrid>
+
+					<f:facet name="actions">
+						<h:commandLink disabled="#{movieMB.inFavorites}"
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+							<h:outputText styleClass="ui-icon ui-icon-star" />
+							<f:ajax listener="#{movieMB.addToFavorites}" />
+						</h:commandLink>
+					</f:facet>
+
+
+					<p:dialog header="Moja ocjena" widgetVar="myRate"
+						showEffect="explode" hideEffect="bounce" height="100">
+
+						<h:outputText value="Ocjena:" />
+						<p:rating value="#{movieMB.userMovieRate.rate}" stars="10"
+							cancel="false" readonly="#{movieMB.rateDisabled}">
+							<p:ajax event="rate" listener="#{movieMB.onRate}"
+								update="messages" />
+							<p:ajax event="cancel" listener="#{movieMB.onCancel}"
+								update="messages" />
+						</p:rating>
+					</p:dialog>
+
+					<p:dialog header="Moja recenzija" widgetVar="myReview"
+						showEffect="explode" hideEffect="bounce" height="100">
+
+						<p:inputTextarea value="#{movieMB.userMovieReview.review}"
+							rows="5" cols="100" counter="display" maxlength="5000"
+							counterTemplate="{0} characters remaining." autoResize="true"
+							readonly="#{movieMB.reviewDisabled}" />
+						<h:outputText id="display" />
+
+						<p:commandButton value="Dodaj recenziju"
+							action="#{movieMB.addReview}"
+							disabled="#{movieMB.reviewDisabled}" update="messages"></p:commandButton>
+					</p:dialog>
+
+				</p:panel>
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">root</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/primefaces</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="hibernate.show_sql">false</property>
+
+		<mapping class="hr.primefaces.model.User" />
+		<mapping class="hr.primefaces.model.Movie" />
+		<mapping class="hr.primefaces.model.Actor" />
+		<mapping class="hr.primefaces.model.Genre" />
+		<mapping class="hr.primefaces.model.Theater" />
+		<mapping class="hr.primefaces.model.Cinema" />
+		<mapping class="hr.primefaces.model.CinemaMovie" />
+		<mapping class="hr.primefaces.model.Projection" />
+		<mapping class="hr.primefaces.model.CinemaSeats" />
+		<mapping class="hr.primefaces.model.ProjectionReservedSeats" />
+		<mapping class="hr.primefaces.model.UserMovieRate" />
+		<mapping class="hr.primefaces.model.UserMovieReview" />
+		<mapping class="hr.primefaces.model.UserFavoriteMovie" />
+		<mapping class="hr.primefaces.model.UserFollowing" />
+
+	</session-factory>
+</hibernate-configuration>
