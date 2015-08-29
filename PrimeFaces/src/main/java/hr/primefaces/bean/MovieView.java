@@ -21,12 +21,12 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean(name = "movieMB")
 @ViewScoped
-public class MovieManagedBean implements Serializable {
+public class MovieView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{loginMB}")
-	LoginManagedBean loginMB;
+	LoginView loginMB;
 
 	@ManagedProperty(value = "#{UserMovieRateService}")
 	IUserMovieRateService userMovieRateService;
@@ -269,11 +269,11 @@ public class MovieManagedBean implements Serializable {
 		return serialVersionUID;
 	}
 
-	public LoginManagedBean getLoginMB() {
+	public LoginView getLoginMB() {
 		return loginMB;
 	}
 
-	public void setLoginMB(LoginManagedBean loginMB) {
+	public void setLoginMB(LoginView loginMB) {
 		this.loginMB = loginMB;
 	}
 

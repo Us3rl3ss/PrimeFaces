@@ -16,28 +16,25 @@
 	
 		<ui:define name="content">
 		
-			<h:form>
+			<h:form id="addTheater">
 			
-				<p:growl id="messages"></p:growl>
+				<p:growl id="messages" showDetail="true" sticky="true" />
 				
 				<p:panelGrid columns="2">
 				
-					<p:outputLabel value="Naziv kina:"></p:outputLabel>
-					<p:inputText value="#{addTheaterMB.theater.name}"></p:inputText>
+					<p:outputLabel for="name" value="Naziv kina:" />
+					<p:inputText id="name" value="#{addTheaterMB.theater.name}" />
 					
-					<p:outputLabel value="Mjesto:"></p:outputLabel>
-					<p:inputText value="#{addTheaterMB.theater.place}"></p:inputText>
+					<p:outputLabel for="place" value="Mjesto:" />
+					<p:inputText id="place" value="#{addTheaterMB.theater.place}" />
 					
-					<p:outputLabel value="Adresa:"></p:outputLabel>
-					<p:inputText value="#{addTheaterMB.theater.address}"></p:inputText>
+					<p:outputLabel for="address" value="Adresa:" />
+					<p:inputText id="address" value="#{addTheaterMB.theater.address}" />
 					
 				</p:panelGrid>
 
-				<p:commandButton 
-						value="Spremi" 
-						action="#{addTheaterMB.spremi}"
-						update="messages">
-			  	</p:commandButton>
+			  	<p:commandButton value="Spremi" action="#{addTheaterMB.spremi}"
+					update="messages addTheater" />
 			  	
 			</h:form>
 			

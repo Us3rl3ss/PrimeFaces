@@ -2,6 +2,7 @@ package hr.primefaces.service.impl;
 
 import hr.primefaces.dao.ICinemaDAO;
 import hr.primefaces.model.Cinema;
+import hr.primefaces.model.Theater;
 import hr.primefaces.service.ICinemaService;
 
 import java.io.Serializable;
@@ -59,6 +60,11 @@ public class CinemaService implements ICinemaService, Serializable {
 	@Override
 	public List<Cinema> getCinemas() {
 		return getCinemaDAO().getCinemas();
+	}
+	
+	@Override
+	public List<Cinema> getCinemaByTheater(Theater theater) {
+		return getCinemaDAO().getCinemaByTheater(theater);
 	}
 
 	public ICinemaDAO getCinemaDAO() {

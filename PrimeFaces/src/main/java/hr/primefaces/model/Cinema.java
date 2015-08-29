@@ -46,6 +46,14 @@ public class Cinema implements java.io.Serializable {
 		this.number_of_seats = number_of_seats;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (this.getId() == ((Cinema) obj).getId())
+				return true;
+		else
+			return false;
+	}
 	
 	// bidirectional association
 	public void addToCinemaSeatsList(CinemaSeats cs) {

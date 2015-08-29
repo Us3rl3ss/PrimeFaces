@@ -22,6 +22,4 @@ public interface ITheaterService {
 	public List<Theater> getTheaterByName(String name);
 
 	public List<Theater> getTheaters();
-	
-	public List<Object[]> getTheaterJoinCinemaById(int id);
 }

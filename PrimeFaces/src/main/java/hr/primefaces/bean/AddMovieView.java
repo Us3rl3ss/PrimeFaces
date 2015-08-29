@@ -1,43 +1,32 @@
 package hr.primefaces.bean;
 
-
-/*
- * Imports
- */
-
 import hr.primefaces.model.Actor;
 import hr.primefaces.model.Genre;
 import hr.primefaces.model.Movie;
 import hr.primefaces.service.IActorService;
 import hr.primefaces.service.IGenreService;
 import hr.primefaces.service.IMovieService;
+import hr.primefaces.util.MessageUtil;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.apache.poi.util.IOUtils;
+import org.hibernate.HibernateException;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "addMovieMB")
 @ViewScoped
-public class AddMovieManagedBean implements Serializable {
+public class AddMovieView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	
-	/*
-	 * Managed Properties
-	 */
-
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
 	
@@ -47,35 +36,36 @@ public class AddMovieManagedBean implements Serializable {
 	@ManagedProperty(value = "#{GenreService}")
 	IGenreService genreService;
 
-	@ManagedProperty("#{dropDownMB}")
-	private DropdownMenuManagedBean dropDownMB;
-	
-	
-	/*
-	 * Private Attributes
-	 */
-
 	private Movie movie = new Movie();
-
 	private List<Movie> movieList;
 	private List<Genre> genreList;
-	
 	private String uploadedFileNames = "";
 
 	@PostConstruct
 	public void init() {
 	}
 
+	/**
+	 * spremi
+	 */
 	public void spremi() {
 
 		try {
 			movieService.addMovie(movie);
-			dropDownMB.reloadMovie();
-		} catch (Exception ex) { // TODO ERROR HANDLING
+			movie = new Movie();
+			MessageUtil.info("Podaci uspješno spremljeni!");
+		} catch (HibernateException hex) {
+			hex.printStackTrace();
+			MessageUtil.error("Došlo je do hibernate greške!");
+		} catch (Exception ex) {
 			ex.printStackTrace();
+			MessageUtil.error("Došlo je do greške!");
 		}
 	}
 	
+	/**
+	 * handleFileUpload
+	 */
 	public void handleFileUpload(FileUploadEvent event) {
 		System.out.println(event);
 		
@@ -96,26 +86,18 @@ public class AddMovieManagedBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * completeActor
+	 */
 	public List<Actor> completeActor(String input) {
-		List<Actor> list = (List<Actor>) actorService.getActorByName(input);
-		return list;
+		return actorService.getActorByName(input);
 	}
 	
+	/**
+	 * completeGenre
+	 */
 	public List<Genre> completeGenre(String input) {
-		List<Genre> list = (List<Genre>) genreService.getGenreByName(input);
-		return list;
-	}
-	
-	public void handleSelect() {
-		System.out.print("test");
-	}
-
-	public void onItemSelect(SelectEvent event) {
-		FacesContext.getCurrentInstance()
-				.addMessage(
-						null,
-						new FacesMessage("Item Selected", event.getObject()
-								.toString()));
+		return genreService.getGenreByName(input);
 	}
 
 	public IMovieService getMovieService() {
@@ -134,24 +116,12 @@ public class AddMovieManagedBean implements Serializable {
 		this.movie = movie;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public List<Movie> getMovieList() {
 		return movieList;
 	}
 
 	public void setMovieList(List<Movie> movieList) {
 		this.movieList = movieList;
-	}
-
-	public DropdownMenuManagedBean getDropDownMB() {
-		return dropDownMB;
-	}
-
-	public void setDropDownMB(DropdownMenuManagedBean dropDownMB) {
-		this.dropDownMB = dropDownMB;
 	}
 
 	public List<Genre> getGenreList() {

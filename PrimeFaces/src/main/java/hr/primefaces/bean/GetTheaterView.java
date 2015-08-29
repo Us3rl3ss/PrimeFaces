@@ -18,7 +18,7 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean(name = "getTheaterMB")
 @ViewScoped
-public class GetTheaterManagedBean implements Serializable {
+public class GetTheaterView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

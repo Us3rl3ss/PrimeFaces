@@ -65,6 +65,15 @@ public class Actor implements java.io.Serializable {
 		this.place_of_birth = placeOfBirth;
 		this.info = info;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (this.getId() == ((Actor) obj).getId())
+				return true;
+		else
+			return false;
+	}
 
 	public Integer getId() {
 		return id;

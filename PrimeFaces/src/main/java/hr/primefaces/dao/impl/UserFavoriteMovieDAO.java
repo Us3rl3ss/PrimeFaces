@@ -4,8 +4,8 @@ import hr.primefaces.dao.IUserFavoriteMovieDAO;
 import hr.primefaces.model.Movie;
 import hr.primefaces.model.User;
 import hr.primefaces.model.UserFavoriteMovie;
-import hr.primefaces.model.UserMovieRate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +13,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserFavoriteMovieDAO implements IUserFavoriteMovieDAO {
+public class UserFavoriteMovieDAO implements IUserFavoriteMovieDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,35 +47,22 @@ public class UserFavoriteMovieDAO implements IUserFavoriteMovieDAO {
 	}
 
 	@Override
-	public List<UserFavoriteMovie> getMovieInUserFavorites(User user,
-			Movie movie) {
+	public List<UserFavoriteMovie> getMovieInUserFavorites(User user, Movie movie) {
 
-		String query = "from UserFavoriteMovie "
-				+ "where user_id = :userId "
-				+ "and movie_id = :movieId";
+		String query = "from UserFavoriteMovie " + "where user_id = :userId " + "and movie_id = :movieId";
 
-		List list = getSessionFactory().getCurrentSession()
-				.createQuery(query)
-				.setParameter("userId", user.getId())
-				.setParameter("movieId", movie.getId())
+		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("userId", user.getId()).setParameter("movieId", movie.getId())
 				.list();
 		return list;
 	}
-	
+
 	@Override
 	public List<UserFavoriteMovie> getUserFavoriteMovieByUser(User user) {
-		
-		String query = "from UserFavoriteMovie ufm "
-				+ "join ufm.movie "
-				+ "where user_id = :userId "
-				+ "order by ufm.created desc";
-		
-		
-		List<Object[]> list = getSessionFactory().getCurrentSession()
-				.createQuery(query)
-				.setParameter("userId", user.getId())
-				.list();
-		
+
+		String query = "from UserFavoriteMovie ufm " + "join ufm.movie " + "where user_id = :userId " + "order by ufm.created desc";
+
+		List<Object[]> list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("userId", user.getId()).list();
+
 		List<UserFavoriteMovie> result = new ArrayList<UserFavoriteMovie>();
 		for (Object[] arr : list) {
 
@@ -83,10 +70,10 @@ public class UserFavoriteMovieDAO implements IUserFavoriteMovieDAO {
 			Movie m = (Movie) arr[1];
 
 			ufm.setMovie(m);
-			
+
 			result.add(ufm);
 		}
-		
+
 		return result;
 	}
 

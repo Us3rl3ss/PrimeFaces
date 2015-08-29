@@ -24,7 +24,7 @@ import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "searchMB")
 @ApplicationScoped
-public class SearchManagedBean implements Serializable {
+public class SearchView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

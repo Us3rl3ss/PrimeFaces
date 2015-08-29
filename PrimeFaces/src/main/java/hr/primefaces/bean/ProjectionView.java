@@ -13,7 +13,6 @@ import hr.primefaces.service.IProjectionService;
 import hr.primefaces.service.ITheaterService;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,12 +22,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ValueChangeEvent;
+
+import org.primefaces.context.RequestContext;
 
 @ManagedBean(name = "projectionMB")
 @ViewScoped
-public class ProjectionManagedBean implements Serializable {
+public class ProjectionView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,9 +46,6 @@ public class ProjectionManagedBean implements Serializable {
 	@ManagedProperty(value = "#{ProjectionReservedSeatsService}")
 	IProjectionReservedSeatsService projectionReservedSeatsService;
 
-	@ManagedProperty("#{dropDownMB}")
-	private DropdownMenuManagedBean dropDownMB;
-
 	private Projection projection = new Projection();
 	private Theater theater = new Theater();
 	private Cinema cinema = new Cinema();
@@ -65,50 +61,28 @@ public class ProjectionManagedBean implements Serializable {
 
 	private boolean render;
 
+	@PostConstruct
+	public void init() {
+		theaterList = theaterService.getTheaters();
+	}
+	
+	/**
+	 * doViewReserveSeats
+	 */
 	public String doViewReserveSeats() {
+		
 		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
 		flash.setKeepMessages(true);
 
 		flash.put("projection", projection);
 
 		return "reserveSeats?faces-redirect=true";
-		// return "reserveSeats";
 	}
 
-	@PostConstruct
-	public void init() {
-		// projectionList = projectionService.getProjectionsForReservation();
-		// //getProjections();
-
-		System.out.println();
-		theaterList = dropDownMB.getTheaterList();// theaterService.getTheaters();
-		// cinemaList = cinemaService.getCinemas();
-		// movieList = movieService.getMovies();
-	}
-
+	/**
+	 * pretrazi
+	 */
 	public void pretrazi() {
-
-		// System.out.println(this.theater.getName());
-		//
-		// if (theater.getName().equals("Novo"))
-		// this.render = true;
-		// else
-		// this.render = false;
-
-		// System.out.println("PRETRAŽI");
-		//
-		// Iterator<Projection> iter =
-		// dropDownMB.getProjectionList().iterator();
-		//
-		// this.projectionList = new ArrayList<Projection>();
-		//
-		// while (iter.hasNext()) {
-		//
-		// Projection p = iter.next();
-		//
-		// if (p.getTheater().getId().equals(theater.getId()))
-		// this.projectionList.add(p);
-		// }
 
 		List<Projection> tempProjectionList = projectionService.getProjectionsForReservation(theater);
 
@@ -128,16 +102,13 @@ public class ProjectionManagedBean implements Serializable {
 		}
 
 		projectionList = tempProjectionList;
-
-		// this.projectionList =
-		// projectionService.getProjectionsByTheater(theater);//new
-		// ArrayList<Projection>();
-
-		// this.projectionList.add(projectionService.getProjectionById(3));
-
+		RequestContext.getCurrentInstance().update("projection");
 	}
 
-	private String getListOfGenresText(List<Genre> genreList) {
+	/**
+	 * getListOfGenresText
+	 */
+	public String getListOfGenresText(List<Genre> genreList) {
 
 		String result = "";
 
@@ -162,7 +133,10 @@ public class ProjectionManagedBean implements Serializable {
 		return result;
 	}
 
-	private String getListOfActorsText(List<Actor> actorList) {
+	/**
+	 * getListOfActorsText
+	 */
+	public String getListOfActorsText(List<Actor> actorList) {
 
 		String result = "";
 
@@ -187,6 +161,9 @@ public class ProjectionManagedBean implements Serializable {
 		return result;
 	}
 
+	/**
+	 * doViewDistinctMovieProjections
+	 */
 	public void doViewDistinctMovieProjections() {
 
 		List<Projection> tempProjectionList = projectionService.getDistinctMovieProjections(selectedProjection);
@@ -204,38 +181,6 @@ public class ProjectionManagedBean implements Serializable {
 		}
 
 		distinctMovieProjectionList = tempProjectionList;
-	}
-
-	public void postaviCinemaList(ValueChangeEvent event) throws AbortProcessingException {
-
-		Theater theater = (Theater) event.getNewValue();
-
-		List<Object[]> list = theaterService.getTheaterJoinCinemaById(theater.getId());
-
-		List<Cinema> cinemaList = new ArrayList<Cinema>();
-		for (Object[] arr : list) {
-
-			Theater t = (Theater) arr[0];
-			Cinema c = (Cinema) arr[1];
-			cinemaList.add(c);
-		}
-
-		this.cinemaList = cinemaList;
-	}
-
-	private void ispisProjection(Projection p) {
-
-		System.out.println("PROJECTION: ");
-
-		System.out.println("	id:" + p.getId());
-		System.out.println("	start_time:" + p.getStart_time());
-		System.out.println("	end_time:" + p.getEnd_time());
-		System.out.println("	movie|id:" + p.getMovie().getId());
-		System.out.println("	movie|name:" + p.getMovie().getName());
-		System.out.println("	cinema|id:" + p.getCinema().getId());
-		System.out.println("	cinema|name:" + p.getCinema().getName());
-
-		System.out.println("END OF - PROJECTION: ");
 	}
 
 	public IProjectionService getProjectionService() {
@@ -310,10 +255,6 @@ public class ProjectionManagedBean implements Serializable {
 		this.movieList = movieList;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public Theater getTheater() {
 		return theater;
 	}
@@ -344,14 +285,6 @@ public class ProjectionManagedBean implements Serializable {
 
 	public void setRender(boolean render) {
 		this.render = render;
-	}
-
-	public DropdownMenuManagedBean getDropDownMB() {
-		return dropDownMB;
-	}
-
-	public void setDropDownMB(DropdownMenuManagedBean dropDownMB) {
-		this.dropDownMB = dropDownMB;
 	}
 
 	public List<Projection> getDistinctMovieProjectionList() {

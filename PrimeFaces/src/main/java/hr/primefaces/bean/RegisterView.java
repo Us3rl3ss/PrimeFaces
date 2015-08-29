@@ -17,7 +17,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 @ManagedBean(name = "registerMB")
 @ViewScoped
-public class RegisterManagedBean implements Serializable {
+public class RegisterView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -13,18 +13,27 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+
 		<ui:define name="content">
-			<h:form>
-				<p:growl id="messages"></p:growl>
+
+			<h:form id="addGenre">
+
+				<p:growl id="messages" showDetail="true" sticky="true" />
+
 				<p:panelGrid columns="2">
-					<p:outputLabel value="Ime žanra:"></p:outputLabel>
-					<p:inputText value="#{addGenreMB.genre.name}"></p:inputText>
+
+					<p:outputLabel for="name" value="Ime žanra:" />
+					<p:inputText id="name" value="#{addGenreMB.genre.name}" />
+
 				</p:panelGrid>
 
 				<p:commandButton value="Spremi" action="#{addGenreMB.spremi}"
-					update="messages"></p:commandButton>
+					update="messages addGenre" />
+
 			</h:form>
+
 		</ui:define>
+
 	</ui:composition>
 
 </h:body>

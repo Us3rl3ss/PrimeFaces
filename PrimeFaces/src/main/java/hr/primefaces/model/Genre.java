@@ -30,6 +30,15 @@ public class Genre implements java.io.Serializable {
 
 	public Genre() {
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (this.getId() == ((Genre) obj).getId())
+				return true;
+		else
+			return false;
+	}
 
 	public Genre(String name, Date created) {
 		this.name = name;

@@ -12,49 +12,41 @@
 	<title><ui:insert name="title">CinePlex</ui:insert></title>
 	<h:outputStylesheet library="css" name="main.css" />
 
-
-	<script type="text/javascript">
-	
-		/* -------------- reserveSeats.xhtml -------------- */
-		var test;
-
-		function handleResize(a) {
-			test = a;
-			// 			$($('input[name="form:cinemaSeats"][value="8"]').parent().children()[1]).prop('readonly', true)
-			alert(JSON.stringify(a));
-		}
-		/* -------------- END OF - reserveSeats.xhtml -------------- */
-		
-	</script>
 </h:head>
 
 <h:body>
 
-	<div id="header">
-		<ui:insert name="header">
-			<ui:include src="header.xhtml" />
-		</ui:insert>
-	</div>
+	<p:layout>
 
-	<div id="center">
-		<div id="leftNav">
-			<ui:insert name="leftNav">
+		<p:layoutUnit position="north">
+
+			<ui:insert name="header">
+				<ui:include src="header.xhtml" />
+			</ui:insert>
+
+		</p:layoutUnit>
+
+
+		<p:layoutUnit position="west" size="300" minSize="300" maxSize="300"
+			scrollable="true">
+
+			<ui:insert name="left">
 				<ui:include src="leftNav.xhtml" />
 			</ui:insert>
-		</div>
 
-		<div id="content">
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" size="300" minSize="300" maxSize="300"
+			scrollable="true">
+
 			<ui:insert name="content">
 			</ui:insert>
-		</div>
-	</div>
 
-	<div id="footer">
-		<ui:insert name="footer">
-			<ui:include src="footer.xhtml" />
-		</ui:insert>
-	</div>
-	
+		</p:layoutUnit>
+
+
+	</p:layout>
+
 </h:body>
 
 </html>

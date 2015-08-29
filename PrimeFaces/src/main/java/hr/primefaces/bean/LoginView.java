@@ -14,7 +14,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "loginMB")
 @SessionScoped
-public class LoginManagedBean implements Serializable {
+public class LoginView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

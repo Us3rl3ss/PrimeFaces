@@ -22,6 +22,4 @@ public interface ITheaterDAO {
 	public List<Theater> getTheaterByName(String username);
 
 	public List<Theater> getTheaters();
-	
-	public List<Object[]> getTheaterJoinCinemaById(int id);
 }

@@ -62,6 +62,14 @@ public class Theater implements java.io.Serializable {
 		this.projection = projection;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (this.getId() == ((Theater) obj).getId())
+				return true;
+		else
+			return false;
+	}
 	
 	/*
 	 * Getters and Setters

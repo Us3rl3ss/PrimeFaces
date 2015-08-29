@@ -13,14 +13,12 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean(name = "getActorMB")
 @ViewScoped
-public class GetActorManagedBean implements Serializable {
+public class GetActorView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{ActorService}")
 	IActorService actorService;
-
-	private Actor actor = new Actor();
 
 	private List<Actor> actorList;
 
@@ -37,24 +35,12 @@ public class GetActorManagedBean implements Serializable {
 		this.actorService = actorService;
 	}
 
-	public Actor getActor() {
-		return actor;
-	}
-
-	public void setActor(Actor actor) {
-		this.actor = actor;
-	}
-
 	public List<Actor> getActorList() {
 		return actorList;
 	}
 
 	public void setActorList(List<Actor> actorList) {
 		this.actorList = actorList;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 }

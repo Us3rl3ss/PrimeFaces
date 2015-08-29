@@ -13,8 +13,10 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+
 		<ui:define name="content">
-			<h:form>
+
+			<h:form id="getUser">
 
 				<p:dataTable id="userList" var="userList"
 					value="#{getUserMB.userList}" rows="10" paginator="true"
@@ -69,33 +71,35 @@
 
 
 				<h3>Export dokumenata</h3>
-				
+
 				<h:commandLink>
 					<p:graphicImage name="images/pdf.png" />
 					<p:dataExporter type="pdf" target="userList"
 						fileName="popis_korisnika" pageOnly="false" />
 				</h:commandLink>
-				
+
 				<h:commandLink>
 					<p:graphicImage name="images/excel.png" />
 					<p:dataExporter type="xls" target="userList"
 						fileName="popis_korisnika" pageOnly="false" />
 				</h:commandLink>
-				
+
 				<h:commandLink>
 					<p:graphicImage name="images/csv.png" />
 					<p:dataExporter type="csv" target="userList"
 						fileName="popis_korisnika" pageOnly="false" />
 				</h:commandLink>
-				
+
 				<h:commandLink>
 					<p:graphicImage name="images/xml.png" />
 					<p:dataExporter type="xml" target="userList"
 						fileName="popis_korisnika" pageOnly="false" />
 				</h:commandLink>
-				
+
 			</h:form>
+
 		</ui:define>
+
 	</ui:composition>
 
 </h:body>

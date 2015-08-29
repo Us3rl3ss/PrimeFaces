@@ -19,7 +19,7 @@ import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "getCinemaMB")
 @ViewScoped
-public class GetCinemaManagedBean implements Serializable {
+public class GetCinemaView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -3,11 +3,14 @@ package hr.primefaces.dao.impl;
 import hr.primefaces.dao.ICinemaMovieDAO;
 import hr.primefaces.model.CinemaMovie;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
-public class CinemaMovieDAO implements ICinemaMovieDAO {
+@Repository
+public class CinemaMovieDAO implements ICinemaMovieDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,26 +44,19 @@ public class CinemaMovieDAO implements ICinemaMovieDAO {
 
 	@Override
 	public CinemaMovie getCinemaMovieById(int id) {
-		List list = getSessionFactory().getCurrentSession()
-				.createQuery("from CinemaMovie where id=?").setParameter(0, id)
-				.list();
+		List list = getSessionFactory().getCurrentSession().createQuery("from CinemaMovie where id=?").setParameter(0, id).list();
 		return (CinemaMovie) list.get(0);
 	}
 
 	@Override
 	public List<CinemaMovie> getCinemaMovies() {
-		List list = getSessionFactory().getCurrentSession()
-				.createQuery("from CinemaMovie").list();
+		List list = getSessionFactory().getCurrentSession().createQuery("from CinemaMovie").list();
 		return list;
 	}
 
 	@Override
 	public List<CinemaMovie> getCinemaMovieByName(String name) {
-		List list = getSessionFactory()
-				.getCurrentSession()
-				.createQuery(
-						"from CinemaMovie where name like lower('%"
-								+ name.toLowerCase() + "%')").list();
+		List list = getSessionFactory().getCurrentSession().createQuery("from CinemaMovie where name like lower('%" + name.toLowerCase() + "%')").list();
 		return list;
 	}
 

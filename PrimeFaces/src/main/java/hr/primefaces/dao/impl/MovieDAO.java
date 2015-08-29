@@ -5,11 +5,14 @@ import hr.primefaces.model.Actor;
 import hr.primefaces.model.Genre;
 import hr.primefaces.model.Movie;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
-public class MovieDAO implements IMovieDAO {
+@Repository
+public class MovieDAO implements IMovieDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,54 +46,41 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public Movie getMovieById(int id) {
-		List list = getSessionFactory().getCurrentSession()
-				.createQuery("from Movie where id=?").setParameter(0, id)
-				.list();
+		List list = getSessionFactory().getCurrentSession().createQuery("from Movie where id=?").setParameter(0, id).list();
 		return (Movie) list.get(0);
 	}
 
 	@Override
 	public List<Movie> getMovies() {
-		List list = getSessionFactory().getCurrentSession()
-				.createQuery("from Movie").list();
+		List list = getSessionFactory().getCurrentSession().createQuery("from Movie").list();
 		return list;
 	}
 
 	@Override
 	public List<Movie> getMovieByName(String name) {
-		List list = getSessionFactory()
-				.getCurrentSession()
-				.createQuery(
-						"from Movie where name like lower('%"
-								+ name.toLowerCase() + "%')").list();
+		List list = getSessionFactory().getCurrentSession().createQuery("from Movie where name like lower('%" + name.toLowerCase() + "%')").list();
 		return list;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
+
 	@Override
 	public List<Actor> getAllMovieActors(Movie movie) {
-		
+
 		String query = "select actorList from Movie where movie_id = :movieId";
-		
-		List list = getSessionFactory().getCurrentSession()
-				.createQuery(query)
-				.setParameter("movieId", movie.getId())
-				.list();
+
+		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("movieId", movie.getId()).list();
 		return list;
 	}
-	
+
 	@Override
 	public List<Genre> getAllMovieGenres(Movie movie) {
-		
+
 		String query = "select genreList from Movie where movie_id = :movieId";
-		
-		List list = getSessionFactory().getCurrentSession()
-				.createQuery(query)
-				.setParameter("movieId", movie.getId())
-				.list();
+
+		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("movieId", movie.getId()).list();
 		return list;
 	}
 

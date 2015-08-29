@@ -13,53 +13,37 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+	
 		<ui:define name="content">
-			<h:form>
-				<p:growl id="messages"></p:growl>
+		
+			<h:form id="addProjection">
+			
+				<p:growl id="messages" showDetail="true" sticky="true" />
+				
 				<p:panelGrid columns="2">
 
-					<p:outputLabel value="Kino:"></p:outputLabel>
+					<p:outputLabel for="theater" value="Kino:"></p:outputLabel>
 					<p:selectOneMenu id="theater" value="#{addProjectionMB.projection.theater}"
-						valueChangeListener="#{addProjectionMB.postaviCinemaList}"
-						converter="#{theaterConverter}" panelStyle="width:180px"
-						effect="fade" var="theater" style="width:160px" filter="true"
-						filterMatchMode="startsWith">
+						converter="#{theaterConverter}">
 						<f:selectItems value="#{addProjectionMB.theaterList}" var="theater"
-							itemLabel="#{theater.name}" itemValue="#{theater}" />
-
-						<p:column>
-							<h:outputText value="#{theater.name}" />
-						</p:column>
+							itemValue="#{theater}" itemLabel="#{theater.name}" />
+						<f:ajax listener="#{addProjectionMB.postaviCinemaList}" />
 					</p:selectOneMenu>
-
-					<p:outputLabel value="Kino dvorana:"></p:outputLabel>
-					<p:selectOneMenu id="cinema"
-						value="#{addProjectionMB.projection.cinema}"
-						converter="#{cinemaConverter}" panelStyle="width:180px"
-						effect="fade" var="cinema" style="width:160px" filter="true"
-						filterMatchMode="startsWith">
+					
+					<p:outputLabel for="cinema" value="Kino dvorana:" />
+					<p:selectOneMenu id="cinema" value="#{addProjectionMB.projection.cinema}"
+						converter="#{cinemaConverter}">
 						<f:selectItems value="#{addProjectionMB.cinemaList}" var="cinema"
-							itemLabel="#{cinema.name}" itemValue="#{cinema}" />
-
-						<p:column>
-							<h:outputText value="#{cinema.name}" />
-						</p:column>
+							itemValue="#{cinema}" itemLabel="#{cinema.name}" />
 					</p:selectOneMenu>
 
-					<p:outputLabel value="Film:"></p:outputLabel>
-					<p:selectOneMenu id="movie"
-						value="#{addProjectionMB.projection.movie}"
-						converter="#{movieConverter}" panelStyle="width:180px"
-						effect="fade" var="movie" style="width:160px" filter="true"
-						filterMatchMode="startsWith">
+					<p:outputLabel for="movie" value="Film:" />
+					<p:selectOneMenu id="movie" value="#{addProjectionMB.projection.movie}"
+						converter="#{movieConverter}" filter="true">
 						<f:selectItems value="#{addProjectionMB.movieList}" var="movie"
-							itemLabel="#{movie.name}" itemValue="#{movie}" />
-
-						<p:column>
-							<h:outputText value="#{movie.name}" />
-						</p:column>
+							itemValue="#{movie}" itemLabel="#{movie.name}" />
 					</p:selectOneMenu>
-
+					
 					<p:outputLabel value="Datum:"></p:outputLabel>
 					<p:calendar value="#{addProjectionMB.projection.date}"
 						pattern="dd.MM.yyyy" mask="true" />
@@ -70,15 +54,19 @@
 						timeOnly="true" />
 
 					<p:outputLabel for="timeTo" value="Kraj:" />
-					<p:calendar id="timeTo" value="#{addProjectionMB.projection.end_time}"
-						pattern="HH:mm" timeOnly="true" />
+					<p:calendar id="timeTo"
+						value="#{addProjectionMB.projection.end_time}" pattern="HH:mm"
+						timeOnly="true" />
 
 				</p:panelGrid>
 
 				<p:commandButton value="Spremi" action="#{addProjectionMB.spremi}"
-					update="messages"></p:commandButton>
+					update="messages addProjection" />
+					
 			</h:form>
+			
 		</ui:define>
+		
 	</ui:composition>
 
 </h:body>

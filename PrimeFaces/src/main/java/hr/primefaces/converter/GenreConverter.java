@@ -23,15 +23,9 @@ public class GenreConverter implements Converter {
 
 		if (value != null && value.trim().length() > 0) {
 			try {
-
-				Genre genre = (Genre) genreService.getGenreById(Integer
-						.parseInt(value));
-
-				return genre;
+				return genreService.getGenreById(Integer.parseInt(value));
 			} catch (NumberFormatException e) {
-				throw new ConverterException(new FacesMessage(
-						FacesMessage.SEVERITY_ERROR, "Conversion Error",
-						"Not a valid genre."));
+				throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid object."));
 			}
 		} else {
 			return null;

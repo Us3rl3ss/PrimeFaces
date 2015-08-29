@@ -12,9 +12,10 @@
 </h:head>
 <h:body>
 
-	<h:form>
+	<h:form id="login">
 
 		<h:panelGrid columns="1" cellpadding="5">
+		
 			<h:outputLabel for="username" value="Korisničko ime: *" />
 			<p:inputText id="username" value="#{loginMB.username}"
 				label="Username" required="true" />
@@ -25,37 +26,48 @@
 
 			<p:commandButton value="Prijava" action="#{loginMB.login}" />
 
-
 			<p:commandButton value="Registracija" type="button"
 				onclick="PF('registracija').show();" />
+				
 		</h:panelGrid>
-		
+
 	</h:form>
 
-	<p:dialog header="Registracija" widgetVar="registracija" modal="true"
+	<p:dialog header="Registracija" widgetVar="registracija"
 		minHeight="40">
+		
 		<h:form>
-			<p:growl id="messages"></p:growl>
+		
+			<p:growl id="messages" showDetail="true" sticky="true" />
+			
 			<p:panelGrid columns="2">
+			
 				<p:outputLabel value="Ime:"></p:outputLabel>
 				<p:inputText value="#{registerMB.user.firstname}"></p:inputText>
+				
 				<p:outputLabel value="Prezime:"></p:outputLabel>
 				<p:inputText value="#{registerMB.user.lastname}"></p:inputText>
+				
 				<p:outputLabel value="Korisničko ime:"></p:outputLabel>
 				<p:inputText value="#{registerMB.user.username}"></p:inputText>
+				
 				<p:outputLabel value="Lozinka: "></p:outputLabel>
 				<p:password value="#{registerMB.user.password}"></p:password>
+				
 				<p:outputLabel value="Email adresa:"></p:outputLabel>
 				<p:inputText value="#{registerMB.user.email}"></p:inputText>
+				
 				<p:outputLabel value="Datum rođenja:"></p:outputLabel>
 				<p:calendar value="#{registerMB.user.date_of_birth}"
 					pattern="dd.MM.yyyy" mask="true" />
+					
 			</p:panelGrid>
 
 			<p:commandButton value="Pošalji" action="#{registerMB.register}"
-				update="messages"></p:commandButton>
+				update="messages" />
 			<p:commandButton value="Odustani" action="#{registerMB.odustani}"
-				update="messages"></p:commandButton>
+				update="messages" />
+		
 		</h:form>
 
 	</p:dialog>

@@ -13,54 +13,95 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+
 		<ui:define name="content">
-			<h:form>
-				<p:growl id="messages"></p:growl>
+
+			<h:form id="addActor">
+
+				<p:growl id="messages" showDetail="true" sticky="true" />
+
+				<!-- 				<p:schedule id="schedule" value="#{addActorMB.scheduleModel}" widgetVar="movieSchedule" timeZone="GMT+2"> -->
+				<!-- 			    </p:schedule> -->
+
+				<!-- 				<p:chart type="pie" model="#{addActorMB.chart}" style="width:400px;height:300px" /> -->
+
 				<p:panelGrid columns="2">
-					<p:outputLabel value="Ime:"></p:outputLabel>
-					<p:inputText value="#{addActorMB.actor.firstname}"></p:inputText>
-					<p:outputLabel value="Prezime:"></p:outputLabel>
-					<p:inputText value="#{addActorMB.actor.lastname}"></p:inputText>
-					<p:outputLabel value="Datum rođenja:"></p:outputLabel>
-					<p:calendar value="#{addActorMB.actor.date_of_birth}"
+
+					<p:outputLabel for="firstname" value="Ime:" />
+					<p:inputText id="firstname" value="#{addActorMB.actor.firstname}" />
+
+					<p:outputLabel for="lastname" value="Prezime:" />
+					<p:inputText id="lastname" value="#{addActorMB.actor.lastname}" />
+
+					<p:outputLabel for="date" value="Datum rođenja:" />
+					<p:calendar id="date" value="#{addActorMB.actor.date_of_birth}"
 						pattern="dd.MM.yyyy" mask="true" />
-					<p:outputLabel value="Mjesto rođenja:"></p:outputLabel>
-					<p:inputText value="#{addActorMB.actor.place_of_birth}"></p:inputText>
-					<p:outputLabel value="Informacije:"></p:outputLabel>
-					<p:inputTextarea value="#{addActorMB.actor.info}" rows="5"
+
+					<p:outputLabel for="place" value="Mjesto rođenja:" />
+					<p:inputText id="place" value="#{addActorMB.actor.place_of_birth}" />
+
+					<p:outputLabel for="info" value="Informacije:" />
+					<p:inputTextarea id="info" value="#{addActorMB.actor.info}" rows="5"
 						cols="30" counter="display" maxlength="1000"
 						counterTemplate="{0} preostalih znakova." autoResize="false" />
-					<p:outputLabel></p:outputLabel>
+
+					<p:outputLabel />
 					<h:outputText id="display" />
 
-					<p:outputLabel value="Filmovi:"></p:outputLabel>
-					<p:autoComplete id="searchMovie" multiple="true"
-						value="#{addActorMB.actor.movieList}"
-						completeMethod="#{addActorMB.completeMovie}" var="movie"
+					<p:outputLabel for="movie" value="Filmovi:" />
+					<p:autoComplete id="movie"
+						value="#{addActorMB.actor.movieList}" var="movie"
 						itemLabel="#{movie.name}" itemValue="#{movie}"
-						converter="#{movieConverter}" forceSelection="true">
+						completeMethod="#{addActorMB.completeMovie}"
+						converter="#{movieConverter}" multiple="true"
+						forceSelection="true" minQueryLength="2" maxResults="10">
 						<p:column>
 							<h:outputText value="#{movie.name}" />
 						</p:column>
+
+						<f:facet name="itemtip">
+							<h:panelGrid columns="1" cellpadding="2">
+
+								<h:outputText value="#{movie.director_name}" />
+
+								<p:graphicImage value="#{movieImageMB.image}" width="100"
+									height="150">
+									<f:param value="#{movie.id}" name="movie_id"></f:param>
+								</p:graphicImage>
+
+								<h:outputText value="#{movie.year_of_creation}" />
+
+							</h:panelGrid>
+						</f:facet>
+
 					</p:autoComplete>
 
-					<p:outputLabel value="Slika:"></p:outputLabel>
-					<p:fileUpload fileUploadListener="#{addActorMB.handleFileUpload}"
+					<p:outputLabel for="pic" value="Slika:" />
+					<p:fileUpload id="pic" fileUploadListener="#{addActorMB.handleFileUpload}"
 						mode="advanced" dragDropSupport="true" update="uploadFilesList"
 						sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 						multiple="false" />
 
-					<p:outputLabel value="Uploadano:"></p:outputLabel>
+					<p:outputLabel for="uploadFilesList" value="Uploadano:"></p:outputLabel>
 					<p:inputText id="uploadFilesList"
 						value="#{addActorMB.uploadedFileNames}" readonly="#{true}"></p:inputText>
 
 				</p:panelGrid>
 
-
 				<p:commandButton value="Spremi" action="#{addActorMB.spremi}"
-					update="messages"></p:commandButton>
+					update="messages addActor" />
+
+				<!-- 					<p:commandButton value="Download"  -->
+				<!-- 						ajax="false"  -->
+				<!-- 						onclick="PrimeFaces.monitorDownload(start, stop);"  -->
+				<!-- 						icon="ui-icon-arrowthick-1-s"> -->
+				<!-- 				        <p:fileDownload value="#{addActorMB.downloadFile}" /> -->
+				<!-- 				    </p:commandButton> -->
+
 			</h:form>
+
 		</ui:define>
+
 	</ui:composition>
 
 </h:body>

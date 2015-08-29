@@ -13,8 +13,10 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+	
 		<ui:define name="content">
-			<h:form>
+		
+			<h:form id="getMovie">
 
 				<p:dataTable id="movieList" var="movieList"
 					value="#{getMovieMB.movieList}" rows="10" paginator="true"
@@ -102,7 +104,9 @@
 				</h:commandLink>
 
 			</h:form>
+			
 		</ui:define>
+		
 	</ui:composition>
 
 </h:body>

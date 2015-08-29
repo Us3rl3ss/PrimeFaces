@@ -27,12 +27,12 @@ import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "friendsMB")
 @ViewScoped
-public class FriendsManagedBean implements Serializable {
+public class FriendsView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{loginMB}")
-	LoginManagedBean loginMB;
+	LoginView loginMB;
 
 	@ManagedProperty(value = "#{UserService}")
 	IUserService userService;
@@ -175,11 +175,11 @@ public class FriendsManagedBean implements Serializable {
 		this.averageRate = averageRate;
 	}
 
-	public LoginManagedBean getLoginMB() {
+	public LoginView getLoginMB() {
 		return loginMB;
 	}
 
-	public void setLoginMB(LoginManagedBean loginMB) {
+	public void setLoginMB(LoginView loginMB) {
 		this.loginMB = loginMB;
 	}
 

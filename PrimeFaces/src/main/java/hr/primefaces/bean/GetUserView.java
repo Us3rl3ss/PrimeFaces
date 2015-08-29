@@ -13,7 +13,7 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean(name = "getUserMB")
 @ViewScoped
-public class GetUserManagedBean implements Serializable {
+public class GetUserView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +21,6 @@ public class GetUserManagedBean implements Serializable {
 	IUserService userService;
 
 	private List<User> userList;
-	private User user;
 
 	@PostConstruct
 	public void init() {
@@ -42,18 +41,6 @@ public class GetUserManagedBean implements Serializable {
 
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 }

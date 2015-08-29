@@ -74,6 +74,19 @@ public class Movie implements java.io.Serializable {
 		this.duration = duration;
 		this.info = info;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (this.getId() == ((Movie) obj).getId())
+				return true;
+		else
+			return false;
+	}
+	
+	public Movie (String name) {
+		this.name = name;
+	}
 
 	public Integer getId() {
 		return this.id;

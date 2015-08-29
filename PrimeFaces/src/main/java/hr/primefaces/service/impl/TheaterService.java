@@ -65,11 +65,6 @@ public class TheaterService implements ITheaterService, Serializable {
 	public List<Theater> getTheaterByName(String name) {
 		return getTheaterDAO().getTheaterByName(name);
 	}
-	
-	@Override
-	public List<Object[]> getTheaterJoinCinemaById(int id) {
-		return getTheaterDAO().getTheaterJoinCinemaById(id);
-	}
 
 	
 	/*

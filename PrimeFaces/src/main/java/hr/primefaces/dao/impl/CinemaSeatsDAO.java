@@ -3,12 +3,15 @@ package hr.primefaces.dao.impl;
 import hr.primefaces.dao.ICinemaSeatsDAO;
 import hr.primefaces.model.CinemaSeats;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
-public class CinemaSeatsDAO implements ICinemaSeatsDAO {
+@Repository
+public class CinemaSeatsDAO implements ICinemaSeatsDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -42,26 +45,19 @@ public class CinemaSeatsDAO implements ICinemaSeatsDAO {
 
 	@Override
 	public CinemaSeats getCinemaSeatsById(int id) {
-		List list = getSessionFactory().getCurrentSession()
-				.createQuery("from CinemaSeats where id=?").setParameter(0, id)
-				.list();
+		List list = getSessionFactory().getCurrentSession().createQuery("from CinemaSeats where id=?").setParameter(0, id).list();
 		return (CinemaSeats) list.get(0);
 	}
 
 	@Override
 	public List<CinemaSeats> getCinemaSeats() {
-		List list = getSessionFactory().getCurrentSession()
-				.createQuery("from CinemaSeats").list();
+		List list = getSessionFactory().getCurrentSession().createQuery("from CinemaSeats").list();
 		return list;
 	}
 
 	@Override
 	public List<CinemaSeats> getCinemaSeatsByName(String name) {
-		List list = getSessionFactory()
-				.getCurrentSession()
-				.createQuery(
-						"from CinemaSeats where name like lower('%"
-								+ name.toLowerCase() + "%')").list();
+		List list = getSessionFactory().getCurrentSession().createQuery("from CinemaSeats where name like lower('%" + name.toLowerCase() + "%')").list();
 		return list;
 	}
 
@@ -72,12 +68,11 @@ public class CinemaSeatsDAO implements ICinemaSeatsDAO {
 	@Override
 	public List<CinemaSeats> getCinemaSeatsByCinemaId(int cinemaId) {
 
-		Query query = getSessionFactory().getCurrentSession().createQuery(
-				"from CinemaSeats where cinema_id = :id");
+		Query query = getSessionFactory().getCurrentSession().createQuery("from CinemaSeats where cinema_id = :id");
 		query.setLong("id", cinemaId);
 
 		List list = query.list();
-		
+
 		return list;
 	}
 

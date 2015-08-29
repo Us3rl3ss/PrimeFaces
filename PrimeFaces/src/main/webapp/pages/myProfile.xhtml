@@ -13,9 +13,13 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+
 		<ui:define name="content">
-			<h:form>
-				<p:growl id="messages"></p:growl>
+
+			<h:form id="myProfile">
+
+				<p:growl id="messages" showDetail="true" sticky="true" />
+
 				<p:panelGrid columns="2">
 					<h:outputLabel for="firstname" value="Ime:" />
 					<p:inplace id="firstname" editor="true">
@@ -43,9 +47,12 @@
 				</p:panelGrid>
 
 				<p:commandButton value="Spremi" action="#{myProfileMB.spremi}"
-					update="messages"></p:commandButton>
+					update="messages" />
+
 			</h:form>
+
 		</ui:define>
+
 	</ui:composition>
 
 </h:body>

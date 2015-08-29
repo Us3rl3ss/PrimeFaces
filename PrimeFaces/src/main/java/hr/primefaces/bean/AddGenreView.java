@@ -2,18 +2,21 @@ package hr.primefaces.bean;
 
 import hr.primefaces.model.Genre;
 import hr.primefaces.service.IGenreService;
+import hr.primefaces.util.MessageUtil;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-@ManagedBean(name = "getGenreMB")
+import org.hibernate.HibernateException;
+
+@ManagedBean(name = "addGenreMB")
 @ViewScoped
-public class GetGenreManagedBean implements Serializable {
+public class AddGenreView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,11 +25,27 @@ public class GetGenreManagedBean implements Serializable {
 
 	private Genre genre = new Genre();
 
-	private List<Genre> genreList;
-
 	@PostConstruct
 	public void init() {
-		genreList = genreService.getGenres();
+	}
+
+	/**
+	 * spremi
+	 */
+	public void spremi() {
+
+		try {
+			genre.setCreated(new Date());
+			genreService.addGenre(genre);
+			genre = new Genre();
+			MessageUtil.info("Podaci uspješno spremljeni!");
+		} catch (HibernateException hex) {
+			hex.printStackTrace();
+			MessageUtil.error("Došlo je do hibernate greške!");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			MessageUtil.error("Došlo je do greške!");
+		}
 	}
 
 	public IGenreService getGenreService() {
@@ -43,18 +62,6 @@ public class GetGenreManagedBean implements Serializable {
 
 	public void setGenre(Genre genre) {
 		this.genre = genre;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public List<Genre> getGenreList() {
-		return genreList;
-	}
-
-	public void setGenreList(List<Genre> genreList) {
-		this.genreList = genreList;
 	}
 
 }

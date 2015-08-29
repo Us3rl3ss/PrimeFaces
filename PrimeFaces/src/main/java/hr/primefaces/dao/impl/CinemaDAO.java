@@ -2,12 +2,16 @@ package hr.primefaces.dao.impl;
 
 import hr.primefaces.dao.ICinemaDAO;
 import hr.primefaces.model.Cinema;
+import hr.primefaces.model.Theater;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
-public class CinemaDAO implements ICinemaDAO {
+@Repository
+public class CinemaDAO implements ICinemaDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,6 +49,13 @@ public class CinemaDAO implements ICinemaDAO {
 				.createQuery("from Cinema where id=?").setParameter(0, id)
 				.list();
 		return (Cinema) list.get(0);
+	}
+	
+	@Override
+	public List<Cinema> getCinemaByTheater(Theater theater) {
+		List list = getSessionFactory().getCurrentSession().createQuery("from Cinema where theater_id = :theater_id")
+				.setParameter("theater_id", theater.getId()).list();
+		return list;
 	}
 
 	@Override

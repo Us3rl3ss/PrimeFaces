@@ -13,8 +13,11 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+	
 		<ui:define name="content">
-			<h:form>
+	
+			<h:form id="getCinema">
+			
 				<p:dataTable id="cinemaList" var="cinemaList"
 					value="#{getCinemaMB.cinemaList}" rows="10" paginator="true"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -70,7 +73,9 @@
 				</h:commandLink>
 
 			</h:form>
+			
 		</ui:define>
+		
 	</ui:composition>
 
 </h:body>

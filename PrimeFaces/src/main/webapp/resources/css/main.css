@@ -1,4 +1,4 @@
-body {
+/* body {
 	margin: 2%;
 	background-image: url("../images/background.jpg");
 }
@@ -44,7 +44,7 @@ table {
 	overflow: scroll;
 }
 
-/* Popravak select-menu */
+Popravak select-menu
 .ui-selectonemenu{
      width: 100% !important;
 }
@@ -52,7 +52,7 @@ table {
      width: 100% !important;
 }  
 
-/* -------------- reserveSeats.xhtml -------------- */
+-------------- reserveSeats.xhtml --------------
 div.ui-selectmanybutton.ui-buttonset.ui-widget.ui-corner-all {
 	width: 30em;
 }
@@ -63,4 +63,5 @@ div.ui-button.ui-widget.ui-state-default.ui-button-text-only {
 	padding: 1em;
 	margin: 0.3em;
 }
-/* -------------- END OF - reserveSeats.xhtml -------------- */
+-------------- END OF - reserveSeats.xhtml --------------
+ */

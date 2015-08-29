@@ -13,9 +13,13 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+
 		<ui:define name="content">
-			<h:form>
-				<p:growl id="messages"></p:growl>
+
+			<h:form id="movie">
+
+				<p:growl id="messages" showDetail="true" sticky="true" />
+
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="Film:"></p:outputLabel>
@@ -34,7 +38,6 @@
 					</p:selectOneMenu>
 
 				</p:panelGrid>
-
 
 				<p:panel id="movieInfo" header="#{movieMB.movie.name}"
 					style="margin-bottom:20px">
@@ -145,13 +148,15 @@
 
 						<p:commandButton value="Dodaj recenziju"
 							action="#{movieMB.addReview}"
-							disabled="#{movieMB.reviewDisabled}" update="messages"></p:commandButton>
+							disabled="#{movieMB.reviewDisabled}" update="messages" />
 					</p:dialog>
 
 				</p:panel>
 
 			</h:form>
+
 		</ui:define>
+
 	</ui:composition>
 
 </h:body>

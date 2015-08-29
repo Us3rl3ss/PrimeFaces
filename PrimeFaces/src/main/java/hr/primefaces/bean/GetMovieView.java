@@ -13,14 +13,12 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean(name = "getMovieMB")
 @ViewScoped
-public class GetMovieManagedBean implements Serializable {
+public class GetMovieView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
-
-	private Movie movie = new Movie();
 
 	private List<Movie> movieList;
 
@@ -35,18 +33,6 @@ public class GetMovieManagedBean implements Serializable {
 
 	public void setMovieService(IMovieService movieService) {
 		this.movieService = movieService;
-	}
-
-	public Movie getMovie() {
-		return movie;
-	}
-
-	public void setMovie(Movie movie) {
-		this.movie = movie;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	public List<Movie> getMovieList() {

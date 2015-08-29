@@ -13,11 +13,15 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+	
 		<ui:define name="content">
 
-			<h:form id="form">
-				<p:growl id="messages"></p:growl>
+			<h:form id="friends">
+			
+				<p:growl id="messages" showDetail="true" sticky="true" />
+				
 				<p:panelGrid columns="2">
+				
 					<p:outputLabel value="Korisnici:"></p:outputLabel>
 					<p:autoComplete id="searchUser" minQueryLength="3" maxResults="5"
 						placeholder="Pretraži" value="#{friendsMB.user}"
@@ -30,7 +34,6 @@
 					</p:autoComplete>
 
 				</p:panelGrid>
-
 
 				<p:panelGrid columns="1" id="userInormations">
 
@@ -67,9 +70,9 @@
 						type="unordered" itemType="none" paginator="true" rows="5"
 						styleClass="paginated">
 						<f:facet name="header">
-			            Ocjene
-			        </f:facet>
-						<p:commandLink update=":form:rateDetail"
+				            Ocjene
+				        </f:facet>
+						<p:commandLink update=":friends:rateDetail"
 							action="#{friendsMB.calculateAverageRate}"
 							oncomplete="PF('rateDialog').show()" title="Detalji"
 							styleClass="ui-icon ui-icon-search"
@@ -93,7 +96,7 @@
 						<f:facet name="header">
 			            Favoriti
 			        </f:facet>
-						<p:commandLink update=":form:favoriteDetail"
+						<p:commandLink update=":friends:favoriteDetail"
 							oncomplete="PF('favoriteDialog').show()" title="Detalji"
 							styleClass="ui-icon ui-icon-search"
 							style="float:left;margin-right:10px">
@@ -113,7 +116,7 @@
 						<f:facet name="header">
 			            Recenzije
 			        </f:facet>
-						<p:commandLink update=":form:reviewDetail"
+						<p:commandLink update=":friends:reviewDetail"
 							oncomplete="PF('reviewDialog').show()" title="Detalji"
 							styleClass="ui-icon ui-icon-search"
 							style="float:left;margin-right:10px">
@@ -129,7 +132,7 @@
 				</p:panelGrid>
 
 
-				<p:dialog header="Ocjena" widgetVar="rateDialog" modal="true"
+				<p:dialog header="Ocjena" widgetVar="rateDialog"
 					showEffect="blind" hideEffect="explode" resizable="false">
 					<p:outputPanel id="rateDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
@@ -163,7 +166,7 @@
 					</p:outputPanel>
 				</p:dialog>
 
-				<p:dialog header="Favoriti" widgetVar="favoriteDialog" modal="true"
+				<p:dialog header="Favoriti" widgetVar="favoriteDialog"
 					showEffect="blind" hideEffect="explode" resizable="false">
 					<p:outputPanel id="favoriteDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
@@ -195,7 +198,7 @@
 					</p:outputPanel>
 				</p:dialog>
 
-				<p:dialog header="Recenzije" widgetVar="reviewDialog" modal="true"
+				<p:dialog header="Recenzije" widgetVar="reviewDialog"
 					showEffect="blind" hideEffect="explode" resizable="false">
 					<p:outputPanel id="reviewDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
@@ -227,11 +230,13 @@
 							<h:outputText value="#{friendsMB.selectedReview.review}" />
 						</p:panelGrid>
 					</p:outputPanel>
+					
 				</p:dialog>
 
 			</h:form>
 
 		</ui:define>
+		
 	</ui:composition>
 
 </h:body>

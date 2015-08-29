@@ -11,43 +11,46 @@
 </h:head>
 
 <h:body>
+
 	<f:metadata>
 		<f:event type="preRenderView"
 			listener="#{reserveSeatsMB.pullValuesFromFlash}" />
 	</f:metadata>
 
 	<ui:composition template="templates/common.xhtml">
+
 		<ui:define name="content">
 
-			<h:form id="form">
+			<h:form id="seats">
 
 				<h:outputText value="Projection: " />
 				<h:outputText value="#{reserveSeatsMB.projection.id}" />
 
-
 				<p:outputLabel value="Kino:"></p:outputLabel>
-				
-					<p:panelGrid columns="10">
-				<p:selectManyButton id="cinemaSeats"
-					value="#{reserveSeatsMB.selectedCinemaSeatsList}">
-					<f:selectItems value="#{reserveSeatsMB.cinemaSeatsList}"
-						var="cinemaSeats"
-						itemLabel="#{(cinemaSeats.seats_row).concat(cinemaSeats.seats_number)}"
-						itemValue="#{cinemaSeats.id}" />
-				</p:selectManyButton>
+
+				<p:panelGrid columns="10">
+					<p:selectManyButton id="cinemaSeats"
+						value="#{reserveSeatsMB.selectedCinemaSeatsList}">
+						<f:selectItems value="#{reserveSeatsMB.cinemaSeatsList}"
+							var="cinemaSeats"
+							itemLabel="#{(cinemaSeats.seats_row).concat(cinemaSeats.seats_number)}"
+							itemValue="#{cinemaSeats.id}" />
+					</p:selectManyButton>
 				</p:panelGrid>
 
-				<p:commandButton value="#{reserveSeatsMB.test}" action="#{reserveSeatsMB.test}"></p:commandButton>
+				<p:commandButton value="#{reserveSeatsMB.test}"
+					action="#{reserveSeatsMB.test}" />
 
 				<p:commandButton value="Pokaži selektirane"
-					action="#{reserveSeatsMB.showSelected}"></p:commandButton>
+					action="#{reserveSeatsMB.showSelected}" />
 
 				<p:commandButton value="Rezerviraj"
-					action="#{reserveSeatsMB.reserveSeats}"></p:commandButton>
+					action="#{reserveSeatsMB.reserveSeats}" />
 
 			</h:form>
 
 		</ui:define>
+
 	</ui:composition>
 
 </h:body>

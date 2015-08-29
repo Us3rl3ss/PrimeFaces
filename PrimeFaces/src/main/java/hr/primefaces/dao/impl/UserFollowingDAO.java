@@ -3,11 +3,13 @@ package hr.primefaces.dao.impl;
 import hr.primefaces.dao.IUserFollowingDAO;
 import hr.primefaces.model.UserFollowing;
 
+import java.io.Serializable;
+
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserFollowingDAO implements IUserFollowingDAO {
+public class UserFollowingDAO implements IUserFollowingDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -7,6 +7,10 @@
 	<!-- JSF and Spring are integrated -->
 	<application>
 		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+		<message-bundle>hr.primefaces.validation.CustomMessages</message-bundle>
+		<locale-config>
+	        <default-locale>hr</default-locale>
+	    </locale-config>
 	</application>
 
 	<!-- configuration of navigation rules -->

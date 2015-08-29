@@ -13,12 +13,12 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean(name = "myFriendsMB")
 @ViewScoped
-public class MyFriendsManagedBean implements Serializable {
+public class MyFriendsView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{loginMB}")
-	LoginManagedBean loginMB;
+	LoginView loginMB;
 
 	@ManagedProperty(value = "#{UserService}")
 	IUserService userService;
@@ -48,11 +48,11 @@ public class MyFriendsManagedBean implements Serializable {
 		this.numberOfFollowers = numberOfFollowers;
 	}
 
-	public LoginManagedBean getLoginMB() {
+	public LoginView getLoginMB() {
 		return loginMB;
 	}
 
-	public void setLoginMB(LoginManagedBean loginMB) {
+	public void setLoginMB(LoginView loginMB) {
 		this.loginMB = loginMB;
 	}
 

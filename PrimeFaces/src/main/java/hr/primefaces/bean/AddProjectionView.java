@@ -8,9 +8,9 @@ import hr.primefaces.service.ICinemaService;
 import hr.primefaces.service.IMovieService;
 import hr.primefaces.service.IProjectionService;
 import hr.primefaces.service.ITheaterService;
+import hr.primefaces.util.MessageUtil;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,11 +18,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ValueChangeEvent;
+
+import org.hibernate.HibernateException;
+import org.primefaces.context.RequestContext;
 
 @ManagedBean(name = "addProjectionMB")
 @ViewScoped
-public class AddProjectionManagedBean implements Serializable {
+public class AddProjectionView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,9 +40,6 @@ public class AddProjectionManagedBean implements Serializable {
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
 
-	@ManagedProperty("#{dropDownMB}")
-	private DropdownMenuManagedBean dropDownMB;
-
 	private Projection projection = new Projection();
 	private Theater theater = new Theater();
 	private Cinema cinema = new Cinema();
@@ -55,65 +54,38 @@ public class AddProjectionManagedBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		theaterList = dropDownMB.getTheaterList(); // theaterService.getTheaters();
-		cinemaList = dropDownMB.getCinemaList();
-		movieList = dropDownMB.getMovieList();
+		theaterList = theaterService.getTheaters();
+		cinemaList = cinemaService.getCinemaByTheater(theaterList.get(0));
+		movieList = movieService.getMovies();
 	}
 
+	/**
+	 * spremi
+	 */
 	public void spremi() {
 
 		try {
-			ispisProjection(projection);
-
 			projectionService.addProjection(projection);
-			dropDownMB.reloadProjection();
-		} catch (Exception ex) { // TODO ERROR HANDLING
+			projection = new Projection();
+			MessageUtil.info("Podaci uspješno spremljeni!");
+		} catch (HibernateException hex) {
+			hex.printStackTrace();
+			MessageUtil.error("Došlo je do hibernate greške!");
+		} catch (Exception ex) {
 			ex.printStackTrace();
+			MessageUtil.error("Došlo je do greške!");
 		}
 	}
 
-	public void pretrazi() {
+	/**
+	 * postaviCinemaList
+	 * @param event
+	 * @throws AbortProcessingException
+	 */
+	public void postaviCinemaList(){
 
-		System.out.println(this.theater.getName());
-
-		if (theater.getName().equals("Novo"))
-			this.render = true;
-		else
-			this.render = false;
-	}
-
-	public void postaviCinemaList(ValueChangeEvent event)
-			throws AbortProcessingException {
-
-		Theater theater = (Theater) event.getNewValue();
-
-		List<Object[]> list = theaterService.getTheaterJoinCinemaById(theater
-				.getId());
-
-		List<Cinema> cinemaList = new ArrayList<Cinema>();
-		for (Object[] arr : list) {
-
-			Theater t = (Theater) arr[0];
-			Cinema c = (Cinema) arr[1];
-			cinemaList.add(c);
-		}
-
-		this.cinemaList = cinemaList;
-	}
-
-	private void ispisProjection(Projection p) {
-
-		System.out.println("PROJECTION: ");
-
-		System.out.println("	id:" + p.getId());
-		System.out.println("	start_time:" + p.getStart_time());
-		System.out.println("	end_time:" + p.getEnd_time());
-		System.out.println("	movie|id:" + p.getMovie().getId());
-		System.out.println("	movie|name:" + p.getMovie().getName());
-		System.out.println("	cinema|id:" + p.getCinema().getId());
-		System.out.println("	cinema|name:" + p.getCinema().getName());
-
-		System.out.println("END OF - PROJECTION: ");
+		cinemaList = cinemaService.getCinemaByTheater(projection.getTheater());
+		RequestContext.getCurrentInstance().update("addProjection");
 	}
 
 	public IProjectionService getProjectionService() {
@@ -188,10 +160,6 @@ public class AddProjectionManagedBean implements Serializable {
 		this.movieList = movieList;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public Theater getTheater() {
 		return theater;
 	}
@@ -222,14 +190,6 @@ public class AddProjectionManagedBean implements Serializable {
 
 	public void setRender(boolean render) {
 		this.render = render;
-	}
-
-	public DropdownMenuManagedBean getDropDownMB() {
-		return dropDownMB;
-	}
-
-	public void setDropDownMB(DropdownMenuManagedBean dropDownMB) {
-		this.dropDownMB = dropDownMB;
 	}
 
 }

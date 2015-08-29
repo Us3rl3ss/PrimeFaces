@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	id="WebApp_ID" version="2.5">
+<web-app version="3.0" 
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
 	<display-name>OTV_JSF_PrimeFaces_Spring_Hibernate</display-name>
 
@@ -33,8 +33,8 @@
 	<!-- Primefaces Theme -->
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>black-tie</param-value>
-		<!-- <param-value>bootstrap</param-value> -->
+<!-- 		<param-value>black-tie</param-value> -->
+		<param-value>bootstrap</param-value>
 	</context-param>
 
 	<!-- Primefaces Skip Comments -->
@@ -86,5 +86,12 @@
 		<filter-name>PrimeFaces FileUpload Filter</filter-name>
 		<servlet-name>Faces Servlet</servlet-name>
 	</filter-mapping>
+	
+	<context-param> 
+		<param-name>
+			javax.faces.VALIDATE_EMPTY_FIELDS 
+		</param-name> 
+		<param-value>true</param-value> 
+	</context-param>
 
 </web-app>

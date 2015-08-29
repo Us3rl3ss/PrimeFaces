@@ -13,8 +13,11 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+
 		<ui:define name="content">
-			<h:form>
+
+			<h:form id="getProjection">
+
 				<p:dataTable id="projectionList" var="projectionList"
 					value="#{getProjectionMB.projectionList}" rows="10"
 					paginator="true"
@@ -78,7 +81,9 @@
 				</h:commandLink>
 
 			</h:form>
+
 		</ui:define>
+
 	</ui:composition>
 
 </h:body>

@@ -13,18 +13,15 @@
 <h:body>
 
 	<ui:composition template="templates/common.xhtml">
+	
 		<ui:define name="content">
-			
-			<h:form>
-			
-				<p:dataTable 
-						id="theaterTable" 
-						var="theater" 
-						value="#{getTheaterMB.theaterList}"
-						rows="10" 
-						paginator="true"
-						rowsPerPageTemplate="5,10,15"
-						paginatorTemplate="{CurrentPageReport}  
+
+			<h:form id="getTheater">
+
+				<p:dataTable id="theaterTable" var="theater"
+					value="#{getTheaterMB.theaterList}" rows="10" paginator="true"
+					rowsPerPageTemplate="5,10,15"
+					paginatorTemplate="{CurrentPageReport}  
 											{FirstPageLink} 
 											{PreviousPageLink} 
 											{PageLinks} 
@@ -82,8 +79,9 @@
 				</h:commandLink>
 
 			</h:form>
-			
+
 		</ui:define>
+		
 	</ui:composition>
 
 </h:body>

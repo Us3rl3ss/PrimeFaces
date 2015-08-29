@@ -1,6 +1,7 @@
 package hr.primefaces.service;
 
 import hr.primefaces.model.Cinema;
+import hr.primefaces.model.Theater;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface ICinemaService {
 
 	public List<Cinema> getCinemas();
 	
+	public List<Cinema> getCinemaByTheater(Theater theater);
 }

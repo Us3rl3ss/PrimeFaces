@@ -23,15 +23,9 @@ public class ActorConverter implements Converter {
 
 		if (value != null && value.trim().length() > 0) {
 			try {
-
-				Actor actor = (Actor) actorService.getActorById(Integer
-						.parseInt(value));
-
-				return actor;
+				return actorService.getActorById(Integer.parseInt(value));
 			} catch (NumberFormatException e) {
-				throw new ConverterException(new FacesMessage(
-						FacesMessage.SEVERITY_ERROR, "Conversion Error",
-						"Not a valid actor."));
+				throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid object."));
 			}
 		} else {
 			return null;

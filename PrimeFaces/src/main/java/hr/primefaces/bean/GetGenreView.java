@@ -4,7 +4,6 @@ import hr.primefaces.model.Genre;
 import hr.primefaces.service.IGenreService;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -12,17 +11,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-@ManagedBean(name = "addGenreMB")
+@ManagedBean(name = "getGenreMB")
 @ViewScoped
-public class AddGenreManagedBean implements Serializable {
+public class GetGenreView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{GenreService}")
 	IGenreService genreService;
-
-	@ManagedProperty("#{dropDownMB}")
-	private DropdownMenuManagedBean dropDownMB;
 
 	private Genre genre = new Genre();
 
@@ -30,17 +26,7 @@ public class AddGenreManagedBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-	}
-
-	public void spremi() {
-
-		try {
-			genre.setCreated(new Date());
-			genreService.addGenre(genre);
-			dropDownMB.reloadGenre();
-		} catch (Exception ex) { // TODO ERROR HANDLING
-			ex.printStackTrace();
-		}
+		genreList = genreService.getGenres();
 	}
 
 	public IGenreService getGenreService() {
@@ -69,14 +55,6 @@ public class AddGenreManagedBean implements Serializable {
 
 	public void setGenreList(List<Genre> genreList) {
 		this.genreList = genreList;
-	}
-
-	public DropdownMenuManagedBean getDropDownMB() {
-		return dropDownMB;
-	}
-
-	public void setDropDownMB(DropdownMenuManagedBean dropDownMB) {
-		this.dropDownMB = dropDownMB;
 	}
 
 }
