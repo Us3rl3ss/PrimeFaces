@@ -171,21 +171,30 @@ public class AddProjectionView implements Serializable {
     	}		
     	RequestContext.getCurrentInstance().update("addProjectionForm:schedule");
 	}
-	
+
+	/**
+	 * onEventSelect
+	 */
 	public void onEventSelect(SelectEvent selectEvent) {
 		forUpdate = true;
 		projection.setStart_time(((DefaultScheduleEvent) selectEvent.getObject()).getStartDate());
 		projection.setEnd_time(((DefaultScheduleEvent) selectEvent.getObject()).getEndDate());
 		projection = projectionService.getProjectionByCinemaStartEnd(projection.getCinema(), projection.getStart_time(), projection.getEnd_time());
     }
-     
+
+	/**
+	 * onDateSelect
+	 */
     public void onDateSelect(SelectEvent selectEvent) {
     	forUpdate = false;
     	projection.setStart_time((Date) selectEvent.getObject());
     	projection.setEnd_time((Date) selectEvent.getObject());
         event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
     }
-     
+
+	/**
+	 * onEventMove
+	 */
     public void onEventMove(ScheduleEntryMoveEvent selectEvent) {
     	Date initialStartTime = setDateDifference(selectEvent.getScheduleEvent().getStartDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
     	Date initialEndTime = setDateDifference(selectEvent.getScheduleEvent().getEndDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
@@ -194,7 +203,10 @@ public class AddProjectionView implements Serializable {
 		projection.setEnd_time(selectEvent.getScheduleEvent().getEndDate());
 		uredi();
     }
-    
+
+	/**
+	 * onEventResize
+	 */
     public void onEventResize(ScheduleEntryResizeEvent selectEvent) {
     	Date initialEndTime = setDateDifference(selectEvent.getScheduleEvent().getEndDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
     	projection = projectionService.getProjectionByCinemaStartEnd(projection.getCinema(), selectEvent.getScheduleEvent().getStartDate(), initialEndTime);
@@ -202,7 +214,10 @@ public class AddProjectionView implements Serializable {
 		projection.setEnd_time(selectEvent.getScheduleEvent().getEndDate());
 		uredi();
     }
-    
+
+	/**
+	 * setDateDifference
+	 */
     public Date setDateDifference(Date initialDate, int dayDiff, int minDiff) {
     	Calendar cal = Calendar.getInstance();
     	cal.setTime(initialDate);
