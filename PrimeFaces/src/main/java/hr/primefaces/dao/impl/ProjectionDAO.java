@@ -1,10 +1,12 @@
 package hr.primefaces.dao.impl;
 
 import hr.primefaces.dao.IProjectionDAO;
+import hr.primefaces.model.Cinema;
 import hr.primefaces.model.Projection;
 import hr.primefaces.model.Theater;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -55,8 +57,13 @@ public class ProjectionDAO implements IProjectionDAO, Serializable {
 		return list;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	@Override
+	public List<Projection> getProjectionsByCinema(Cinema cinema) {
+
+		String query = "from Projection projection where cinema_id = :cinema_id";
+
+		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("cinema_id", cinema.getId()).list();
+		return list;
 	}
 
 	@Override
@@ -87,6 +94,24 @@ public class ProjectionDAO implements IProjectionDAO, Serializable {
 		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("theaterId", projection.getTheater().getId())
 				.setParameter("movieId", projection.getMovie().getId()).list();
 		return list;
+	}
+
+	@Override
+	public Projection getProjectionByCinemaStartEnd(Cinema cinema, Date start, Date end) {
+
+		String query = "from Projection where cinema_id = :cinema_id and start_time = :start and end_time = :end";
+
+		return (Projection) getSessionFactory().getCurrentSession().createQuery(query).setParameter("cinema_id", cinema.getId()).setParameter("start", start)
+				.setParameter("end", end).uniqueResult();
+	}
+
+	@Override
+	public List<Projection> getProjectionByCinemaBetweenStartEnd(Cinema cinema, Date start, Date end) {
+
+		String query = "from Projection where cinema_id = :cinema_id and start_time >= :start and end_time < :end";
+
+		return getSessionFactory().getCurrentSession().createQuery(query).setParameter("cinema_id", cinema.getId()).setParameter("start", start)
+				.setParameter("end", end).list();
 	}
 
 }

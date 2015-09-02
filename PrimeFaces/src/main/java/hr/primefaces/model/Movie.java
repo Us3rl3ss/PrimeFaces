@@ -46,16 +46,16 @@ public class Movie implements java.io.Serializable {
 	@JoinTable(name = "movie_genre", joinColumns = { @JoinColumn(name = "movie_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "genre_id", referencedColumnName = "id") })
 	private List<Genre> genreList;
 
-	@OneToMany(targetEntity = Projection.class, mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = Projection.class, mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Projection> projection;
 
-	@OneToMany(targetEntity = UserMovieRate.class, mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = UserMovieRate.class, mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<UserMovieRate> userMovieRate;
 
-	@OneToMany(targetEntity = UserMovieReview.class, mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = UserMovieReview.class, mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<UserMovieReview> userMovieReview;
 
-	@OneToMany(targetEntity = UserFavoriteMovie.class, mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = UserFavoriteMovie.class, mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<UserFavoriteMovie> userFavoriteMovie;
 	
 	@Transient

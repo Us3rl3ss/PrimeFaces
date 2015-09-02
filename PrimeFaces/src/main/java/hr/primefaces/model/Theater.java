@@ -5,7 +5,7 @@ package hr.primefaces.model;
  * Imports
  */
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -36,14 +36,14 @@ public class Theater implements java.io.Serializable {
 	@OneToMany(targetEntity = Cinema.class, 
 			mappedBy = "theater", 
 			cascade = CascadeType.ALL, 
-			fetch = FetchType.EAGER)
-	private Set<Cinema> cinema;
+			fetch = FetchType.LAZY)
+	private List<Cinema> cinema;
 
 	@OneToMany(targetEntity = Projection.class, 
 			mappedBy = "theater", 
 			cascade = CascadeType.ALL, 
-			fetch = FetchType.EAGER)
-	private Set<Projection> projection;
+			fetch = FetchType.LAZY)
+	private List<Projection> projection;
 
 	
 	/*
@@ -51,16 +51,6 @@ public class Theater implements java.io.Serializable {
 	 */
 	
 	public Theater() {}
-	
-	public Theater(Integer id, String name, String place, String address, Set<Cinema> cinema, Set<Projection> projection) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.place = place;
-		this.address = address;
-		this.cinema = cinema;
-		this.projection = projection;
-	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -107,19 +97,19 @@ public class Theater implements java.io.Serializable {
 		this.address = address;
 	}
 
-	public Set<Cinema> getCinema() {
+	public List<Cinema> getCinema() {
 		return cinema;
 	}
 
-	public void setCinema(Set<Cinema> cinema) {
+	public void setCinema(List<Cinema> cinema) {
 		this.cinema = cinema;
 	}
 
-	public Set<Projection> getProjection() {
+	public List<Projection> getProjection() {
 		return projection;
 	}
 
-	public void setProjection(Set<Projection> projection) {
+	public void setProjection(List<Projection> projection) {
 		this.projection = projection;
 	}
 	

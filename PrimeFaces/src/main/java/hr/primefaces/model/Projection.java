@@ -24,9 +24,8 @@ public class Projection implements java.io.Serializable {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	private Date date;
-	private String start_time;
-	private String end_time;
+	private Date start_time;
+	private Date end_time;
 
 	@ManyToOne
 	@JoinColumn(name = "theater_id")
@@ -40,19 +39,13 @@ public class Projection implements java.io.Serializable {
 	@JoinColumn(name = "movie_id")
 	private Movie movie;
 
-	@OneToMany(targetEntity = ProjectionReservedSeats.class, mappedBy = "projection", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = ProjectionReservedSeats.class, mappedBy = "projection", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProjectionReservedSeats> projectionReservedSeatsList;
 
 	@Transient
 	private String numberOfFreeSeatsText;
 
 	public Projection() {
-	}
-
-	public Projection(Date created, int cinemaId, int movieId, Date date, String startTime, String endTime) {
-		this.date = date;
-		this.start_time = startTime;
-		this.end_time = endTime;
 	}
 
 	public Integer getId() {
@@ -63,27 +56,19 @@ public class Projection implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public String getStart_time() {
+	public Date getStart_time() {
 		return start_time;
 	}
 
-	public void setStart_time(String start_time) {
+	public void setStart_time(Date start_time) {
 		this.start_time = start_time;
 	}
 
-	public String getEnd_time() {
+	public Date getEnd_time() {
 		return end_time;
 	}
 
-	public void setEnd_time(String end_time) {
+	public void setEnd_time(Date end_time) {
 		this.end_time = end_time;
 	}
 
@@ -101,10 +86,6 @@ public class Projection implements java.io.Serializable {
 
 	public void setMovie(Movie movie) {
 		this.movie = movie;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	public Set<ProjectionReservedSeats> getProjectionReservedSeatsList() {

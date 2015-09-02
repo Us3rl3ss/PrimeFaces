@@ -26,7 +26,7 @@ public class CinemaSeats implements java.io.Serializable {
 	@JoinColumn(name = "cinema_id")
 	private Cinema cinema;
 
-	@OneToOne(targetEntity = ProjectionReservedSeats.class, mappedBy = "cinema_seats", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(targetEntity = ProjectionReservedSeats.class, mappedBy = "cinema_seats", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private ProjectionReservedSeats projectionReservedSeats;
 
 	public CinemaSeats() {

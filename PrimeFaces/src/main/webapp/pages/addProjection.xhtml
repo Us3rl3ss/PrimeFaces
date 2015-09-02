@@ -16,13 +16,13 @@
 	
 		<ui:define name="content">
 		
-			<h:form id="addProjection">
+			<h:form id="addProjectionForm">
 			
 				<p:growl id="messages" showDetail="true" sticky="true" />
 				
-				<p:panelGrid columns="2">
+				<p:panelGrid columns="2" id="dropdownPanel">
 
-					<p:outputLabel for="theater" value="Kino:"></p:outputLabel>
+					<p:outputLabel for="theater" value="Kino:"/>
 					<p:selectOneMenu id="theater" value="#{addProjectionMB.projection.theater}"
 						converter="#{theaterConverter}">
 						<f:selectItems value="#{addProjectionMB.theaterList}" var="theater"
@@ -35,34 +35,64 @@
 						converter="#{cinemaConverter}">
 						<f:selectItems value="#{addProjectionMB.cinemaList}" var="cinema"
 							itemValue="#{cinema}" itemLabel="#{cinema.name}" />
+						<f:ajax listener="#{addProjectionMB.postaviProjectionList}" />
 					</p:selectOneMenu>
 
-					<p:outputLabel for="movie" value="Film:" />
-					<p:selectOneMenu id="movie" value="#{addProjectionMB.projection.movie}"
-						converter="#{movieConverter}" filter="true">
-						<f:selectItems value="#{addProjectionMB.movieList}" var="movie"
-							itemValue="#{movie}" itemLabel="#{movie.name}" />
-					</p:selectOneMenu>
+<!-- 					<p:outputLabel for="movie" value="Film:" /> -->
+<!-- 					<p:selectOneMenu id="movie" value="#{addProjectionMB.projection.movie}" -->
+<!-- 						converter="#{movieConverter}" filter="true"> -->
+<!-- 						<f:selectItems value="#{addProjectionMB.movieList}" var="movie" -->
+<!-- 							itemValue="#{movie}" itemLabel="#{movie.name}" /> -->
+<!-- 					</p:selectOneMenu> -->
 					
-					<p:outputLabel value="Datum:"></p:outputLabel>
-					<p:calendar value="#{addProjectionMB.projection.date}"
-						pattern="dd.MM.yyyy" mask="true" />
+<!-- 					<p:outputLabel for="timeFrom" value="Početak" /> -->
+<!-- 					<p:calendar id="timeFrom" -->
+<!-- 						value="#{addProjectionMB.projection.start_time}" pattern="dd.MM.yyyy HH:mm" -->
+<!-- 						mask="true" /> -->
 
-					<p:outputLabel for="timeFrom" value="Početak" />
-					<p:calendar id="timeFrom"
-						value="#{addProjectionMB.projection.start_time}" pattern="HH:mm"
-						timeOnly="true" />
-
-					<p:outputLabel for="timeTo" value="Kraj:" />
-					<p:calendar id="timeTo"
-						value="#{addProjectionMB.projection.end_time}" pattern="HH:mm"
-						timeOnly="true" />
+<!-- 					<p:outputLabel for="timeTo" value="Kraj:" /> -->
+<!-- 					<p:calendar id="timeTo" -->
+<!-- 						value="#{addProjectionMB.projection.end_time}" pattern="dd.MM.yyyy HH:mm" -->
+<!-- 						mask="true" /> -->
 
 				</p:panelGrid>
 
-				<p:commandButton value="Spremi" action="#{addProjectionMB.spremi}"
-					update="messages addProjection" />
+<!-- 				<p:commandButton value="Spremi" action="#{addProjectionMB.spremi}" -->
+<!-- 					update="messages addProjection" /> -->
+
 					
+				<p:schedule id="schedule" value="#{addProjectionMB.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
+ 
+		            <p:ajax event="dateSelect" listener="#{addProjectionMB.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+		            <p:ajax event="eventSelect" listener="#{addProjectionMB.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+		            <p:ajax event="eventMove" listener="#{addProjectionMB.onEventMove}" update="messages" />
+		            <p:ajax event="eventResize" listener="#{addProjectionMB.onEventResize}" update="messages" />
+		 
+		        </p:schedule>
+		        
+		        <p:dialog widgetVar="eventDialog" header="Projekcija">
+			        <h:panelGrid id="eventDetails" columns="2">
+			            
+			            <p:outputLabel for="movie" value="Film:" />
+						<p:selectOneMenu id="movie" value="#{addProjectionMB.projection.movie}"
+							converter="#{movieConverter}" filter="true">
+							<f:selectItems value="#{addProjectionMB.movieList}" var="movie"
+								itemValue="#{movie}" itemLabel="#{movie.name}" />
+						</p:selectOneMenu>
+			 
+			            <p:outputLabel for="from" value="Od:" />
+			            <p:calendar id="from" value="#{addProjectionMB.projection.start_time}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
+			 
+			            <p:outputLabel for="to" value="Do:" />
+			            <p:calendar id="to" value="#{addProjectionMB.projection.end_time}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
+			 
+			            <p:commandButton id="addButton" value="Spremi" actionListener="#{addProjectionMB.spremi}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{!addProjectionMB.forUpdate}" />
+			            <p:commandButton id="updateButton" value="Ažuriraj" actionListener="#{addProjectionMB.uredi}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" />
+			            <p:commandButton id="deleteButton" value="Obriši" actionListener="#{addProjectionMB.obrisi}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" />
+			            
+			        </h:panelGrid>
+			    </p:dialog>  
+			
 			</h:form>
 			
 		</ui:define>

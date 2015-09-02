@@ -37,13 +37,13 @@ public class User implements java.io.Serializable {
 	// CascadeType.ALL, fetch = FetchType.EAGER)
 	// private Role role;
 
-	@OneToMany(targetEntity = ProjectionReservedSeats.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = ProjectionReservedSeats.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProjectionReservedSeats> projectionReservedSeats;
 
-	@OneToMany(targetEntity = UserMovieRate.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = UserMovieRate.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<UserMovieRate> userMovieRate;
 
-	@OneToMany(targetEntity = UserMovieReview.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = UserMovieReview.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<UserMovieReview> userMovieReview;
 
 	@ManyToMany(cascade = { CascadeType.ALL })

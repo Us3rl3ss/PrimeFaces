@@ -1,3 +1,7 @@
+.fc-day div{
+	min-height: 30px !important;
+}
+
 /* body {
 	margin: 2%;
 	background-image: url("../images/background.jpg");

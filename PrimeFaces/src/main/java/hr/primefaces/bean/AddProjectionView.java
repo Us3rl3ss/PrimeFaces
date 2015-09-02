@@ -11,16 +11,25 @@ import hr.primefaces.service.ITheaterService;
 import hr.primefaces.util.MessageUtil;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.AbortProcessingException;
 
 import org.hibernate.HibernateException;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.ScheduleEntryMoveEvent;
+import org.primefaces.event.ScheduleEntryResizeEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
 
 @ManagedBean(name = "addProjectionMB")
 @ViewScoped
@@ -41,22 +50,37 @@ public class AddProjectionView implements Serializable {
 	IMovieService movieService;
 
 	private Projection projection = new Projection();
-	private Theater theater = new Theater();
-	private Cinema cinema = new Cinema();
-	private Movie movie = new Movie();
 
-	private List<Projection> projectionList;
 	private List<Theater> theaterList;
 	private List<Cinema> cinemaList;
 	private List<Movie> movieList;
 
-	private boolean render;
+	private ScheduleModel eventModel = new DefaultScheduleModel();
+	private ScheduleEvent event = new DefaultScheduleEvent();
+	
+	private Date currStartDate;
+	private Date currEndDate;
+	
+	private boolean forUpdate;
 
 	@PostConstruct
 	public void init() {
-		theaterList = theaterService.getTheaters();
-		cinemaList = cinemaService.getCinemaByTheater(theaterList.get(0));
 		movieList = movieService.getMovies();
+		theaterList = theaterService.getTheaters();
+		projection.setTheater(theaterList.get(0));
+		postaviCinemaList();
+	
+		//lazy fetch - projectionService - dohvat čiji je početak između dvaju datuma
+//		eventModel = new LazyScheduleModel() {
+//            
+//            @Override
+//            public void loadEvents(Date start, Date end) {
+//            	
+//            	currStartDate = start;
+//            	currEndDate = end;
+//            	postaviProjectionListInDateRange();
+//            }   
+//        };
 	}
 
 	/**
@@ -66,8 +90,44 @@ public class AddProjectionView implements Serializable {
 
 		try {
 			projectionService.addProjection(projection);
-			projection = new Projection();
 			MessageUtil.info("Podaci uspješno spremljeni!");
+			postaviProjectionList();
+		} catch (HibernateException hex) {
+			hex.printStackTrace();
+			MessageUtil.error("Došlo je do hibernate greške!");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			MessageUtil.error("Došlo je do greške!");
+		}
+	}
+	
+	/**
+	 * uredi
+	 */
+	public void uredi() {
+
+		try {
+			projectionService.updateProjection(projection);
+			MessageUtil.info("Podaci uspješno ažurirani!");
+			postaviProjectionList();
+		} catch (HibernateException hex) {
+			hex.printStackTrace();
+			MessageUtil.error("Došlo je do hibernate greške!");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			MessageUtil.error("Došlo je do greške!");
+		}
+	}
+	
+	/**
+	 * obrisi
+	 */
+	public void obrisi() {
+
+		try {
+			projectionService.deleteProjection(projection);
+			MessageUtil.info("Podaci uspješno obrisani!");
+			postaviProjectionList();
 		} catch (HibernateException hex) {
 			hex.printStackTrace();
 			MessageUtil.error("Došlo je do hibernate greške!");
@@ -79,14 +139,78 @@ public class AddProjectionView implements Serializable {
 
 	/**
 	 * postaviCinemaList
-	 * @param event
-	 * @throws AbortProcessingException
 	 */
 	public void postaviCinemaList(){
 
 		cinemaList = cinemaService.getCinemaByTheater(projection.getTheater());
-		RequestContext.getCurrentInstance().update("addProjection");
+		projection.setCinema(cinemaList.get(0));
+		RequestContext.getCurrentInstance().update("addProjectionForm:dropdownPanel");
+		postaviProjectionList();
 	}
+	
+	/**
+	 * postaviProjectionList
+	 */
+	public void postaviProjectionList(){
+
+		eventModel = new DefaultScheduleModel();
+    	for (Projection p: projectionService.getProjectionsByCinema(projection.getCinema())) {
+    		eventModel.addEvent(new DefaultScheduleEvent(p.getMovie().getName(), p.getStart_time(), p.getEnd_time()));
+    	}		
+    	RequestContext.getCurrentInstance().update("addProjectionForm:schedule");
+	}
+	
+	/**
+	 * postaviProjectionListInDateRange
+	 */
+	public void postaviProjectionListInDateRange(){
+
+		eventModel = new DefaultScheduleModel();
+    	for (Projection p: projectionService.getProjectionByCinemaBetweenStartEnd(projection.getCinema(), currStartDate, currEndDate)) {
+    		eventModel.addEvent(new DefaultScheduleEvent(p.getMovie().getName(), p.getStart_time(), p.getEnd_time()));
+    	}		
+    	RequestContext.getCurrentInstance().update("addProjectionForm:schedule");
+	}
+	
+	public void onEventSelect(SelectEvent selectEvent) {
+		forUpdate = true;
+		projection.setStart_time(((DefaultScheduleEvent) selectEvent.getObject()).getStartDate());
+		projection.setEnd_time(((DefaultScheduleEvent) selectEvent.getObject()).getEndDate());
+		projection = projectionService.getProjectionByCinemaStartEnd(projection.getCinema(), projection.getStart_time(), projection.getEnd_time());
+    }
+     
+    public void onDateSelect(SelectEvent selectEvent) {
+    	forUpdate = false;
+    	projection.setStart_time((Date) selectEvent.getObject());
+    	projection.setEnd_time((Date) selectEvent.getObject());
+        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+    }
+     
+    public void onEventMove(ScheduleEntryMoveEvent selectEvent) {
+    	Date initialStartTime = setDateDifference(selectEvent.getScheduleEvent().getStartDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
+    	Date initialEndTime = setDateDifference(selectEvent.getScheduleEvent().getEndDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
+    	projection = projectionService.getProjectionByCinemaStartEnd(projection.getCinema(), initialStartTime, initialEndTime);
+    	projection.setStart_time(selectEvent.getScheduleEvent().getStartDate());
+		projection.setEnd_time(selectEvent.getScheduleEvent().getEndDate());
+		uredi();
+    }
+    
+    public void onEventResize(ScheduleEntryResizeEvent selectEvent) {
+    	Date initialEndTime = setDateDifference(selectEvent.getScheduleEvent().getEndDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
+    	projection = projectionService.getProjectionByCinemaStartEnd(projection.getCinema(), selectEvent.getScheduleEvent().getStartDate(), initialEndTime);
+    	projection.setStart_time(selectEvent.getScheduleEvent().getStartDate());
+		projection.setEnd_time(selectEvent.getScheduleEvent().getEndDate());
+		uredi();
+    }
+    
+    public Date setDateDifference(Date initialDate, int dayDiff, int minDiff) {
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(initialDate);
+    	cal.add(Calendar.DAY_OF_MONTH, dayDiff * (-1));
+    	cal.add(Calendar.MINUTE, minDiff * (-1));
+    	return cal.getTime();
+    }
+     
 
 	public IProjectionService getProjectionService() {
 		return projectionService;
@@ -128,14 +252,6 @@ public class AddProjectionView implements Serializable {
 		this.projection = projection;
 	}
 
-	public List<Projection> getProjectionList() {
-		return projectionList;
-	}
-
-	public void setProjectionList(List<Projection> projectionList) {
-		this.projectionList = projectionList;
-	}
-
 	public List<Theater> getTheaterList() {
 		return theaterList;
 	}
@@ -160,36 +276,45 @@ public class AddProjectionView implements Serializable {
 		this.movieList = movieList;
 	}
 
-	public Theater getTheater() {
-		return theater;
+	public ScheduleEvent getEvent() {
+		return event;
 	}
 
-	public void setTheater(Theater theater) {
-		this.theater = theater;
+	public void setEvent(ScheduleEvent event) {
+		this.event = event;
 	}
 
-	public Cinema getCinema() {
-		return cinema;
+	public ScheduleModel getEventModel() {
+		return eventModel;
 	}
 
-	public void setCinema(Cinema cinema) {
-		this.cinema = cinema;
+	public void setEventModel(ScheduleModel eventModel) {
+		this.eventModel = eventModel;
 	}
 
-	public Movie getMovie() {
-		return movie;
+	public boolean isForUpdate() {
+		return forUpdate;
 	}
 
-	public void setMovie(Movie movie) {
-		this.movie = movie;
+	public void setForUpdate(boolean forUpdate) {
+		this.forUpdate = forUpdate;
 	}
 
-	public boolean isRender() {
-		return render;
+	public Date getCurrStartDate() {
+		return currStartDate;
 	}
 
-	public void setRender(boolean render) {
-		this.render = render;
+	public void setCurrStartDate(Date currStartDate) {
+		this.currStartDate = currStartDate;
 	}
+
+	public Date getCurrEndDate() {
+		return currEndDate;
+	}
+
+	public void setCurrEndDate(Date currEndDate) {
+		this.currEndDate = currEndDate;
+	}
+
 
 }

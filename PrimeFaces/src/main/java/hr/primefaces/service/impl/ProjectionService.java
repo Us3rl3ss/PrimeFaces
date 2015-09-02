@@ -1,11 +1,13 @@
 package hr.primefaces.service.impl;
 
 import hr.primefaces.dao.IProjectionDAO;
+import hr.primefaces.model.Cinema;
 import hr.primefaces.model.Projection;
 import hr.primefaces.model.Theater;
 import hr.primefaces.service.IProjectionService;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ApplicationScoped;
@@ -61,6 +63,16 @@ public class ProjectionService implements IProjectionService, Serializable {
 	public List<Projection> getProjections() {
 		return getProjectionDAO().getProjections();
 	}
+	
+	@Override
+	public Projection getProjectionByCinemaStartEnd(Cinema cinema, Date start, Date end) {
+		return getProjectionDAO().getProjectionByCinemaStartEnd(cinema, start, end);
+	}
+	
+	@Override
+	public List<Projection> getProjectionByCinemaBetweenStartEnd(Cinema cinema, Date start, Date end) {
+		return getProjectionDAO().getProjectionByCinemaBetweenStartEnd(cinema, start, end);
+	}
 
 	public IProjectionDAO getProjectionDAO() {
 		return projectionDAO;
@@ -74,6 +86,10 @@ public class ProjectionService implements IProjectionService, Serializable {
 		return getProjectionDAO().getProjectionsByTheater(theater);
 	}
 	
+	public List<Projection> getProjectionsByCinema(Cinema cinema) {
+		return getProjectionDAO().getProjectionsByCinema(cinema);
+	}
+	
 	public List<Projection> getProjectionsForReservation(Theater theater) {
 		return getProjectionDAO().getProjectionsForReservation(theater);
 	}
@@ -81,4 +97,5 @@ public class ProjectionService implements IProjectionService, Serializable {
 	public List<Projection> getDistinctMovieProjections(Projection projection) {
 		return getProjectionDAO().getDistinctMovieProjections(projection);
 	}
+	
 }

@@ -2,7 +2,6 @@ package hr.primefaces.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -32,10 +31,14 @@ public class Cinema implements java.io.Serializable {
 	@JoinColumn(name = "theater_id")
 	private Theater theater;
 
-	@OneToMany(targetEntity = Projection.class, mappedBy = "cinema", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Projection> projectionList;
+	public void setProjectionList(List<Projection> projectionList) {
+		this.projectionList = projectionList;
+	}
 
-	@OneToMany(targetEntity = CinemaSeats.class, mappedBy = "cinema", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = Projection.class, mappedBy = "cinema", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Projection> projectionList;
+
+	@OneToMany(targetEntity = CinemaSeats.class, mappedBy = "cinema", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<CinemaSeats> cinemaSeatsList = new ArrayList<CinemaSeats>();
 	
 	public Cinema() {
@@ -93,18 +96,6 @@ public class Cinema implements java.io.Serializable {
 		this.theater = theater;
 	}
 
-	public Set<Projection> getProjectionList() {
-		return projectionList;
-	}
-
-	public void setProjectionList(Set<Projection> projectionList) {
-		this.projectionList = projectionList;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public List<CinemaSeats> getCinemaSeatsList() {
 		return cinemaSeatsList;
 	}
@@ -123,6 +114,10 @@ public class Cinema implements java.io.Serializable {
 
 	public int getNumber_of_seats_in_row() {
 		return number_of_seats_in_row;
+	}
+
+	public List<Projection> getProjectionList() {
+		return projectionList;
 	}
 
 	public void setNumber_of_seats_in_row(int number_of_seats_in_row) {
