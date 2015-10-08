@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+	
+	<ui:define name="scripts">
+        <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"/>
+    </ui:define>
+
+		<ui:define name="content">
+		
+			<p:growl id="messages" showDetail="true" sticky="true" />
+		
+			<h:form id="getTheater">
+
+				<p:dataTable id="theaterTable" var="theater"
+					value="#{theaterMB.theaterList}" rows="10" paginator="true"
+					rowsPerPageTemplate="5,10,15" 
+					selectionMode="single" 
+					selection="#{theaterMB.theater}" 
+					rowKey="#{theater.id}"
+					paginatorTemplate="{CurrentPageReport}  
+											{FirstPageLink} 
+											{PreviousPageLink} 
+											{PageLinks} 
+											{NextPageLink} 
+											{LastPageLink} 
+											{RowsPerPageDropdown}">
+					<p:ajax event="rowSelect" listener="#{theaterMB.onRowSelect}" update=":theaterGMapForm" />
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Naziv" />
+						</f:facet>
+						<h:outputText value="#{theater.name}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Adresa" />
+						</f:facet>
+						<h:outputText value="#{theater.address}" />
+					</p:column>
+
+				</p:dataTable>
+				
+			</h:form>
+		
+			<h:form id="theaterGMapForm">
+				<p:gmap center="#{theaterMB.initCenter}" zoom="#{theaterMB.initZoom}" type="HYBRID" widgetVar="gmap" style="width:100%;height:400px" model="#{theaterMB.mapModel}">
+					<p:ajax event="overlaySelect" listener="#{theaterMB.onMarkerSelect}" />
+				</p:gmap>
+				
+				<p:panelGrid columns="2">
+					<p:inputText id="pretragaTekst" value="#{theaterMB.pretragaTekst}" />
+					<p:commandButton value="Pretraži" action="#{theaterMB.pretrazi}"
+						update="theaterGMapForm" />
+				</p:panelGrid>
+				
+			</h:form>
+		
+			<!-- Dialozi: -->			
+			
+			<p:dialog id="theaterDialog" header="Kino" widgetVar="theaterDialog"
+				minHeight="40">
+			
+				<h:form id="addTheater">
+				
+					<p:growl id="messages" showDetail="true" sticky="true" />
+					
+					<p:panelGrid columns="2">
+					
+						<p:outputLabel for="name" value="Naziv kina:" />
+						<p:inputText id="name" value="#{theaterMB.theater.name}" />
+						
+						<p:outputLabel for="address" value="Adresa:" />
+						<p:inputText id="address" value="#{theaterMB.theater.address}" readonly="true" />
+						
+					</p:panelGrid>
+	
+				  	<p:commandButton value="Spremi" action="#{theaterMB.save}"
+						update=":messages :theaterGMapForm :getTheater" oncomplete="PF('theaterDialog').hide();" />
+						
+					<p:commandButton value="Obriši" action="#{theaterMB.delete}"
+						update=":messages :theaterGMapForm :getTheater" disabled="#{theaterMB.deleteDisabled}" oncomplete="PF('theaterDialog').hide();" />
+				  	
+				</h:form>
+	
+			</p:dialog>
+			
+		</ui:define>
+		
+	</ui:composition>
+
+</h:body>
+</html>

@@ -31,22 +31,32 @@ public class TheaterDAO implements ITheaterDAO, Serializable {
 		getSessionFactory().getCurrentSession().update(theater);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Theater getTheaterById(int id) {
-		List list = getSessionFactory().getCurrentSession().createQuery("from Theater where id=?").setParameter(0, id).list();
+		List<Theater> list = getSessionFactory().getCurrentSession().createQuery("from Theater where id=?").setParameter(0, id).list();
 		return (Theater) list.get(0);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Theater> getTheaterByName(String name) {
-		List list = getSessionFactory().getCurrentSession().createQuery("from Theater where name like lower('%" + name.toLowerCase() + "%')").list();
+		List<Theater> list = getSessionFactory().getCurrentSession().createQuery("from Theater where name like lower('%" + name.toLowerCase() + "%')").list();
+		return list;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Theater> getTheaters() {
+		List<Theater> list = getSessionFactory().getCurrentSession().createQuery("from Theater").list();
 		return list;
 	}
 
 	@Override
-	public List<Theater> getTheaters() {
-		List list = getSessionFactory().getCurrentSession().createQuery("from Theater").list();
-		return list;
+	public Theater getTheaterByLatLng(Double lat, Double lng) {
+		Theater theater = (Theater) getSessionFactory().getCurrentSession().createQuery("from Theater where lat=:lat and lng=:lng").setParameter("lat", lat)
+				.setParameter("lng", lng).uniqueResult();
+		return theater;
 	}
 
 	/*

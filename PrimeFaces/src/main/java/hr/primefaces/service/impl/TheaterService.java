@@ -65,6 +65,11 @@ public class TheaterService implements ITheaterService, Serializable {
 	public List<Theater> getTheaterByName(String name) {
 		return getTheaterDAO().getTheaterByName(name);
 	}
+	
+	@Override
+	public Theater getTheaterByLatLng(Double lat, Double lng) {
+		return getTheaterDAO().getTheaterByLatLng(lat, lng);
+	}
 
 	
 	/*

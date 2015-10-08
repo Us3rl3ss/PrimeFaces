@@ -18,8 +18,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.hibernate.HibernateException;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
-@ManagedBean(name = "addCinemaMB")
+@ManagedBean(name = "cinemaMB")
 @ViewScoped
 public class AddCinemaView implements Serializable {
 
@@ -32,36 +34,121 @@ public class AddCinemaView implements Serializable {
 	ITheaterService theaterService;
 
 	private Cinema cinema = new Cinema();
+	private Theater theater;
 	private List<Theater> theaterList;
-
+	private List<Cinema> cinemaList;
+	
+	public boolean deleteDisabled = true;
+	public boolean saveDisabled = false;
+	
 	@PostConstruct
 	public void init() {
 
+		theaterList = theaterService.getTheaters();
 		setTheaterList(theaterService.getTheaters());
 	}
+	
+	/**
+	 * onRowSelect
+	 */
+	public void onRowSelect(SelectEvent event) {
+        
+		cinemaList = cinemaService.getCinemaByTheater(theater);
+		
+		if (cinemaList.size() > 0) {
+			
+		}
+		else {
+			
+			MessageUtil.info("Za odabrano kino nema unesenih kino dvorana!");
+		}
+    }
 
 	/**
-	 * spremi
+	 * addCinema
 	 */
-	public void spremi() {
+	public void addCinema() {
+        
+		cinema = new Cinema();
+		cinema.setTheater(theater);
+		saveDisabled = false;
+		deleteDisabled = true;
+		RequestContext.getCurrentInstance().execute("PF('cinemaDialog').show();");
+		RequestContext.getCurrentInstance().update("cinemaDialog");
+    }
+	
+	/**
+	 * updateCinema
+	 */
+	public void updateCinema() {
+        
+		saveDisabled = true;
+		deleteDisabled = false;
+		RequestContext.getCurrentInstance().execute("PF('cinemaDialog').show();");
+		RequestContext.getCurrentInstance().update("cinemaDialog");
+    }
+	
+	/**
+	 * save
+	 */
+	public void save() {
 
 		try {
-			int numberOfSeats = cinema.getNumber_of_rows() * cinema.getNumber_of_seats_in_row();
-			List<CinemaSeats> cinemaSeatsList = setCinemaSeatsList(cinema.getNumber_of_rows(), cinema.getNumber_of_seats_in_row());
+			
+			if (theater != null) {
+				
+				if(cinemaService.getCinemaByTheaterAndName(theater, cinema.getName()) == null) {
+					
+					cinema.setTheater(theater);
+					int numberOfSeats = cinema.getNumber_of_rows() * cinema.getNumber_of_seats_in_row();
+					List<CinemaSeats> cinemaSeatsList = setCinemaSeatsList(cinema.getNumber_of_rows(), cinema.getNumber_of_seats_in_row());
 
-			cinema.setNumber_of_seats(numberOfSeats);
+					cinema.setNumber_of_seats(numberOfSeats);
 
-			Iterator<CinemaSeats> iter = cinemaSeatsList.iterator();
-			while (iter.hasNext()) {
+					Iterator<CinemaSeats> iter = cinemaSeatsList.iterator();
+					while (iter.hasNext()) {
 
-				CinemaSeats cs = iter.next();
-				cinema.addToCinemaSeatsList(cs);
+						CinemaSeats cs = iter.next();
+						cinema.addToCinemaSeatsList(cs);
+					}
+
+					cinemaService.addCinema(cinema);
+
+					cinema = new Cinema();
+					cinemaList = cinemaService.getCinemaByTheater(theater);
+					MessageUtil.info("Podaci uspješno spremljeni!");
+				}
+				else {
+
+					MessageUtil.info("U kinu već postoji kino dvorana sa unesenim nazivom!");
+				}
 			}
+			else {
+				
+				MessageUtil.info("Niste odabrali kino!");
+			}
+			
+		} catch (HibernateException hex) {
+			hex.printStackTrace();
+			MessageUtil.error("Došlo je do hibernate greške!");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			MessageUtil.error("Došlo je do greške!");
+		}
+	}
+	
+	/**
+	 * delete
+	 */
+	public void delete() {
 
-			cinemaService.addCinema(cinema);
+		try {
+			
+			cinemaService.deleteCinema(cinema);
+			cinemaList = cinemaService.getCinemaByTheater(theater);
+			
+			MessageUtil.info("Kino dvorana je uspješno obrisana!");
 
-			cinema = new Cinema();
-			MessageUtil.info("Podaci uspješno spremljeni!");
 		} catch (HibernateException hex) {
 			hex.printStackTrace();
 			MessageUtil.error("Došlo je do hibernate greške!");
@@ -168,6 +255,38 @@ public class AddCinemaView implements Serializable {
 
 	public void setTheaterList(List<Theater> theaterList) {
 		this.theaterList = theaterList;
+	}
+
+	public Theater getTheater() {
+		return theater;
+	}
+
+	public void setTheater(Theater theater) {
+		this.theater = theater;
+	}
+
+	public List<Cinema> getCinemaList() {
+		return cinemaList;
+	}
+
+	public void setCinemaList(List<Cinema> cinemaList) {
+		this.cinemaList = cinemaList;
+	}
+
+	public boolean isDeleteDisabled() {
+		return deleteDisabled;
+	}
+
+	public void setDeleteDisabled(boolean deleteDisabled) {
+		this.deleteDisabled = deleteDisabled;
+	}
+
+	public boolean isSaveDisabled() {
+		return saveDisabled;
+	}
+
+	public void setSaveDisabled(boolean saveDisabled) {
+		this.saveDisabled = saveDisabled;
 	}
 
 }

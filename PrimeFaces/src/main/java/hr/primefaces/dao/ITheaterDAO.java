@@ -22,4 +22,6 @@ public interface ITheaterDAO {
 	public List<Theater> getTheaterByName(String username);
 
 	public List<Theater> getTheaters();
+
+	public Theater getTheaterByLatLng(Double lat, Double lng);
 }

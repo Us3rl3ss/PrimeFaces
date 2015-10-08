@@ -20,23 +20,15 @@
 				<p:submenu label="Kina">
 					<p:menuitem 
 						value="Popis kina"
-						action="#{navigationController.doViewGetTheater}"
+						action="#{navigationController.doViewTheater}"
 						icon="ui-icon-disk" />
-					<p:menuitem 
-					value="Dodaj kino"
-						action="#{navigationController.doViewAddTheater}"
-						icon="ui-icon-plus" />
 				</p:submenu>
 				
 				<p:submenu label="Kino dvorane">
 					<p:menuitem 
-						value="Popis kino dvorana"
-						action="#{navigationController.doViewGetCinema}"
-						icon="ui-icon-disk" />
-					<p:menuitem 
 						value="Dodaj kino dvoranu"
-						action="#{navigationController.doViewAddCinema}"
-						icon="ui-icon-plus" />
+						action="#{navigationController.doViewCinema}"
+						icon="ui-icon-disk" />
 				</p:submenu>
 				
 				<p:submenu label="Projekcije">

@@ -43,40 +43,42 @@ public class CinemaDAO implements ICinemaDAO, Serializable {
 		getSessionFactory().getCurrentSession().update(cinema);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Cinema getCinemaById(int id) {
-		List list = getSessionFactory().getCurrentSession()
+		List<Cinema> list = getSessionFactory().getCurrentSession()
 				.createQuery("from Cinema where id=?").setParameter(0, id)
 				.list();
 		return (Cinema) list.get(0);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Cinema> getCinemaByTheater(Theater theater) {
-		List list = getSessionFactory().getCurrentSession().createQuery("from Cinema where theater_id = :theater_id")
+		List<Cinema> list = getSessionFactory().getCurrentSession().createQuery("from Cinema where theater_id = :theater_id")
 				.setParameter("theater_id", theater.getId()).list();
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Cinema> getCinemas() {
-		List list = getSessionFactory().getCurrentSession()
+		List<Cinema> list = getSessionFactory().getCurrentSession()
 				.createQuery("from Cinema").list();
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Cinema> getCinemaByName(String name) {
-		List list = getSessionFactory()
-				.getCurrentSession()
-				.createQuery(
-						"from Cinema where name like lower('%"
-								+ name.toLowerCase() + "%')").list();
+		List<Cinema> list = getSessionFactory().getCurrentSession().createQuery("from Cinema where name like lower('%" + name.toLowerCase() + "%')").list();
 		return list;
 	}
-	
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
+	@Override
+	public Cinema getCinemaByTheaterAndName(Theater theater, String name) {
+		Cinema cinema = (Cinema) getSessionFactory().getCurrentSession().createQuery("from Cinema where theater_id = :theater_id and name = :name")
+				.setParameter("theater_id", theater.getId()).setParameter("name", name).uniqueResult();
+		return cinema;
+	}
 }

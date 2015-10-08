@@ -27,7 +27,6 @@ import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
@@ -143,9 +142,13 @@ public class AddProjectionView implements Serializable {
 	public void postaviCinemaList(){
 
 		cinemaList = cinemaService.getCinemaByTheater(projection.getTheater());
-		projection.setCinema(cinemaList.get(0));
-		RequestContext.getCurrentInstance().update("addProjectionForm:dropdownPanel");
-		postaviProjectionList();
+		
+		if (cinemaList.size() > 0) {
+			
+			projection.setCinema(cinemaList.get(0));
+			RequestContext.getCurrentInstance().update("addProjectionForm:dropdownPanel");
+			postaviProjectionList();
+		}
 	}
 	
 	/**

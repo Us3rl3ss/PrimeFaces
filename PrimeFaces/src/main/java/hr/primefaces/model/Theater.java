@@ -30,8 +30,9 @@ public class Theater implements java.io.Serializable {
 	@GeneratedValue
 	private Integer id;
 	private String name;
-	private String place;
 	private String address;
+	private Double lat;
+	private Double lng;
 
 	@OneToMany(targetEntity = Cinema.class, 
 			mappedBy = "theater", 
@@ -81,14 +82,6 @@ public class Theater implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public String getPlace() {
-		return place;
-	}
-
-	public void setPlace(String place) {
-		this.place = place;
-	}
-
 	public String getAddress() {
 		return address;
 	}
@@ -111,6 +104,22 @@ public class Theater implements java.io.Serializable {
 
 	public void setProjection(List<Projection> projection) {
 		this.projection = projection;
+	}
+
+	public Double getLat() {
+		return lat;
+	}
+
+	public void setLat(Double lat) {
+		this.lat = lat;
+	}
+
+	public Double getLng() {
+		return lng;
+	}
+
+	public void setLng(Double lng) {
+		this.lng = lng;
 	}
 	
 }

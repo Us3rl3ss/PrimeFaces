@@ -67,6 +67,11 @@ public class CinemaService implements ICinemaService, Serializable {
 		return getCinemaDAO().getCinemaByTheater(theater);
 	}
 
+	@Override
+	public Cinema getCinemaByTheaterAndName(Theater theater, String name) {
+		return getCinemaDAO().getCinemaByTheaterAndName(theater, name);
+	}
+
 	public ICinemaDAO getCinemaDAO() {
 		return cinemaDAO;
 	}

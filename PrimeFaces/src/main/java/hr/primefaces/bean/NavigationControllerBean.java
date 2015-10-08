@@ -89,23 +89,13 @@ public class NavigationControllerBean implements Serializable {
 	 * Side navigation
 	 */
 	
-	public String doViewGetTheater() {
-		this.page = "getTheater?faces-redirect=true";
+	public String doViewTheater() {
+		this.page = "theater?faces-redirect=true";
 		return page;
 	}
 	
-	public String doViewAddTheater() {
-		this.page = "addTheater?faces-redirect=true";
-		return page;
-	}
-	
-	public String doViewGetCinema() {
-		this.page = "getCinema?faces-redirect=true";
-		return page;
-	}
-	
-	public String doViewAddCinema() {
-		this.page = "addCinema?faces-redirect=true";
+	public String doViewCinema() {
+		this.page = "cinema?faces-redirect=true";
 		return page;
 	}
 	

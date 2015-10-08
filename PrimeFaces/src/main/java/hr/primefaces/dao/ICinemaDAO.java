@@ -20,4 +20,6 @@ public interface ICinemaDAO {
 	public List<Cinema> getCinemas();
 	
 	public List<Cinema> getCinemaByTheater(Theater theater);
+
+	public Cinema getCinemaByTheaterAndName(Theater theater, String name);
 }

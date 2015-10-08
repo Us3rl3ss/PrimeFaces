@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="templates/common.xhtml">
+
+		<ui:define name="content">
+		
+			<p:growl id="messages" showDetail="true" sticky="true" />
+		
+			<h:form id="getTheater">
+
+				<p:dataTable id="theaterTable" var="theater"
+					value="#{cinemaMB.theaterList}" rows="10" paginator="true"
+					rowsPerPageTemplate="5,10,15" 
+					selectionMode="single" 
+					selection="#{cinemaMB.theater}" 
+					rowKey="#{theater.id}"
+					paginatorTemplate="{CurrentPageReport}  
+											{FirstPageLink} 
+											{PreviousPageLink} 
+											{PageLinks} 
+											{NextPageLink} 
+											{LastPageLink} 
+											{RowsPerPageDropdown}">
+					<p:ajax event="rowSelect" listener="#{cinemaMB.onRowSelect}" update=":messages :cinemaListForm" />
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Naziv" />
+						</f:facet>
+						<h:outputText value="#{theater.name}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Adresa" />
+						</f:facet>
+						<h:outputText value="#{theater.address}" />
+					</p:column>
+
+				</p:dataTable>
+				
+			</h:form>
+			
+			<h:form id="cinemaListForm">
+			
+				<p:panel id="cinemaInfo" header="Kino dvorane:"
+						style="margin-bottom:20px">
+				
+					<f:facet name="actions">
+						<p:commandLink action="#{cinemaMB.addCinema}"
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+							<h:outputText styleClass="ui-icon ui-icon-plus" />
+						</p:commandLink>
+					</f:facet>
+			
+					<p:dataList value="#{cinemaMB.cinemaList}" var="cinema" type="unordered" itemType="none">
+				        <p:commandLink update=":cinemaDialog" action="#{cinemaMB.updateCinema}" title="View Detail" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px">
+				            <f:setPropertyActionListener value="#{cinema}" target="#{cinemaMB.cinema}" />
+				        </p:commandLink>
+				        <h:outputText value="#{cinema.name}, #{cinema.number_of_seats}" style="display:inline-block"/>
+				    </p:dataList>
+			
+				</p:panel>
+				
+			</h:form>
+			
+			<!-- Dialozi: -->			
+			
+			<p:dialog id="cinemaDialog" header="Kino dvorana" widgetVar="cinemaDialog"
+				minHeight="40">
+			
+				<h:form id="addCinema">
+				
+					<p:panelGrid columns="2">
+					
+						<p:outputLabel for="name" value="Ime dvorane:" />
+						<p:inputText id="name" value="#{cinemaMB.cinema.name}" />
+	
+						<p:outputLabel for="noRows" value="Broj redova:" />
+				        <p:spinner id="noRows" value="#{cinemaMB.cinema.number_of_rows}" min="0" max="50" stepFactor="1" />
+						
+						<p:outputLabel for="noSeats" value="Broj sjedala u svakom redu:" />
+						<p:spinner id="noSeats" value="#{cinemaMB.cinema.number_of_seats_in_row}" min="0" max="50" stepFactor="1" />
+	
+					</p:panelGrid>
+	
+				  	<p:commandButton value="Spremi" action="#{cinemaMB.save}"
+						update=":messages :cinemaListForm" oncomplete="PF('cinemaDialog').hide();" disabled="#{cinemaMB.saveDisabled}" />
+						
+					<p:commandButton value="Obriši" action="#{cinemaMB.delete}"
+						update=":messages :cinemaListForm" disabled="#{cinemaMB.deleteDisabled}" oncomplete="PF('cinemaDialog').hide();" />
+				  	
+				</h:form>
+	
+			</p:dialog>
+
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>
