@@ -90,12 +90,12 @@ public class ProjectionService implements IProjectionService, Serializable {
 		return getProjectionDAO().getProjectionsByCinema(cinema);
 	}
 	
-	public List<Projection> getProjectionsForReservation(Theater theater) {
-		return getProjectionDAO().getProjectionsForReservation(theater);
+	public List<Projection> getProjectionsForReservation(Theater theater, Date datumProjekcije) {
+		return getProjectionDAO().getProjectionsForReservation(theater, datumProjekcije);
 	}
 
 	public List<Projection> getDistinctMovieProjections(Projection projection) {
 		return getProjectionDAO().getDistinctMovieProjections(projection);
 	}
-	
+
 }

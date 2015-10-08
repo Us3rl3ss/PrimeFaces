@@ -23,7 +23,7 @@ public interface IProjectionDAO {
 	
 	public List<Projection> getProjectionsByCinema(Cinema cinema);
 	
-	public List<Projection> getProjectionsForReservation(Theater theater);
+	public List<Projection> getProjectionsForReservation(Theater theater, Date datumProjekcije);
 	
 	public List<Projection> getDistinctMovieProjections(Projection projection);
 	

@@ -45,53 +45,59 @@ public class ProjectionDAO implements IProjectionDAO, Serializable {
 		getSessionFactory().getCurrentSession().update(projection);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Projection getProjectionById(int id) {
-		List list = getSessionFactory().getCurrentSession().createQuery("from Projection where id=?").setParameter(0, id).list();
+		List<Projection> list = getSessionFactory().getCurrentSession().createQuery("from Projection where id=?").setParameter(0, id).list();
 		return (Projection) list.get(0);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Projection> getProjections() {
-		List list = getSessionFactory().getCurrentSession().createQuery("from Projection").list();
+		List<Projection> list = getSessionFactory().getCurrentSession().createQuery("from Projection").list();
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Projection> getProjectionsByCinema(Cinema cinema) {
 
 		String query = "from Projection projection where cinema_id = :cinema_id";
 
-		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("cinema_id", cinema.getId()).list();
+		List<Projection> list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("cinema_id", cinema.getId()).list();
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Projection> getProjectionsByTheater(Theater theater) {
 
 		String query = "from Projection projection " + "join projection.cinema cinema " + "join cinema.theater theater " + "join projection.movie movie "
 				+ "where theater.id = ?";
 
-		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter(0, theater.getId()).list();
+		List<Projection> list = getSessionFactory().getCurrentSession().createQuery(query).setParameter(0, theater.getId()).list();
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Projection> getProjectionsForReservation(Theater theater) {
+	public List<Projection> getProjectionsForReservation(Theater theater, Date datumProjekcije) {
 
-		String query = "from Projection where current_timestamp < date and theater_id = :theaterId group by movie_id";
+		String query = "from Projection where DATE_FORMAT(:datum,'%d.%m.%Y') = DATE_FORMAT(start_time,'%d.%m.%Y') and theater_id = :theaterId group by movie_id";
 
-		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("theaterId", theater.getId()).list();
+		List<Projection> list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("datum", datumProjekcije).setParameter("theaterId", theater.getId()).list();
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Projection> getDistinctMovieProjections(Projection projection) {
 
-		String query = "from Projection where " + "theater_id = :theaterId " + "and movie_id = :movieId " + "and current_timestamp < date "
-				+ "order by date desc";
+		String query = "from Projection where " + "theater_id = :theaterId " + "and movie_id = :movieId "
+				+ "order by start_time desc";
 
-		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("theaterId", projection.getTheater().getId())
+		List<Projection> list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("theaterId", projection.getTheater().getId())
 				.setParameter("movieId", projection.getMovie().getId()).list();
 		return list;
 	}
@@ -105,6 +111,7 @@ public class ProjectionDAO implements IProjectionDAO, Serializable {
 				.setParameter("end", end).uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Projection> getProjectionByCinemaBetweenStartEnd(Cinema cinema, Date start, Date end) {
 

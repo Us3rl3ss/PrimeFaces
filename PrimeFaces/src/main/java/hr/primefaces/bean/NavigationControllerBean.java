@@ -99,11 +99,6 @@ public class NavigationControllerBean implements Serializable {
 		return page;
 	}
 	
-	public String doViewGetProjection() {
-		this.page = "getProjection?faces-redirect=true";
-		return page;
-	}
-	
 	public String doViewAddProjection() {
 		this.page = "addProjection?faces-redirect=true";
 		return page;

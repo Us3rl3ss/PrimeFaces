@@ -13,6 +13,7 @@ import hr.primefaces.service.IProjectionService;
 import hr.primefaces.service.ITheaterService;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -60,9 +61,12 @@ public class ProjectionView implements Serializable {
 	private List<Projection> distinctMovieProjectionList;
 
 	private boolean render;
+	
+	private Date datumProjekcije;
 
 	@PostConstruct
 	public void init() {
+		datumProjekcije = new Date();
 		theaterList = theaterService.getTheaters();
 	}
 	
@@ -84,7 +88,7 @@ public class ProjectionView implements Serializable {
 	 */
 	public void pretrazi() {
 
-		List<Projection> tempProjectionList = projectionService.getProjectionsForReservation(theater);
+		List<Projection> tempProjectionList = projectionService.getProjectionsForReservation(theater, datumProjekcije);
 
 		for (int i = 0; i < tempProjectionList.size(); i++) {
 
@@ -309,6 +313,14 @@ public class ProjectionView implements Serializable {
 
 	public void setProjectionReservedSeatsService(IProjectionReservedSeatsService projectionReservedSeatsService) {
 		this.projectionReservedSeatsService = projectionReservedSeatsService;
+	}
+
+	public Date getDatumProjekcije() {
+		return datumProjekcije;
+	}
+
+	public void setDatumProjekcije(Date datumProjekcije) {
+		this.datumProjekcije = datumProjekcije;
 	}
 
 }

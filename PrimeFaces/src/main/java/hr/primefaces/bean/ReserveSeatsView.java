@@ -43,24 +43,18 @@ public class ReserveSeatsView implements Serializable {
 	private List<String> selectedCinemaSeatsList;
 	private List<String> savedCinemaSeatsList;
 	
-	private String test = "testiranje";
-	
 	private List<String> savedCinemaSeatsByCurrUserList;
 
 	private boolean disabled = true;
 	
-	public void test() {
-		List<String> a = new ArrayList<String>();
-		a.add("aa");
-		a.add("bb");
+	public void sendDataToJS() {
 		
 		Gson gson = new Gson();
-		String res = gson.toJson(a);
+		Projection p = new Projection();
+		p.setId(5);
+		String res = gson.toJson(p);
 		
-		String call = "handleResize(" + res + ")";
-		
-		System.out.println(call);
-		
+		String call = "ReserveSeats.setSeats(" + res + ")";
 		RequestContext.getCurrentInstance().execute(call);
 	}
 
@@ -135,10 +129,9 @@ public class ReserveSeatsView implements Serializable {
 
 		this.projection = p;
 
-		System.out.println(projection.getId());
-
 		setSeats();
 		setSelectedSeats();
+//		sendDataToJS();
 	}
 
 	public void setSeats() {
@@ -196,9 +189,7 @@ public class ReserveSeatsView implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		// setSelected();
 
-		System.out.println("INIT");
 	}
 
 	public void spremi() {
@@ -282,14 +273,6 @@ public class ReserveSeatsView implements Serializable {
 
 	public void setSavedCinemaSeatsByCurrUserList(List<String> savedCinemaSeatsByCurrUserList) {
 		this.savedCinemaSeatsByCurrUserList = savedCinemaSeatsByCurrUserList;
-	}
-
-	public String getTest() {
-		return test;
-	}
-
-	public void setTest(String test) {
-		this.test = test;
 	}
 
 }

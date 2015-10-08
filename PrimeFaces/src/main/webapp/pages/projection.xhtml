@@ -29,20 +29,11 @@
 							itemValue="#{theater}" itemLabel="#{theater.name}" />
 						<f:ajax listener="#{projectionMB.pretrazi}" />
 					</p:selectOneMenu>
-<!-- 					<p:selectOneMenu id="theater" value="#{projectionMB.theater}" -->
-<!-- 						valueChangeListener="#{projectionMB.postaviCinemaList}" -->
-<!-- 						converter="#{theaterConverter}" panelStyle="width:180px" -->
-<!-- 						effect="fade" var="theater" style="width:160px" filter="true" -->
-<!-- 						filterMatchMode="startsWith"> -->
-<!-- 						<f:selectItems value="#{projectionMB.theaterList}" var="theater" -->
-<!-- 							itemLabel="#{theater.name}" itemValue="#{theater}" /> -->
-
-<!-- 						<p:column> -->
-<!-- 							<h:outputText value="#{theater.name}" /> -->
-<!-- 						</p:column> -->
-
-<!-- 						<f:ajax listener="#{projectionMB.pretrazi}" render="projection" /> -->
-<!-- 					</p:selectOneMenu> -->
+					<p:outputLabel for="datumProjekcije" value="Datum:" />
+					<p:calendar id="datumProjekcije" value="#{projectionMB.datumProjekcije}"
+						pattern="dd.MM.yyyy" mask="true">
+						<p:ajax event="dateSelect" listener="#{projectionMB.pretrazi}"/>
+					</p:calendar>
 
 					<p:commandButton value="Pretraži" action="#{projectionMB.pretrazi}"
 						update="projection projection" />
@@ -104,11 +95,11 @@
 									<f:setPropertyActionListener value="#{distinctProjection}"
 										target="#{projectionMB.projection}" />
 									<h:outputText
-										value="#{distinctProjection.numberOfFreeSeatsText}, #{distinctProjection.date}, #{distinctProjection.cinema.number_of_seats}, #{distinctProjection.cinema.name}" />
+										value="#{distinctProjection.numberOfFreeSeatsText}, #{distinctProjection.start_time}, #{distinctProjection.cinema.number_of_seats}, #{distinctProjection.cinema.name}" />
 								</p:commandLink>
 
-								<h:outputText value="#{distinctProjection.date}">
-									<f:convertDateTime pattern="dd.MM.yyyy" />
+								<h:outputText value="#{distinctProjection.start_time}">
+									<f:convertDateTime pattern="HH:mm" />
 								</h:outputText>
 
 								<h:outputText

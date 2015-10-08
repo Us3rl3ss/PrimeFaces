@@ -25,3 +25,24 @@ PrimeFaces.locales ['hr'] = {
     day: 'Dan',
     allDayText: 'Cijeli dan'
 };
+
+
+var ReserveSeats = {
+	
+		setSeats: function(data) {
+			
+			// selektor za disable svih već odabranih sjedala
+			$($('#seats\\:cinemaSeats').find('div.ui-state-active')).addClass('ui-state-disabled');
+			
+			// selektor za razdvajanje ćelija
+			$($('#seats\\:cinemaSeats').children()).css({'margin': '1em'});
+			
+			alert(data);
+			debugger;
+		},
+}
+
+function handleResize(a, b) {
+	alert(a, b);
+	
+}
