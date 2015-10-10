@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,7 +21,7 @@ public class ProjectionReservedSeats implements java.io.Serializable {
 	@JoinColumn(name = "projection_id")
 	private Projection projection;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "cinema_seats_id")
 	private CinemaSeats cinema_seats;
 

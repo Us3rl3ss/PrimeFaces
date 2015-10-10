@@ -16,8 +16,6 @@
 
 		<ui:define name="content">
 		
-			<p:growl id="messages" showDetail="true" sticky="true" />
-		
 			<h:form id="getTheater">
 
 				<p:dataTable id="theaterTable" var="theater"
@@ -77,7 +75,7 @@
 			
 			<!-- Dialozi: -->			
 			
-			<p:dialog id="cinemaDialog" header="Kino dvorana" widgetVar="cinemaDialog"
+			<p:dialog id="cinemaDialog" header="Kino dvorana" widgetVar="cinemaDialog" modal="true" appendTo="@(body)"
 				minHeight="40">
 			
 				<h:form id="addCinema">

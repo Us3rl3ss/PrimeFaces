@@ -12,9 +12,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-@ManagedBean(name = "loginMB")
+import org.primefaces.context.RequestContext;
+
+@ManagedBean(name = "userSession")
 @SessionScoped
-public class LoginView implements Serializable {
+public class UserSession implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,10 +30,11 @@ public class LoginView implements Serializable {
 	private String password;
 
 	private User user;
+	
+	private boolean isLogged = false;
+	private String userRole;
 
 	public String login() {
-
-		String result = null;
 
 		user = userService.getUserByDistinctUsername(username);
 
@@ -43,13 +46,19 @@ public class LoginView implements Serializable {
 				context.addMessage(null, new FacesMessage(
 						Messages.SUCCESSFUL_LOGIN_MSG));
 
-				result = "home";
-				// result = "templates/common.xhtml";
+				isLogged = true;
+				userRole = user.getRole().getCode();
+				
+				RequestContext.getCurrentInstance().update(":leftNavForm :upperNavForm");
+
+				return navigationControllerMB.doViewHome();
 			} else {
 				FacesContext context = FacesContext.getCurrentInstance();
 
 				context.addMessage(null, new FacesMessage(
 						Messages.WRONG_PASSWORD_MSG));
+				
+				return "";
 			}
 
 		} else {
@@ -57,14 +66,21 @@ public class LoginView implements Serializable {
 
 			context.addMessage(null, new FacesMessage(
 					Messages.USER_DONT_EXIST_MSG));
+			
+			return "";
 		}
-
-		return result;
 	}
 
 	public String logout() {
+		
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		return navigationControllerMB.doViewLogin();
+		
+		isLogged = false;
+		userRole = null;
+		
+		RequestContext.getCurrentInstance().update(":leftNavForm :upperNavForm");
+		
+		return navigationControllerMB.doViewHome();
 	}
 
 	public String getUsername() {
@@ -99,10 +115,6 @@ public class LoginView implements Serializable {
 		this.user = user;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public NavigationControllerBean getNavigationControllerMB() {
 		return navigationControllerMB;
 	}
@@ -112,4 +124,19 @@ public class LoginView implements Serializable {
 		this.navigationControllerMB = navigationControllerMB;
 	}
 
+	public boolean isLogged() {
+		return isLogged;
+	}
+
+	public void setLogged(boolean isLogged) {
+		this.isLogged = isLogged;
+	}
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
 }

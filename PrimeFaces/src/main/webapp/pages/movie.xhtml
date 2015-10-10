@@ -18,8 +18,6 @@
 
 			<h:form id="movie">
 
-				<p:growl id="messages" showDetail="true" sticky="true" />
-
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="Film:"></p:outputLabel>
@@ -73,16 +71,16 @@
 
 						<!-- 						<p:commandButton value="Dodaj recenziju" -->
 						<!-- 							action="#{movieMB.addReview}" -->
-						<!-- 							disabled="#{movieMB.reviewDisabled}" update="messages"></p:commandButton> -->
+						<!-- 							disabled="#{movieMB.reviewDisabled}" update=":messages"></p:commandButton> -->
 
 						<!-- 						<h:outputText value="" /> -->
 						<!-- 						<h:outputText value="Ocjena:" /> -->
 						<!-- 						<p:rating value="#{movieMB.userMovieRate.rate}" stars="10" -->
 						<!-- 							cancel="false" readonly="#{movieMB.rateDisabled}"> -->
 						<!-- 							<p:ajax event="rate" listener="#{movieMB.onRate}" -->
-						<!-- 								update="messages" /> -->
+						<!-- 								update=":messages" /> -->
 						<!-- 							<p:ajax event="cancel" listener="#{movieMB.onCancel}" -->
-						<!-- 								update="messages" /> -->
+						<!-- 								update=":messages" /> -->
 						<!-- 						</p:rating> -->
 
 
@@ -125,20 +123,20 @@
 
 
 					<p:dialog header="Moja ocjena" widgetVar="myRate"
-						showEffect="explode" hideEffect="bounce" height="100">
+						showEffect="explode" hideEffect="bounce" height="100" modal="true" appendTo="@(body)">
 
 						<h:outputText value="Ocjena:" />
 						<p:rating value="#{movieMB.userMovieRate.rate}" stars="10"
 							cancel="false" readonly="#{movieMB.rateDisabled}">
 							<p:ajax event="rate" listener="#{movieMB.onRate}"
-								update="messages" />
+								update=":messages" />
 							<p:ajax event="cancel" listener="#{movieMB.onCancel}"
-								update="messages" />
+								update=":messages" />
 						</p:rating>
 					</p:dialog>
 
 					<p:dialog header="Moja recenzija" widgetVar="myReview"
-						showEffect="explode" hideEffect="bounce" height="100">
+						showEffect="explode" hideEffect="bounce" height="100" modal="true" appendTo="@(body)">
 
 						<p:inputTextarea value="#{movieMB.userMovieReview.review}"
 							rows="5" cols="100" counter="display" maxlength="5000"
@@ -148,7 +146,7 @@
 
 						<p:commandButton value="Dodaj recenziju"
 							action="#{movieMB.addReview}"
-							disabled="#{movieMB.reviewDisabled}" update="messages" />
+							disabled="#{movieMB.reviewDisabled}" update=":messages" />
 					</p:dialog>
 
 				</p:panel>

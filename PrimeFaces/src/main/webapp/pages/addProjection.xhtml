@@ -18,8 +18,6 @@
 		
 			<h:form id="addProjectionForm">
 			
-				<p:growl id="messages" showDetail="true" sticky="true" />
-				
 				<p:panelGrid columns="2" id="dropdownPanel">
 
 					<p:outputLabel for="theater" value="Kino:"/>
@@ -58,19 +56,19 @@
 				</p:panelGrid>
 
 <!-- 				<p:commandButton value="Spremi" action="#{addProjectionMB.spremi}" -->
-<!-- 					update="messages addProjection" /> -->
+<!-- 					update=":messages addProjection" /> -->
 
 					
 				<p:schedule id="schedule" value="#{addProjectionMB.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
  
 		            <p:ajax event="dateSelect" listener="#{addProjectionMB.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
 		            <p:ajax event="eventSelect" listener="#{addProjectionMB.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-		            <p:ajax event="eventMove" listener="#{addProjectionMB.onEventMove}" update="messages" />
-		            <p:ajax event="eventResize" listener="#{addProjectionMB.onEventResize}" update="messages" />
+		            <p:ajax event="eventMove" listener="#{addProjectionMB.onEventMove}" update=":messages" />
+		            <p:ajax event="eventResize" listener="#{addProjectionMB.onEventResize}" update=":messages" />
 		 
 		        </p:schedule>
 		        
-		        <p:dialog widgetVar="eventDialog" header="Projekcija">
+		        <p:dialog widgetVar="eventDialog" header="Projekcija" modal="true" appendTo="@(body)">
 			        <h:panelGrid id="eventDetails" columns="2">
 			            
 			            <p:outputLabel for="movie" value="Film:" />

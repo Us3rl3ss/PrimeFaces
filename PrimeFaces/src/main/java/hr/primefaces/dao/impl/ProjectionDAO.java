@@ -95,7 +95,7 @@ public class ProjectionDAO implements IProjectionDAO, Serializable {
 	public List<Projection> getDistinctMovieProjections(Projection projection) {
 
 		String query = "from Projection where " + "theater_id = :theaterId " + "and movie_id = :movieId "
-				+ "order by start_time desc";
+				+ "order by start_time asc";
 
 		List<Projection> list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("theaterId", projection.getTheater().getId())
 				.setParameter("movieId", projection.getMovie().getId()).list();

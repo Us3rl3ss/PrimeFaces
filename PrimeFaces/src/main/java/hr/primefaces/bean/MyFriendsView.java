@@ -17,8 +17,8 @@ public class MyFriendsView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{loginMB}")
-	LoginView loginMB;
+	@ManagedProperty(value = "#{userSession}")
+	UserSession userSession;
 
 	@ManagedProperty(value = "#{UserService}")
 	IUserService userService;
@@ -33,7 +33,7 @@ public class MyFriendsView implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		this.userFollowList = userService.getUserFollowByUser(loginMB
+		this.userFollowList = userService.getUserFollowByUser(userSession
 				.getUser());
 	}
 
@@ -48,12 +48,12 @@ public class MyFriendsView implements Serializable {
 		this.numberOfFollowers = numberOfFollowers;
 	}
 
-	public LoginView getLoginMB() {
-		return loginMB;
+	public UserSession getUserSession() {
+		return userSession;
 	}
 
-	public void setLoginMB(LoginView loginMB) {
-		this.loginMB = loginMB;
+	public void setUserSession(UserSession userSession) {
+		this.userSession = userSession;
 	}
 
 	public IUserService getUserService() {

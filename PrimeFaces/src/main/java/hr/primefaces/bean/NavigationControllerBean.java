@@ -48,21 +48,9 @@ public class NavigationControllerBean implements Serializable {
 	}
 	
 
-	public String doViewFriends() {
-		this.page = "friends?faces-redirect=true";
+	public String doViewUsers() {
+		this.page = "users?faces-redirect=true";
 		this.activeParam = 3;
-		return page;
-	}
-	
-	public String doViewMyMovies() {
-		this.page = "myMovies?faces-redirect=true";
-		this.activeParam = 4;
-		return page;
-	}
-	
-	public String doViewMyFriends() {
-		this.page = "myFriends?faces-redirect=true";
-		this.activeParam = 5;
 		return page;
 	}
 	
@@ -75,12 +63,6 @@ public class NavigationControllerBean implements Serializable {
 	public String doViewContact() {
 		this.page = "contact?faces-redirect=true";
 		this.activeParam = 7;
-		return page;
-	}
-	
-	public String doViewAboutUs() {
-		this.page = "aboutUs?faces-redirect=true";
-		this.activeParam = 8;
 		return page;
 	}
 	

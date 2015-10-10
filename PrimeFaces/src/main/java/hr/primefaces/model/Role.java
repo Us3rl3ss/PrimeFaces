@@ -5,8 +5,6 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,11 +16,8 @@ public class Role implements java.io.Serializable {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	private String code;
 	private String name;
-
-//	@OneToOne
-//	@JoinColumn(name = "user_id")
-//	private User user;
 
 	public Role() {
 	}
@@ -47,16 +42,12 @@ public class Role implements java.io.Serializable {
 		this.name = name;
 	}
 
-//	public User getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
+	public String getCode() {
+		return code;
+	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }

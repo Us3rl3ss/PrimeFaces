@@ -14,11 +14,51 @@
 
 	<ui:composition template="templates/common.xhtml">
 
-		<ui:define name="content">
+		<ui:define name="scripts">
+	        <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"/>
+	    </ui:define>
 
+		<ui:define name="content">
+		
 			<h:form id="contact">
 			
-				TODO - KONTAKT
+					<p:dataTable id="theaterTable" var="theater"
+						value="#{contactMB.theaterList}"
+						selectionMode="single" 
+						selection="#{contactMB.theater}" 
+						rowKey="#{theater.id}">
+						<p:ajax event="rowSelect" listener="#{contactMB.onRowSelect}" update=":contact" />
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Naziv" />
+							</f:facet>
+							<h:outputText value="#{theater.name}" />
+						</p:column>
+	
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Adresa" />
+							</f:facet>
+							<h:outputText value="#{theater.address}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Broj dvorana" />
+							</f:facet>
+							<h:outputText value="#{contactMB.calcBrojDvorana(theater)}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Broj sjedećih mjesta" />
+							</f:facet>
+							<h:outputText value="#{contactMB.calcBrojSjedećihMjesta(theater)}" />
+						</p:column>
+	
+					</p:dataTable>
+					
+					<p:gmap center="#{contactMB.initCenter}" zoom="#{contactMB.initZoom}" type="HYBRID" widgetVar="gmap" style="width:100%;height:400px" model="#{contactMB.mapModel}" />
 				
 			</h:form>
 

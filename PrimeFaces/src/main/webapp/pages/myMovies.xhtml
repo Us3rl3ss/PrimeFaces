@@ -12,13 +12,11 @@
 
 <h:body>
 
-	<ui:composition template="templates/common.xhtml">
+<!-- 	<ui:composition template="templates/common.xhtml"> -->
 
-		<ui:define name="content">
+<!-- 		<ui:define name="content"> -->
 
 			<h:form id="myMovies">
-
-				<p:growl id="messages" showDetail="true" sticky="true" />
 
 				<p:dataList value="#{myMoviesMB.userMovieRateList}" var="rate"
 					type="unordered" itemType="none" paginator="true" rows="5"
@@ -85,7 +83,7 @@
 				</p:dataList>
 
 				<p:dialog header="Ocjena" widgetVar="rateDialog"
-					showEffect="blind" hideEffect="explode" resizable="false">
+					showEffect="blind" hideEffect="explode" resizable="false" modal="true" appendTo="@(body)">
 					<p:outputPanel id="rateDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
 							rendered="#{not empty myMoviesMB.selectedRate}"
@@ -119,7 +117,7 @@
 				</p:dialog>
 
 				<p:dialog header="Favoriti" widgetVar="favoriteDialog"
-					showEffect="blind" hideEffect="explode" resizable="false">
+					showEffect="blind" hideEffect="explode" resizable="false" modal="true" appendTo="@(body)">
 					<p:outputPanel id="favoriteDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
 							rendered="#{not empty myMoviesMB.selectedFavorite}"
@@ -151,7 +149,7 @@
 				</p:dialog>
 
 				<p:dialog header="Recenzije" widgetVar="reviewDialog"
-					showEffect="blind" hideEffect="explode" resizable="false">
+					showEffect="blind" hideEffect="explode" resizable="false" modal="true" appendTo="@(body)">
 					<p:outputPanel id="reviewDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
 							rendered="#{not empty myMoviesMB.selectedReview}"
@@ -186,9 +184,9 @@
 
 			</h:form>
 
-		</ui:define>
+<!-- 		</ui:define> -->
 
-	</ui:composition>
+<!-- 	</ui:composition> -->
 
 </h:body>
 </html>

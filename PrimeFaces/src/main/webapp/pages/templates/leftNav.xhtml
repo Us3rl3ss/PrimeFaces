@@ -12,7 +12,7 @@
 <h:body>
 	<ui:composition>
 	
-		<h:form>
+		<h:form id="leftNavForm" rendered="#{userSession.userRole == 'ADM'}">
 			<p:growl autoUpdate="true" />
 
 			<p:panelMenu>

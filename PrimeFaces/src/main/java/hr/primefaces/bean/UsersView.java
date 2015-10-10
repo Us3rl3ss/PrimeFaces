@@ -25,14 +25,14 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.event.SelectEvent;
 
-@ManagedBean(name = "friendsMB")
+@ManagedBean(name = "usersMB")
 @ViewScoped
-public class FriendsView implements Serializable {
+public class UsersView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{loginMB}")
-	LoginView loginMB;
+	@ManagedProperty(value = "#{userSession}")
+	UserSession userSession;
 
 	@ManagedProperty(value = "#{UserService}")
 	IUserService userService;
@@ -112,7 +112,7 @@ public class FriendsView implements Serializable {
 		this.userFavoriteMovieList = userFavoriteMovieService
 				.getUserFavoriteMovieByUser(this.user);
 
-		boolean inFollowList = isInFollowList(loginMB.getUser(), this.user);
+		boolean inFollowList = isInFollowList(userSession.getUser(), this.user);
 
 		if (inFollowList) {
 			System.out.println("u follow listi");
@@ -138,7 +138,7 @@ public class FriendsView implements Serializable {
 
 	public void addToFollowList() {
 
-		Integer user_id = loginMB.getUser().getId();
+		Integer user_id = userSession.getUser().getId();
 		Integer follow_id = this.user.getId();
 
 		UserFollowing uf = new UserFollowing();
@@ -175,12 +175,12 @@ public class FriendsView implements Serializable {
 		this.averageRate = averageRate;
 	}
 
-	public LoginView getLoginMB() {
-		return loginMB;
+	public UserSession getUserSession() {
+		return userSession;
 	}
 
-	public void setLoginMB(LoginView loginMB) {
-		this.loginMB = loginMB;
+	public void setUserSession(UserSession userSession) {
+		this.userSession = userSession;
 	}
 
 	public IUserService getUserService() {

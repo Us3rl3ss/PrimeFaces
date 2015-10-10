@@ -18,18 +18,16 @@
 
 			<h:form id="friends">
 			
-				<p:growl id="messages" showDetail="true" sticky="true" />
-				
 				<p:panelGrid columns="2">
 				
 					<p:outputLabel value="Korisnici:"></p:outputLabel>
 					<p:autoComplete id="searchUser" minQueryLength="3" maxResults="5"
-						placeholder="Pretraži" value="#{friendsMB.user}"
-						completeMethod="#{friendsMB.completeUser}" effect="fade"
+						placeholder="Pretraži" value="#{usersMB.user}"
+						completeMethod="#{usersMB.completeUser}" effect="fade"
 						var="user" itemLabel="#{user.username}" itemValue="#{user}"
 						converter="#{userConverter}" forceSelection="true">
 
-						<p:ajax event="itemSelect" listener="#{friendsMB.onItemSelect}"
+						<p:ajax event="itemSelect" listener="#{usersMB.onItemSelect}"
 							update="userInormations"></p:ajax>
 					</p:autoComplete>
 
@@ -37,48 +35,48 @@
 
 				<p:panelGrid columns="1" id="userInormations">
 
-					<p:panel id="userInfo" header="#{friendsMB.user.username}"
+					<p:panel id="userInfo" header="#{usersMB.user.username}"
 						style="margin-bottom:20px">
 						<h:panelGrid columns="2" cellpadding="10">
 
 							<h:outputText value="Ime:" />
-							<h:outputText value="#{friendsMB.user.firstname}" />
+							<h:outputText value="#{usersMB.user.firstname}" />
 
 							<h:outputText value="Prezime:" />
-							<h:outputText value="#{friendsMB.user.lastname}" />
+							<h:outputText value="#{usersMB.user.lastname}" />
 
 							<h:outputText value="Godina rođenja:" />
-							<h:outputText value="#{friendsMB.user.date_of_birth}">
+							<h:outputText value="#{usersMB.user.date_of_birth}">
 								<f:convertDateTime pattern="dd.MM.yyyy" />
 							</h:outputText>
 
 							<h:outputText value="Email:" />
-							<h:outputText value="#{friendsMB.user.email}" />
+							<h:outputText value="#{usersMB.user.email}" />
 
 						</h:panelGrid>
 
 						<f:facet name="actions">
-							<h:commandLink disabled="#{friendsMB.inFollowList}"
+							<h:commandLink disabled="#{usersMB.inFollowList}"
 								styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
 								<h:outputText styleClass="ui-icon ui-icon-check" />
-								<f:ajax listener="#{friendsMB.addToFollowList}" />
+								<f:ajax listener="#{usersMB.addToFollowList}" />
 							</h:commandLink>
 						</f:facet>
 					</p:panel>
 
-					<p:dataList value="#{friendsMB.userMovieRateList}" var="rate"
+					<p:dataList value="#{usersMB.userMovieRateList}" var="rate"
 						type="unordered" itemType="none" paginator="true" rows="5"
 						styleClass="paginated">
 						<f:facet name="header">
 				            Ocjene
 				        </f:facet>
 						<p:commandLink update=":friends:rateDetail"
-							action="#{friendsMB.calculateAverageRate}"
+							action="#{usersMB.calculateAverageRate}"
 							oncomplete="PF('rateDialog').show()" title="Detalji"
 							styleClass="ui-icon ui-icon-search"
 							style="float:left;margin-right:10px">
 							<f:setPropertyActionListener value="#{rate}"
-								target="#{friendsMB.selectedRate}" />
+								target="#{usersMB.selectedRate}" />
 						</p:commandLink>
 						<p:rating value="#{rate.rate}" stars="10" cancel="false"
 							style="display:inline-block" readonly="#{true}">
@@ -90,7 +88,7 @@
 							style="display:inline-block" />
 					</p:dataList>
 
-					<p:dataList value="#{friendsMB.userFavoriteMovieList}"
+					<p:dataList value="#{usersMB.userFavoriteMovieList}"
 						var="favorite" type="unordered" itemType="none" paginator="true"
 						rows="5" styleClass="paginated">
 						<f:facet name="header">
@@ -101,7 +99,7 @@
 							styleClass="ui-icon ui-icon-search"
 							style="float:left;margin-right:10px">
 							<f:setPropertyActionListener value="#{favorite}"
-								target="#{friendsMB.selectedFavorite}" />
+								target="#{usersMB.selectedFavorite}" />
 						</p:commandLink>
 						<h:outputText value="#{favorite.created}">
 							<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
@@ -110,7 +108,7 @@
 							style="display:inline-block" />
 					</p:dataList>
 
-					<p:dataList value="#{friendsMB.userMovieReviewList}" var="review"
+					<p:dataList value="#{usersMB.userMovieReviewList}" var="review"
 						type="unordered" itemType="none" paginator="true" rows="5"
 						styleClass="paginated">
 						<f:facet name="header">
@@ -121,7 +119,7 @@
 							styleClass="ui-icon ui-icon-search"
 							style="float:left;margin-right:10px">
 							<f:setPropertyActionListener value="#{review}"
-								target="#{friendsMB.selectedReview}" />
+								target="#{usersMB.selectedReview}" />
 						</p:commandLink>
 						<h:outputText value="#{review.created}">
 							<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
@@ -133,10 +131,10 @@
 
 
 				<p:dialog header="Ocjena" widgetVar="rateDialog"
-					showEffect="blind" hideEffect="explode" resizable="false">
+					showEffect="blind" hideEffect="explode" resizable="false" modal="true" appendTo="@(body)">
 					<p:outputPanel id="rateDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
-							rendered="#{not empty friendsMB.selectedRate}"
+							rendered="#{not empty usersMB.selectedRate}"
 							columnClasses="label,value">
 							<f:facet name="header">
 								<!-- 								<p:graphicImage -->
@@ -144,33 +142,33 @@
 							</f:facet>
 
 							<h:outputText value="Naziv:" />
-							<h:outputText value="#{friendsMB.selectedRate.movie.name}" />
+							<h:outputText value="#{usersMB.selectedRate.movie.name}" />
 
 							<h:outputText value="Redatelj:" />
 							<h:outputText
-								value="#{friendsMB.selectedRate.movie.director_name}" />
+								value="#{usersMB.selectedRate.movie.director_name}" />
 
 							<h:outputText value="Godina:" />
 							<h:outputText
-								value="#{friendsMB.selectedRate.movie.year_of_creation}" />
+								value="#{usersMB.selectedRate.movie.year_of_creation}" />
 
 							<h:outputText value="Trajanje:" />
-							<h:outputText value="#{friendsMB.selectedRate.movie.duration}" />
+							<h:outputText value="#{usersMB.selectedRate.movie.duration}" />
 
 							<h:outputText value="Informacije:" />
-							<h:outputText value="#{friendsMB.selectedRate.movie.info}" />
+							<h:outputText value="#{usersMB.selectedRate.movie.info}" />
 
 							<h:outputText value="Ukupna ocjena" />
-							<h:outputText value="#{friendsMB.averageRate}/10" />
+							<h:outputText value="#{usersMB.averageRate}/10" />
 						</p:panelGrid>
 					</p:outputPanel>
 				</p:dialog>
 
 				<p:dialog header="Favoriti" widgetVar="favoriteDialog"
-					showEffect="blind" hideEffect="explode" resizable="false">
+					showEffect="blind" hideEffect="explode" resizable="false" modal="true" appendTo="@(body)">
 					<p:outputPanel id="favoriteDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
-							rendered="#{not empty friendsMB.selectedFavorite}"
+							rendered="#{not empty usersMB.selectedFavorite}"
 							columnClasses="label,value">
 							<f:facet name="header">
 								<!-- 								<p:graphicImage -->
@@ -178,31 +176,31 @@
 							</f:facet>
 
 							<h:outputText value="Naziv:" />
-							<h:outputText value="#{friendsMB.selectedFavorite.movie.name}" />
+							<h:outputText value="#{usersMB.selectedFavorite.movie.name}" />
 
 							<h:outputText value="Redatelj:" />
 							<h:outputText
-								value="#{friendsMB.selectedFavorite.movie.director_name}" />
+								value="#{usersMB.selectedFavorite.movie.director_name}" />
 
 							<h:outputText value="Godina:" />
 							<h:outputText
-								value="#{friendsMB.selectedFavorite.movie.year_of_creation}" />
+								value="#{usersMB.selectedFavorite.movie.year_of_creation}" />
 
 							<h:outputText value="Trajanje:" />
 							<h:outputText
-								value="#{friendsMB.selectedFavorite.movie.duration}" />
+								value="#{usersMB.selectedFavorite.movie.duration}" />
 
 							<h:outputText value="Informacije:" />
-							<h:outputText value="#{friendsMB.selectedFavorite.movie.info}" />
+							<h:outputText value="#{usersMB.selectedFavorite.movie.info}" />
 						</p:panelGrid>
 					</p:outputPanel>
 				</p:dialog>
 
 				<p:dialog header="Recenzije" widgetVar="reviewDialog"
-					showEffect="blind" hideEffect="explode" resizable="false">
+					showEffect="blind" hideEffect="explode" resizable="false" modal="true" appendTo="@(body)">
 					<p:outputPanel id="reviewDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
-							rendered="#{not empty friendsMB.selectedReview}"
+							rendered="#{not empty usersMB.selectedReview}"
 							columnClasses="label,value">
 							<f:facet name="header">
 								<!-- 								<p:graphicImage -->
@@ -210,24 +208,24 @@
 							</f:facet>
 
 							<h:outputText value="Naziv:" />
-							<h:outputText value="#{friendsMB.selectedReview.movie.name}" />
+							<h:outputText value="#{usersMB.selectedReview.movie.name}" />
 
 							<h:outputText value="Redatelj:" />
 							<h:outputText
-								value="#{friendsMB.selectedReview.movie.director_name}" />
+								value="#{usersMB.selectedReview.movie.director_name}" />
 
 							<h:outputText value="Godina:" />
 							<h:outputText
-								value="#{friendsMB.selectedReview.movie.year_of_creation}" />
+								value="#{usersMB.selectedReview.movie.year_of_creation}" />
 
 							<h:outputText value="Trajanje:" />
-							<h:outputText value="#{friendsMB.selectedReview.movie.duration}" />
+							<h:outputText value="#{usersMB.selectedReview.movie.duration}" />
 
 							<h:outputText value="Informacije:" />
-							<h:outputText value="#{friendsMB.selectedReview.movie.info}" />
+							<h:outputText value="#{usersMB.selectedReview.movie.info}" />
 
 							<h:outputText value="Recenzija:" />
-							<h:outputText value="#{friendsMB.selectedReview.review}" />
+							<h:outputText value="#{usersMB.selectedReview.review}" />
 						</p:panelGrid>
 					</p:outputPanel>
 					

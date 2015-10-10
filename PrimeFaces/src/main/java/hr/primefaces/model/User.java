@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,12 +31,10 @@ public class User implements java.io.Serializable {
 	private String password;
 	private String email;
 	private Date date_of_birth;
-	private int role_id;
 	private Date updated;
 
-	// @OneToOne(targetEntity = Role.class, mappedBy = "user", cascade =
-	// CascadeType.ALL, fetch = FetchType.EAGER)
-	// private Role role;
+	@OneToOne(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Role role;
 
 	@OneToMany(targetEntity = ProjectionReservedSeats.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProjectionReservedSeats> projectionReservedSeats;
@@ -112,20 +111,27 @@ public class User implements java.io.Serializable {
 		this.date_of_birth = date_of_birth;
 	}
 
-	public int getRole_id() {
-		return role_id;
+	public Date getUpdated() {
+		return updated;
 	}
 
-	public void setRole_id(int role_id) {
-		this.role_id = role_id;
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public Set<ProjectionReservedSeats> getProjectionReservedSeats() {
 		return projectionReservedSeats;
 	}
 
-	public void setProjectionReservedSeats(
-			Set<ProjectionReservedSeats> projectionReservedSeats) {
+	public void setProjectionReservedSeats(Set<ProjectionReservedSeats> projectionReservedSeats) {
 		this.projectionReservedSeats = projectionReservedSeats;
 	}
 
@@ -145,10 +151,6 @@ public class User implements java.io.Serializable {
 		this.userMovieReview = userMovieReview;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public List<User> getUserFollowList() {
 		return userFollowList;
 	}
@@ -163,14 +165,6 @@ public class User implements java.io.Serializable {
 
 	public void setFollow(List<User> follow) {
 		this.follow = follow;
-	}
-
-	public Date getUpdated() {
-		return updated;
-	}
-
-	public void setUpdated(Date updated) {
-		this.updated = updated;
 	}
 
 }

@@ -24,8 +24,8 @@ public class MyMoviesView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{loginMB}")
-	LoginView loginMB;
+	@ManagedProperty(value = "#{userSession}")
+	UserSession userSession;
 
 	@ManagedProperty(value = "#{UserService}")
 	IUserService userService;
@@ -56,9 +56,9 @@ public class MyMoviesView implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		this.userMovieRateList = userMovieRateService.getUserMovieRateByUser(loginMB.getUser());
-		this.userMovieReviewList = userMovieReviewService.getUserMovieReviewByUser(loginMB.getUser());
-		this.userFavoriteMovieList = userFavoriteMovieService.getUserFavoriteMovieByUser(loginMB.getUser());
+		this.userMovieRateList = userMovieRateService.getUserMovieRateByUser(userSession.getUser());
+		this.userMovieReviewList = userMovieReviewService.getUserMovieReviewByUser(userSession.getUser());
+		this.userFavoriteMovieList = userFavoriteMovieService.getUserFavoriteMovieByUser(userSession.getUser());
 	}
 	
 	public void calculateAverageRate() {
@@ -83,12 +83,12 @@ public class MyMoviesView implements Serializable {
 		this.averageRate = averageRate;
 	}
 
-	public LoginView getLoginMB() {
-		return loginMB;
+	public UserSession getUserSession() {
+		return userSession;
 	}
 
-	public void setLoginMB(LoginView loginMB) {
-		this.loginMB = loginMB;
+	public void setUserSession(UserSession userSession) {
+		this.userSession = userSession;
 	}
 
 	public User getUser() {

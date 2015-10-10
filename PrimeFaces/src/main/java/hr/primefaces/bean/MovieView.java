@@ -25,8 +25,8 @@ public class MovieView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{loginMB}")
-	LoginView loginMB;
+	@ManagedProperty(value = "#{userSession}")
+	UserSession userSession;
 
 	@ManagedProperty(value = "#{UserMovieRateService}")
 	IUserMovieRateService userMovieRateService;
@@ -71,9 +71,9 @@ public class MovieView implements Serializable {
 
 		System.out.println("pretraži");
 
-		boolean rateSaved = isRateSaved(loginMB.getUser(), this.movie);
-		boolean reviewSaved = isReviewSaved(loginMB.getUser(), this.movie);
-		boolean inFavorites = isInFavorites(loginMB.getUser(), this.movie);
+		boolean rateSaved = isRateSaved(userSession.getUser(), this.movie);
+		boolean reviewSaved = isReviewSaved(userSession.getUser(), this.movie);
+		boolean inFavorites = isInFavorites(userSession.getUser(), this.movie);
 
 		if (rateSaved) {
 			System.out.println("rate postoji");
@@ -165,7 +165,7 @@ public class MovieView implements Serializable {
 
 		if (this.userMovieReview.getReview() != null) {
 
-			this.userMovieReview.setUser(loginMB.getUser());
+			this.userMovieReview.setUser(userSession.getUser());
 			this.userMovieReview.setMovie(this.movie);
 			this.userMovieReview.setCreated(new Date());
 
@@ -179,7 +179,7 @@ public class MovieView implements Serializable {
 
 		if (this.userMovieRate.getRate() > 0) {
 
-			this.userMovieRate.setUser(loginMB.getUser());
+			this.userMovieRate.setUser(userSession.getUser());
 			this.userMovieRate.setMovie(this.movie);
 			this.userMovieRate.setCreated(new Date());
 
@@ -197,7 +197,7 @@ public class MovieView implements Serializable {
 		UserFavoriteMovie ufm = new UserFavoriteMovie();
 
 		ufm.setMovie(this.movie);
-		ufm.setUser(loginMB.getUser());
+		ufm.setUser(userSession.getUser());
 		ufm.setCreated(new Date());
 		
 		userFavoriteMovieService.addUserFavoriteMovie(ufm);
@@ -269,12 +269,12 @@ public class MovieView implements Serializable {
 		return serialVersionUID;
 	}
 
-	public LoginView getLoginMB() {
-		return loginMB;
+	public UserSession getUserSession() {
+		return userSession;
 	}
 
-	public void setLoginMB(LoginView loginMB) {
-		this.loginMB = loginMB;
+	public void setUserSession(UserSession userSession) {
+		this.userSession = userSession;
 	}
 
 	public UserMovieRate getUserMovieRate() {

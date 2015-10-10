@@ -36,13 +36,5 @@ var ReserveSeats = {
 			
 			// selektor za razdvajanje ćelija
 			$($('#seats\\:cinemaSeats').children()).css({'margin': '1em'});
-			
-			alert(data);
-			debugger;
 		},
-}
-
-function handleResize(a, b) {
-	alert(a, b);
-	
 }

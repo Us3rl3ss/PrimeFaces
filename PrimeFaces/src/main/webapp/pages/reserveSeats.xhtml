@@ -20,13 +20,50 @@
 	<ui:composition template="templates/common.xhtml">
 
 		<ui:define name="content">
-
+		
 			<h:form id="seats">
-
-				<h:outputText value="Projection: " />
-				<h:outputText value="#{reserveSeatsMB.projection.id}" />
-
-				<p:outputLabel value="Kino:"></p:outputLabel>
+			
+				<p:panel style="text-align:center">
+					<h:panelGrid columns="2" style="width:40%; float:left;">
+						<p:graphicImage value="#{movieImageMB.image}" width="200"
+							height="300">
+							<f:param value="#{reserveSeatsMB.projection.movie.id}" name="movie_id" />
+						</p:graphicImage>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="2" style="width:40%">
+						<h:outputText value="Film:" />
+						<h:outputText value="#{reserveSeatsMB.projection.movie.name}" />
+						<h:outputText value="Redatelj:" />
+						<h:outputText value="#{reserveSeatsMB.projection.movie.director_name}" />
+						<h:outputText value="Godina: " />
+						<h:outputText value="#{reserveSeatsMB.projection.movie.year_of_creation}" />
+						<h:outputText value="Trajanje:" />
+						<h:outputText value="#{reserveSeatsMB.projection.movie.duration}" />
+						<h:outputText value="Glumci:" />
+						<h:outputText value="#{reserveSeatsMB.projection.movie.listOfActorsText}" />
+						<h:outputText value="Žanr:" />
+						<h:outputText value="#{reserveSeatsMB.projection.movie.listOfGenresText}" />
+						<h:outputText value="Info:" />
+						<h:outputText value="#{reserveSeatsMB.projection.movie.info}" />
+					</h:panelGrid>
+				</p:panel>
+				
+				<p:panel style="text-align:center">
+					<h:panelGrid columns="2">
+						<h:outputText value="Dvorana:" />
+						<h:outputText value="#{reserveSeatsMB.projection.cinema.name}" />
+		
+						<h:outputText value="Mjesta:" />
+						<h:outputText value="#{reserveSeatsMB.projection.numberOfFreeSeatsText}" />
+						
+						<h:outputText value="Početak:" />
+						<h:outputText value="#{reserveSeatsMB.projectionStart}" />
+						
+						<h:outputText value="Kraj:" />
+						<h:outputText value="#{reserveSeatsMB.projectionEnd}" />
+					</h:panelGrid>
+				</p:panel>
 
 				<p:panelGrid columns="10">
 					<p:selectManyButton id="cinemaSeats"
@@ -37,9 +74,6 @@
 							itemValue="#{cinemaSeats.id}" />
 					</p:selectManyButton>
 				</p:panelGrid>
-
-				<p:commandButton value="Pokaži selektirane"
-					action="#{reserveSeatsMB.showSelected}" />
 
 				<p:commandButton value="Rezerviraj"
 					action="#{reserveSeatsMB.reserveSeats}" />

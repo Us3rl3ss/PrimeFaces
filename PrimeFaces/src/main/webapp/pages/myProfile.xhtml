@@ -18,8 +18,6 @@
 
 			<h:form id="myProfile">
 
-				<p:growl id="messages" showDetail="true" sticky="true" />
-
 				<p:panelGrid columns="2">
 					<h:outputLabel for="firstname" value="Ime:" />
 					<p:inplace id="firstname" editor="true">
@@ -47,9 +45,15 @@
 				</p:panelGrid>
 
 				<p:commandButton value="Spremi" action="#{myProfileMB.spremi}"
-					update="messages" />
+					update=":messages" />
 
 			</h:form>
+			
+			Moji filmovi:
+			<ui:include src="myMovies.xhtml" />
+			
+			Moji prijatelji:
+			<ui:include src="myFriends.xhtml" />
 
 		</ui:define>
 

@@ -1,5 +1,7 @@
 package hr.primefaces.model;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,9 +28,9 @@ public class CinemaSeats implements java.io.Serializable {
 	@JoinColumn(name = "cinema_id")
 	private Cinema cinema;
 
-	@OneToOne(targetEntity = ProjectionReservedSeats.class, mappedBy = "cinema_seats", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private ProjectionReservedSeats projectionReservedSeats;
-
+	@OneToMany(targetEntity = ProjectionReservedSeats.class, mappedBy = "cinema_seats", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<ProjectionReservedSeats> projectionReservedSeatsList;
+	
 	public CinemaSeats() {
 	}
 
@@ -64,17 +66,12 @@ public class CinemaSeats implements java.io.Serializable {
 		this.cinema = cinema;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public List<ProjectionReservedSeats> getProjectionReservedSeatsList() {
+		return projectionReservedSeatsList;
 	}
 
-	public ProjectionReservedSeats getProjectionReservedSeats() {
-		return projectionReservedSeats;
-	}
-
-	public void setProjectionReservedSeats(
-			ProjectionReservedSeats projectionReservedSeats) {
-		this.projectionReservedSeats = projectionReservedSeats;
+	public void setProjectionReservedSeatsList(List<ProjectionReservedSeats> projectionReservedSeatsList) {
+		this.projectionReservedSeatsList = projectionReservedSeatsList;
 	}
 
 }

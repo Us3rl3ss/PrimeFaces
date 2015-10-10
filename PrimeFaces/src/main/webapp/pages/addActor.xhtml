@@ -18,8 +18,6 @@
 
 			<h:form id="addActor">
 
-				<p:growl id="messages" showDetail="true" sticky="true" />
-
 				<!-- 				<p:schedule id="schedule" value="#{addActorMB.scheduleModel}" widgetVar="movieSchedule" timeZone="GMT+2"> -->
 				<!-- 			    </p:schedule> -->
 
@@ -89,7 +87,7 @@
 				</p:panelGrid>
 
 				<p:commandButton value="Spremi" action="#{addActorMB.spremi}"
-					update="messages addActor" />
+					update=":messages addActor" />
 
 				<!-- 					<p:commandButton value="Download"  -->
 				<!-- 						ajax="false"  -->

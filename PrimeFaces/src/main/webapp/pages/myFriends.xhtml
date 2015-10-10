@@ -12,13 +12,11 @@
 
 <h:body>
 
-	<ui:composition template="templates/common.xhtml">
+<!-- 	<ui:composition template="templates/common.xhtml"> -->
 
-		<ui:define name="content">
+<!-- 		<ui:define name="content"> -->
 
 			<h:form id="myFriends">
-
-				<p:growl id="messages" showDetail="true" sticky="true" />
 
 				<p:dataList value="#{myFriendsMB.userFollowList}" var="user"
 					type="unordered" itemType="none" paginator="true" rows="5"
@@ -39,7 +37,7 @@
 				</p:dataList>
 
 				<p:dialog header="Korisnik" widgetVar="userDialog"
-					showEffect="blind" hideEffect="explode" resizable="false">
+					showEffect="blind" hideEffect="explode" resizable="false" modal="true" appendTo="@(body)">
 					<p:outputPanel id="userDetail" style="text-align:center;">
 						<p:panelGrid columns="2"
 							rendered="#{not empty myFriendsMB.selectedUser}"
@@ -72,9 +70,9 @@
 
 			</h:form>
 
-		</ui:define>
+<!-- 		</ui:define> -->
 
-	</ui:composition>
+<!-- 	</ui:composition> -->
 
 </h:body>
 </html>

@@ -47,16 +47,11 @@ public class UserDAO implements IUserDAO, Serializable {
 
 	@Override
 	public User getUserByDistinctUsername(String username) {
-		User tempUser = null;
 
-		try {
-			tempUser = (User) getSessionFactory().getCurrentSession().createQuery("from User where username = :username").setParameter("username", username)
-					.list().get(0);
-		} catch (IndexOutOfBoundsException iobex) {
-			iobex.printStackTrace();
-		}
+		User user = (User) getSessionFactory().getCurrentSession().createQuery("from User where username = :username").setParameter("username", username)
+				.uniqueResult();
 
-		return tempUser;
+		return user;
 	}
 
 	@Override

@@ -52,8 +52,8 @@
 
 	<!-- Welcome Page -->
 	<welcome-file-list>
-		<welcome-file>/pages/login.xhtml</welcome-file>
-		<!-- <welcome-file>/pages/home.xhtml</welcome-file> -->
+<!-- 		<welcome-file>/pages/login.xhtml</welcome-file> -->
+		<welcome-file>/pages/home.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<!-- JSF Servlet is defined to container -->
