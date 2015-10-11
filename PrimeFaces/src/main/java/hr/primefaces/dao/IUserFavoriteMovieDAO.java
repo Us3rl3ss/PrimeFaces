@@ -14,7 +14,7 @@ public interface IUserFavoriteMovieDAO {
 
 	public void deleteUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie);
 	
-	public List<UserFavoriteMovie> getMovieInUserFavorites(User user, Movie movie);
+	public UserFavoriteMovie getMovieInUserFavorites(User user, Movie movie);
 	
 	public List<UserFavoriteMovie> getUserFavoriteMovieByUser(User user);
 }

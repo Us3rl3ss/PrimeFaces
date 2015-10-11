@@ -1,16 +1,20 @@
 package hr.primefaces.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -18,7 +22,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
-public class User implements java.io.Serializable {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,6 +36,11 @@ public class User implements java.io.Serializable {
 	private String email;
 	private Date date_of_birth;
 	private Date updated;
+	
+	@Lob
+	@Basic(fetch = FetchType.EAGER)
+	@Column(name = "IMAGE")
+	private byte[] image;
 
 	@OneToOne(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Role role;
@@ -55,6 +64,10 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 
+	public User(int id) {
+		this.id = id;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -165,6 +178,14 @@ public class User implements java.io.Serializable {
 
 	public void setFollow(List<User> follow) {
 		this.follow = follow;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 }

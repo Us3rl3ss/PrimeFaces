@@ -17,13 +17,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.event.SelectEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 
 @ManagedBean(name = "usersMB")
 @ViewScoped
@@ -65,46 +62,15 @@ public class UsersView implements Serializable {
 	private User user;
 
 	private boolean inFollowList = false;
+	
+	private String userInfoRenderCss = "display:none;";
 
 	@PostConstruct
 	public void init() {
 	}
 
-	public void pretrazi() {
-
-		// System.out.println("PRETRAŽI");
-		//
-		// Iterator<Projection> iter =
-		// dropDownMB.getProjectionList().iterator();
-		//
-		// this.projectionList = new ArrayList<Projection>();
-		//
-		// while (iter.hasNext()) {
-		//
-		// Projection p = iter.next();
-		//
-		// if (p.getTheater().getId().equals(theater.getId()))
-		// this.projectionList.add(p);
-		// }
-
-	}
-
-	public List<User> completeUser(String input) {
-		List<User> list = (List<User>) userService.getUserByUsername(input);
-		return list;
-	}
-
-	public void handleSelect() {
-		System.out.print("test");
-	}
-
-	public void onItemSelect(SelectEvent event) {
-		FacesContext.getCurrentInstance()
-				.addMessage(
-						null,
-						new FacesMessage("Item Selected", event.getObject()
-								.toString()));
-
+	public void postavi() {
+		
 		this.userMovieRateList = userMovieRateService
 				.getUserMovieRateByUser(this.user);
 		this.userMovieReviewList = userMovieReviewService
@@ -115,11 +81,21 @@ public class UsersView implements Serializable {
 		boolean inFollowList = isInFollowList(userSession.getUser(), this.user);
 
 		if (inFollowList) {
-			System.out.println("u follow listi");
 			this.inFollowList = true;
 		} else {
 			this.inFollowList = false;
 		}
+	}
+
+	public List<User> completeUser(String input) {
+		List<User> list = (List<User>) userService.getUserByUsername(input);
+		return list;
+	}
+
+	public void onItemSelect(AjaxBehaviorEvent event) {
+
+		postavi();
+		setUserInfoRenderCss("");
 	}
 
 	public boolean isInFollowList(User loggedUser, User currUser) {
@@ -147,11 +123,21 @@ public class UsersView implements Serializable {
 		uf.setCreated(new Date());
 		
 		userFollowingService.addUserFollowing(uf);
-
-		System.out.println("ADDED TO FOLLOW LIST");
-		isInFollowList();
+		
+		postavi();
 	}
 
+	public void removeFromFollowList() {
+
+		Integer user_id = userSession.getUser().getId();
+		Integer follow_id = this.user.getId();
+
+		UserFollowing uf = userFollowingService.getUserFriends(new User(user_id), new User(follow_id));
+		userFollowingService.deleteUserFollowing(uf);
+		
+		postavi();
+	}
+	
 	public void calculateAverageRate() {
 
 		int averageRate = 0;
@@ -166,10 +152,8 @@ public class UsersView implements Serializable {
 
 		} catch (NumberFormatException nex) {
 			nex.printStackTrace();
-			System.out.println("NEX");
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			System.out.println("EX");
 		}
 
 		this.averageRate = averageRate;
@@ -197,10 +181,6 @@ public class UsersView implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	public IUserMovieRateService getUserMovieRateService() {
@@ -310,6 +290,14 @@ public class UsersView implements Serializable {
 	public void setUserFollowingService(
 			IUserFollowingService userFollowingService) {
 		this.userFollowingService = userFollowingService;
+	}
+
+	public String getUserInfoRenderCss() {
+		return userInfoRenderCss;
+	}
+
+	public void setUserInfoRenderCss(String userInfoRenderCss) {
+		this.userInfoRenderCss = userInfoRenderCss;
 	}
 
 }

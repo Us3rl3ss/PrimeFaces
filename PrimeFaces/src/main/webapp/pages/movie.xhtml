@@ -16,32 +16,58 @@
 
 		<ui:define name="content">
 
-			<h:form id="movie">
+			<h:form id="movieSearchForm">
 
 				<p:panelGrid columns="2">
 
 					<p:outputLabel value="Film:"></p:outputLabel>
-					<p:selectOneMenu id="movie" value="#{movieMB.movie}"
-						converter="#{movieConverter}" panelStyle="width:180px"
-						effect="fade" var="movie" style="width:160px" filter="true"
-						filterMatchMode="startsWith">
-						<f:selectItems value="#{movieMB.movieList}" var="movie"
-							itemLabel="#{movie.name}" itemValue="#{movie}" />
+					
+					<p:autoComplete id="movie" minQueryLength="3" maxResults="5"
+						placeholder="Pretraži" value="#{movieMB.movie}"
+						completeMethod="#{movieMB.completeMovie}" effect="fade"
+						var="movie" itemLabel="#{movie.name}" itemValue="#{movie}"
+						converter="#{movieConverter}" forceSelection="true">
 
+						<f:ajax event="itemSelect" listener="#{movieMB.onItemSelect}" render=":movieInfoForm :myReviewForm :myRateForm" />
+					
 						<p:column>
 							<h:outputText value="#{movie.name}" />
 						</p:column>
 
-						<f:ajax listener="#{movieMB.pretrazi}" render="movieInfo" />
-					</p:selectOneMenu>
+						<f:facet name="itemtip">
+							<h:panelGrid columns="1" cellpadding="2">
+
+								<h:outputText value="#{movie.director_name}" />
+
+								<p:graphicImage value="#{movieImageMB.image}" width="100"
+									height="150">
+									<f:param value="#{movie.id}" name="movie_id" />
+								</p:graphicImage>
+
+								<h:outputText value="#{movie.year_of_creation}" />
+
+							</h:panelGrid>
+						</f:facet>
+
+					</p:autoComplete>
 
 				</p:panelGrid>
+				
+			</h:form>
+			
+			<h:form id="movieInfoForm" style="#{movieMB.movieInfoRenderCss}">
 
-				<p:panel id="movieInfo" header="#{movieMB.movie.name}"
-					style="margin-bottom:20px">
+				<p:panel header="#{movieMB.movie.name}">
+					
+					<h:panelGrid columns="1" style="width:40%; float:left;">
+						<p:graphicImage value="#{movieImageMB.image}" width="160"
+							height="240">
+							<f:param value="#{movieMB.movie.id}" name="movie_id" />
+						</p:graphicImage>
+					</h:panelGrid>
+					
 					<h:panelGrid columns="2" cellpadding="10">
 
-						<!-- 						<p:graphicImage name="demo/images/godfather/godfather3.jpg" /> -->
 						<h:outputText value="Naslov:" />
 						<h:outputText value="#{movieMB.movie.name}" />
 
@@ -58,100 +84,111 @@
 						<h:outputText value="#{movieMB.movie.info}" />
 
 						<h:outputText value="Ukupna ocjena:" />
-						<p:rating value="#{movieMB.averageRate}" stars="10" cancel="false"
+						<p:rating value="#{movieMB.averageRate}" stars="10" cancel="false" id="averageRateField"
 							readonly="#{true}">
 						</p:rating>
 
-						<!-- 						<h3>Recenzija:</h3> -->
-						<!-- 						<p:inputTextarea value="#{movieMB.userMovieReview.review}" -->
-						<!-- 							rows="5" cols="100" counter="display" maxlength="5000" -->
-						<!-- 							counterTemplate="{0} characters remaining." autoResize="true" -->
-						<!-- 							readonly="#{movieMB.reviewDisabled}" /> -->
-						<!-- 						<h:outputText id="display" /> -->
-
-						<!-- 						<p:commandButton value="Dodaj recenziju" -->
-						<!-- 							action="#{movieMB.addReview}" -->
-						<!-- 							disabled="#{movieMB.reviewDisabled}" update=":messages"></p:commandButton> -->
-
-						<!-- 						<h:outputText value="" /> -->
-						<!-- 						<h:outputText value="Ocjena:" /> -->
-						<!-- 						<p:rating value="#{movieMB.userMovieRate.rate}" stars="10" -->
-						<!-- 							cancel="false" readonly="#{movieMB.rateDisabled}"> -->
-						<!-- 							<p:ajax event="rate" listener="#{movieMB.onRate}" -->
-						<!-- 								update=":messages" /> -->
-						<!-- 							<p:ajax event="cancel" listener="#{movieMB.onCancel}" -->
-						<!-- 								update=":messages" /> -->
-						<!-- 						</p:rating> -->
-
-
-						<p:carousel value="#{movieMB.userMovieReviewList}"
-							headerText="Recenzije" var="reviews"
-							itemStyle="height:200px;width:600px;" numVisible="1"
-							easing="easeOutBounce" styleClass="carouselAdvanced">
-							<p:panelGrid columns="2" style="width:100%"
-								columnClasses="label,value">
-
-								<h:outputText value="Korisnik:" />
-								<h:outputText value="#{reviews.id}" />
-
-								<h:outputText value="Kreirano:" />
-								<h:outputText value="#{reviews.created}">
-									<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
-								</h:outputText>
-
-								<h:outputText value="Recenzija:" />
-								<p:inputTextarea value="#{reviews.review}" rows="5" cols="100"
-									autoResize="true" readonly="#{true}" />
-							</p:panelGrid>
-						</p:carousel>
-						<h:outputText value="" />
-
-						<p:commandButton value="Moja recenzija" type="button"
-							onclick="PF('myReview').show();" />
-
-						<p:commandButton value="Moja ocjena" type="button"
-							onclick="PF('myRate').show();" />
 					</h:panelGrid>
 
 					<f:facet name="actions">
-						<h:commandLink disabled="#{movieMB.inFavorites}"
+						<h:commandLink rendered="#{userSession.logged and movieMB.inFavorites}"
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+							<h:outputText styleClass="ui-icon ui-icon-trash" />
+							<f:ajax listener="#{movieMB.removeFromFavorites}" render=":movieInfoForm" />
+						</h:commandLink>
+						<h:commandLink rendered="#{userSession.logged and !movieMB.inFavorites}"
 							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
 							<h:outputText styleClass="ui-icon ui-icon-star" />
-							<f:ajax listener="#{movieMB.addToFavorites}" />
+							<f:ajax listener="#{movieMB.addToFavorites}" render=":movieInfoForm" />
 						</h:commandLink>
+						<p:commandLink rendered="#{userSession.logged}" oncomplete="PF('myRate').show();"
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+							<h:outputText styleClass="ui-icon ui-icon-heart" />
+						</p:commandLink>
 					</f:facet>
 
+				</p:panel>
+				
+				<p:carousel value="#{movieMB.userMovieReviewList}"
+					headerText="Recenzije" var="reviews" numVisible="1"
+					easing="easeOutBounce" styleClass="carouselAdvanced" style="width:100%;">
+					
+					<h:panelGrid columns="2" style="width:100%; float:left;">
+					
+						<p:graphicImage value="#{userImageMB.image}" width="80"
+							height="110">
+							<f:param value="#{reviews.user.id}" name="user_id" />
+						</p:graphicImage>
+						
+						<p:panel style="text-align:center;">
+								
+							<h:panelGrid columns="1" style="width:100%;">
+		        
+								<h:outputText value="#{reviews.user.username}" />
+								
+								<h:outputText value="#{reviews.created}">
+									<f:convertDateTime pattern="HH:mm dd.MM.yyyy" />
+								</h:outputText>
+							
+<!-- 								<h:outputText value="#{reviews.review}" /> -->
+								
+								<p:inputTextarea value="#{reviews.review}" rows="5" cols="100" style="max-height:400px; overflow-y:scroll;"
+									autoResize="true" readonly="#{true}" />
+								
+							</h:panelGrid>
+							
+				        </p:panel>
+	
+					</h:panelGrid>
+					
+					<f:facet name="header">
+						<p:commandButton rendered="#{userSession.logged}" icon="ui-icon-comment" type="button"
+							onclick="PF('myReview').show();" />
+					</f:facet>
+				</p:carousel>
+				
+			</h:form>
+			
+			<p:dialog header="Moja ocjena" widgetVar="myRate"
+				showEffect="explode" hideEffect="bounce" height="100" modal="true" appendTo="@(body)">
+				
+				<h:form id="myRateForm">
 
-					<p:dialog header="Moja ocjena" widgetVar="myRate"
-						showEffect="explode" hideEffect="bounce" height="100" modal="true" appendTo="@(body)">
+					<h:outputText value="Ocjena:" />
+					<p:rating value="#{movieMB.userMovieRate.rate}" stars="10"
+						cancel="false" readonly="#{movieMB.rateDisabled}">
+						<p:ajax event="rate" listener="#{movieMB.onRate}"
+							update=":messages myRateForm :movieInfoForm:averageRateField" oncomplete="PF('myRate').hide();" />
+						<p:ajax event="cancel" listener="#{movieMB.onCancel}"
+							update=":messages :movieInfoForm myRateForm" oncomplete="PF('myRate').hide();" />
+					</p:rating>
+				
+				</h:form>
+				
+			</p:dialog>
 
-						<h:outputText value="Ocjena:" />
-						<p:rating value="#{movieMB.userMovieRate.rate}" stars="10"
-							cancel="false" readonly="#{movieMB.rateDisabled}">
-							<p:ajax event="rate" listener="#{movieMB.onRate}"
-								update=":messages" />
-							<p:ajax event="cancel" listener="#{movieMB.onCancel}"
-								update=":messages" />
-						</p:rating>
-					</p:dialog>
-
-					<p:dialog header="Moja recenzija" widgetVar="myReview"
-						showEffect="explode" hideEffect="bounce" height="100" modal="true" appendTo="@(body)">
-
+			<p:dialog header="Moja recenzija" widgetVar="myReview"
+				showEffect="explode" hideEffect="bounce" height="100" modal="true" appendTo="@(body)">
+				
+				<h:form id="myReviewForm">
+				
+					<h:panelGrid columns="2" style="width:40%; float:left;">
+					
 						<p:inputTextarea value="#{movieMB.userMovieReview.review}"
 							rows="5" cols="100" counter="display" maxlength="5000"
 							counterTemplate="{0} characters remaining." autoResize="true"
 							readonly="#{movieMB.reviewDisabled}" />
-						<h:outputText id="display" />
-
+	
 						<p:commandButton value="Dodaj recenziju"
 							action="#{movieMB.addReview}"
-							disabled="#{movieMB.reviewDisabled}" update=":messages" />
-					</p:dialog>
+							disabled="#{movieMB.reviewDisabled}" update=":messages :movieInfoForm myReviewForm" oncomplete="PF('myReview').hide();" />
+	
+						<h:outputText id="display" />
+					</h:panelGrid>
 
-				</p:panel>
-
-			</h:form>
+				</h:form>
+					
+			</p:dialog>
 
 		</ui:define>
 

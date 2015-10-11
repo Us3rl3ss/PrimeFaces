@@ -70,7 +70,7 @@ public class UserFavoriteMovieService implements IUserFavoriteMovieService,
 
 	@Transactional(readOnly = false)
 	@Override
-	public List<UserFavoriteMovie> getMovieInUserFavorites(User user, Movie movie) {
+	public UserFavoriteMovie getMovieInUserFavorites(User user, Movie movie) {
 		return getUserFavoriteMovieDAO().getMovieInUserFavorites(user, movie);
 	}
 	

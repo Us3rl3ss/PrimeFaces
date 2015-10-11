@@ -1,5 +1,6 @@
 package hr.primefaces.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "cinema_seats")
-public class CinemaSeats implements java.io.Serializable {
+public class CinemaSeats implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

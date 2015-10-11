@@ -11,6 +11,7 @@ import hr.primefaces.service.IUserMovieRateService;
 import hr.primefaces.service.IUserMovieReviewService;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 
 @ManagedBean(name = "movieMB")
 @ViewScoped
@@ -40,12 +42,11 @@ public class MovieView implements Serializable {
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
 
-	@ManagedProperty("#{dropDownMB}")
-	private DropdownMenuManagedBean dropDownMB;
-
 	private Movie movie = new Movie();
 
 	private List<Movie> movieList;
+	
+	private String movieInfoRenderCss = "display:none;";
 
 	private UserMovieRate userMovieRate = new UserMovieRate();
 	private boolean rateDisabled = false;
@@ -57,47 +58,56 @@ public class MovieView implements Serializable {
 	private boolean inFavorites = false;
 	
 	private List<UserMovieReview> userMovieReviewList;
-
-	public void test(){
-		System.out.println("test");
-	}
+	
+	private boolean movieInfoFormRender = false;
 	
 	@PostConstruct
 	public void init() {
-		movieList = dropDownMB.getMovieList();
 	}
-
+	
+	public List<Movie> completeMovie(String input) {
+		return movieService.getMovieByName(input);
+	}
+	
+	public void onItemSelect(AjaxBehaviorEvent event) {
+		
+		pretrazi();
+		setMovieInfoRenderCss("");
+		
+		movieInfoFormRender = true;
+	}
+	
 	public void pretrazi() {
 
-		System.out.println("pretraži");
-
-		boolean rateSaved = isRateSaved(userSession.getUser(), this.movie);
-		boolean reviewSaved = isReviewSaved(userSession.getUser(), this.movie);
-		boolean inFavorites = isInFavorites(userSession.getUser(), this.movie);
-
-		if (rateSaved) {
-			System.out.println("rate postoji");
-			this.rateDisabled = true;
-		} else {
-			this.rateDisabled = false;
-		}
-
-		if (reviewSaved) {
-			System.out.println("review postoji");
-			this.reviewDisabled = true;
-		} else {
-			this.reviewDisabled = false;
-		}
-
-		if (inFavorites) {
-			System.out.println("u favoritima");
-			this.inFavorites = true;
-		} else {
-			this.inFavorites = false;
+		if (userSession.getUser() != null) {
+		
+			boolean rateSaved = isRateSaved(userSession.getUser(), this.movie);
+			boolean reviewSaved = isReviewSaved(userSession.getUser(), this.movie);
+			boolean inFavorites = isInFavorites(userSession.getUser(), this.movie);
+	
+			if (rateSaved) {
+				System.out.println("rate postoji");
+				this.rateDisabled = true;
+			} else {
+				this.rateDisabled = false;
+			}
+	
+			if (reviewSaved) {
+				System.out.println("review postoji");
+				this.reviewDisabled = true;
+			} else {
+				this.reviewDisabled = false;
+			}
+	
+			if (inFavorites) {
+				System.out.println("u favoritima");
+				this.inFavorites = true;
+			} else {
+				this.inFavorites = false;
+			}
 		}
 
 		this.averageRate = calculateAverageRate(this.movie);
-		
 		this.userMovieReviewList = getAllMovieReviews(this.movie);
 	}
 
@@ -195,14 +205,19 @@ public class MovieView implements Serializable {
 	public void addToFavorites() {
 
 		UserFavoriteMovie ufm = new UserFavoriteMovie();
-
 		ufm.setMovie(this.movie);
 		ufm.setUser(userSession.getUser());
 		ufm.setCreated(new Date());
-		
 		userFavoriteMovieService.addUserFavoriteMovie(ufm);
 
-		System.out.println("FAVORITES");
+		pretrazi();
+	}
+	
+	public void removeFromFavorites() {
+		
+		UserFavoriteMovie ufm = userFavoriteMovieService.getMovieInUserFavorites(userSession.getUser(), movie);
+		userFavoriteMovieService.deleteUserFavoriteMovie(ufm);
+		
 		pretrazi();
 	}
 
@@ -210,10 +225,10 @@ public class MovieView implements Serializable {
 
 		boolean result = false;
 
-		List<UserFavoriteMovie> list = userFavoriteMovieService
+		UserFavoriteMovie ufm = userFavoriteMovieService
 				.getMovieInUserFavorites(user, movie);
 
-		if (list.size() > 0) {
+		if (ufm != null) {
 
 			result = true;
 		}
@@ -226,12 +241,12 @@ public class MovieView implements Serializable {
 
 		List<UserMovieReview> result = userMovieReviewService
 				.getAllMovieReviews(movie);
-
+		
+		if (result == null)
+			result = new ArrayList<UserMovieReview>();
+		
 		return result;
 	}
-	
-	
-	
 
 	public IMovieService getMovieService() {
 		return movieService;
@@ -239,14 +254,6 @@ public class MovieView implements Serializable {
 
 	public void setMovieService(IMovieService movieService) {
 		this.movieService = movieService;
-	}
-
-	public DropdownMenuManagedBean getDropDownMB() {
-		return dropDownMB;
-	}
-
-	public void setDropDownMB(DropdownMenuManagedBean dropDownMB) {
-		this.dropDownMB = dropDownMB;
 	}
 
 	public Movie getMovie() {
@@ -263,10 +270,6 @@ public class MovieView implements Serializable {
 
 	public void setMovieList(List<Movie> movieList) {
 		this.movieList = movieList;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	public UserSession getUserSession() {
@@ -358,6 +361,22 @@ public class MovieView implements Serializable {
 
 	public void setUserMovieReviewList(List<UserMovieReview> userMovieReviewList) {
 		this.userMovieReviewList = userMovieReviewList;
+	}
+
+	public String getMovieInfoRenderCss() {
+		return movieInfoRenderCss;
+	}
+
+	public void setMovieInfoRenderCss(String movieInfoRenderCss) {
+		this.movieInfoRenderCss = movieInfoRenderCss;
+	}
+
+	public boolean isMovieInfoFormRender() {
+		return movieInfoFormRender;
+	}
+
+	public void setMovieInfoFormRender(boolean movieInfoFormRender) {
+		this.movieInfoFormRender = movieInfoFormRender;
 	}
 
 }

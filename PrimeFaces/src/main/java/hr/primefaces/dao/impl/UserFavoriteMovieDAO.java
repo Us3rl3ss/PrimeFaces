@@ -42,18 +42,13 @@ public class UserFavoriteMovieDAO implements IUserFavoriteMovieDAO, Serializable
 		getSessionFactory().getCurrentSession().update(userFavoriteMovie);
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	@Override
-	public List<UserFavoriteMovie> getMovieInUserFavorites(User user, Movie movie) {
+	public UserFavoriteMovie getMovieInUserFavorites(User user, Movie movie) {
 
 		String query = "from UserFavoriteMovie " + "where user_id = :userId " + "and movie_id = :movieId";
 
-		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("userId", user.getId()).setParameter("movieId", movie.getId())
-				.list();
-		return list;
+		return (UserFavoriteMovie) getSessionFactory().getCurrentSession().createQuery(query).setParameter("userId", user.getId()).setParameter("movieId", movie.getId())
+				.uniqueResult();
 	}
 
 	@Override

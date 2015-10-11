@@ -1,6 +1,7 @@
 package hr.primefaces.bean;
 
 import hr.primefaces.model.Cinema;
+import hr.primefaces.model.Genre;
 import hr.primefaces.model.Movie;
 import hr.primefaces.model.Projection;
 import hr.primefaces.model.Theater;
@@ -12,6 +13,7 @@ import hr.primefaces.service.ITheaterService;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -87,23 +89,44 @@ public class ProjectionView implements Serializable {
 
 		projectionList = projectionService.getProjectionsForReservation(theater, datumProjekcije);
 
-//		for (int i = 0; i < tempProjectionList.size(); i++) {
+		for (int i = 0; i < projectionList.size(); i++) {
 
-//			Projection tempProjection = tempProjectionList.get(i);
-//			Movie tempMovie = tempProjection.getMovie();
+			Projection tempProjection = projectionList.get(i);
+			Movie tempMovie = tempProjection.getMovie();
+			List<Genre> genreList = movieService.getAllMovieGenres(tempMovie);
+			tempProjection.getMovie().setGenreList(genreList);
+			tempProjection.getMovie().setListOfGenresText(getListOfGenresText(genreList));
+		}
 
-//			List<Actor> actorList = movieService.getAllMovieActors(tempMovie);
-//			List<Genre> genreList = movieService.getAllMovieGenres(tempMovie);
-//
-//			tempProjectionList.get(i).getMovie().setActorList(actorList);
-//			tempProjectionList.get(i).getMovie().setListOfActorsText(getListOfActorsText(actorList));
-//
-//			tempProjectionList.get(i).getMovie().setGenreList(genreList);
-//			tempProjectionList.get(i).getMovie().setListOfGenresText(getListOfGenresText(genreList));
-//		}
-
-//		projectionList = tempProjectionList;
 		RequestContext.getCurrentInstance().update("projection");
+	}
+	
+	/**
+	 * getListOfGenresText
+	 */
+	public String getListOfGenresText(List<Genre> genreList) {
+
+		String result = "";
+
+		if (genreList.size() > 0) {
+
+			Iterator<Genre> iter = genreList.iterator();
+
+			while (iter.hasNext()) {
+
+				Genre g = iter.next();
+
+				result += g.getName();
+				result += ", ";
+			}
+
+			result = result.substring(0, result.length() - 2);
+		}
+
+		if (result.length() == 0)
+			result = "-";
+
+		return result;
 	}
 
 	/**

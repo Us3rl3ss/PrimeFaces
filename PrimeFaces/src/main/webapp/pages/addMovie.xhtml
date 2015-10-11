@@ -48,11 +48,23 @@
 						itemLabel="#{(actor.firstname).concat(' ').concat(actor.lastname)}"
 						itemValue="#{actor}" converter="#{actorConverter}"
 						forceSelection="true">
+						
 						<p:column>
 							<h:outputText
 								value="#{(actor.firstname).concat(' ').concat(actor.lastname)}" />
 						</p:column>
-						<p:ajax event="itemSelect" listener="#{addMovieMB.onItemSelect}" />
+
+						<f:facet name="itemtip">
+							<h:panelGrid columns="1" cellpadding="2">
+
+								<p:graphicImage value="#{actorImageMB.image}" width="100"
+									height="150">
+									<f:param value="#{actor.id}" name="actor_id"></f:param>
+								</p:graphicImage>
+
+							</h:panelGrid>
+						</f:facet>
+
 					</p:autoComplete>
 
 					<p:outputLabel for="genres" value="Žanr/ovi:" />

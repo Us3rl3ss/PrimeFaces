@@ -16,44 +16,310 @@
 
 		<ui:define name="content">
 
-			<h:form id="myProfile">
+			<h:form id="userInfoForm">
 
 				<p:panelGrid columns="2">
-					<h:outputLabel for="firstname" value="Ime:" />
-					<p:inplace id="firstname" editor="true">
-						<p:inputText value="#{myProfileMB.user.firstname}" required="true"
-							label="text" />
-					</p:inplace>
 
-					<h:outputLabel for="lastname" value="Prezime:" />
-					<p:inplace id="lastname" editor="true">
-						<p:inputText value="#{myProfileMB.user.lastname}" required="true"
-							label="text" />
-					</p:inplace>
+					<p:panel id="userInfo" header="#{myProfileMB.user.username}"
+						style="margin-bottom:20px">
+						
+						<h:panelGrid columns="2" cellpadding="10">
+						
+							<p:graphicImage value="#{userImageMB.image}" width="50"
+								height="70">
+								<f:param value="#{myProfileMB.user.id}" name="user_id" />
+							</p:graphicImage>
+								
+							<p:panel style="text-align:center">
+								
+								<h:panelGrid columns="2" style="width:100%">
+			        
+									<h:outputLabel for="firstname" value="Ime:" />
+									<p:inplace id="firstname" editor="true">
+										<p:inputText value="#{myProfileMB.user.firstname}" required="true"
+											label="text" />
+									</p:inplace>
+				
+									<h:outputLabel for="lastname" value="Prezime:" />
+									<p:inplace id="lastname" editor="true">
+										<p:inputText value="#{myProfileMB.user.lastname}" required="true"
+											label="text" />
+									</p:inplace>
+				
+									<h:outputLabel for="password" value="Lozinka:" />
+									<p:inplace id="password" editor="true">
+										<p:inputText value="#{myProfileMB.user.password}" required="true"
+											label="text" />
+									</p:inplace>
+				
+									<h:outputLabel for="email" value="Email:" />
+									<p:inplace id="email" editor="true">
+										<p:inputText value="#{myProfileMB.user.email}" required="true"
+											label="text" />
+									</p:inplace>
+								
+								</h:panelGrid>
+								
+									<p:commandButton value="Spremi" action="#{myProfileMB.spremi}"
+										update=":messages" />
+								
+					        </p:panel>
 
-					<h:outputLabel for="password" value="Lozinka:" />
-					<p:inplace id="password" editor="true">
-						<p:inputText value="#{myProfileMB.user.password}" required="true"
-							label="text" />
-					</p:inplace>
+						</h:panelGrid>
 
-					<h:outputLabel for="email" value="Email:" />
-					<p:inplace id="email" editor="true">
-						<p:inputText value="#{myProfileMB.user.email}" required="true"
-							label="text" />
-					</p:inplace>
+					</p:panel>
+
+					<!-- OCJENE DATAGRID: -->
+					<p:dataGrid value="#{myProfileMB.userMovieRateList}" var="rate" columns="3" layout="grid"
+				        rows="6" paginator="true"
+				        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				        rowsPerPageTemplate="6,12,16">
+				 
+				        <f:facet name="header">
+				            Ocjene
+				        </f:facet>
+				 
+				        <p:panel header="#{rate.movie.name}" style="text-align:center">
+				        
+				            <h:panelGrid columns="2" style="width:100%">
+				        
+					            <p:graphicImage value="#{movieImageMB.image}" width="50"
+									height="70">
+									<f:param value="#{rate.movie.id}" name="movie_id" />
+								</p:graphicImage>
+								
+								<p:panel style="text-align:center">
+								
+									<h:panelGrid columns="1" style="width:100%">
+				        
+										<h:outputText value="#{rate.movie.name}"
+											style="display:inline-block" />
+											
+									</h:panelGrid>
+									
+									<h:outputText value="#{rate.created}">
+										<f:convertDateTime pattern="HH:mm dd.MM.yyyy" />
+									</h:outputText>
+									
+									<p:rating value="#{rate.rate}" stars="10" cancel="false"
+										style="display:inline-block" readonly="#{true}">
+									</p:rating>
+									
+						        </p:panel>
+									
+							</h:panelGrid>
+							
+							<f:facet name="actions">
+								<p:commandLink update=":rateForm"
+									action="#{myProfileMB.calculateAverageRate}"
+									oncomplete="PF('rateDialog').show()" title="Detalji"
+									styleClass="ui-icon ui-icon-search"
+									style="float:left;margin-right:10px">
+									<f:setPropertyActionListener value="#{rate}"
+										target="#{myProfileMB.selectedRate}" />
+								</p:commandLink>
+							</f:facet>
+								
+				        </p:panel>
+				        
+				    </p:dataGrid>
+				    <!-- END OF - OCJENE DATAGRID -->
+					
+					<!-- FAVORITI DATALIST: -->
+					<p:dataList value="#{myProfileMB.userFavoriteMovieList}"
+						var="favorite" type="unordered" itemType="none" paginator="true"
+						rows="5" styleClass="paginated">
+						
+						<f:facet name="header">
+				            Favoriti
+				        </f:facet>
+				        
+						<h:outputText value="#{favorite.created}">
+							<f:convertDateTime pattern="HH:mm dd.MM.yyyy" />
+						</h:outputText>
+						
+						<h:outputText value="&#160;-&#160;#{favorite.movie.name}"
+							style="display:inline-block" />
+							
+						<p:commandLink update=":favoriteForm"
+							oncomplete="PF('favoriteDialog').show()" title="Detalji"
+							styleClass="ui-icon ui-icon-search"
+							style="float:left;margin-right:10px">
+							<f:setPropertyActionListener value="#{favorite}"
+								target="#{myProfileMB.selectedFavorite}" />
+						</p:commandLink>
+						
+					</p:dataList>
+					<!-- END OF - FAVORITI DATALIST -->
+
+					<!-- REVIEW DATAGRID: -->
+					<p:dataGrid value="#{myProfileMB.userMovieReviewList}" var="review" columns="3" layout="grid"
+				        rows="6" paginator="true"
+				        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				        rowsPerPageTemplate="6,12,16">
+				 
+				        <f:facet name="header">
+				            Recenzije
+				        </f:facet>
+				 
+				        <p:panel header="#{review.movie.name}" style="text-align:center">
+				        
+				            <h:panelGrid columns="2" style="width:100%">
+				        
+					            <p:graphicImage value="#{movieImageMB.image}" width="50"
+									height="70">
+									<f:param value="#{review.movie.id}" name="movie_id" />
+								</p:graphicImage>
+								
+								<p:panel style="text-align:center; max-height:200px; overflow-y:scroll;">
+								
+									<h:panelGrid columns="1" style="width:100%;">
+				        
+										<h:outputText value="#{review.movie.name}"
+											style="display:inline-block" />
+											
+										<h:outputText value="#{review.created}">
+											<f:convertDateTime pattern="HH:mm dd.MM.yyyy" />
+										</h:outputText>
+										
+										<h:outputText value="#{review.review}"/>
+										
+									</h:panelGrid>
+									
+						        </p:panel>
+									
+							</h:panelGrid>
+							
+							<f:facet name="actions">
+								<p:commandLink update=":reviewForm"
+									oncomplete="PF('reviewDialog').show()" title="Detalji"
+									styleClass="ui-icon ui-icon-search"
+									style="float:left;margin-right:10px">
+									<f:setPropertyActionListener value="#{review}"
+										target="#{myProfileMB.selectedReview}" />
+								</p:commandLink>
+							</f:facet>
+								
+				        </p:panel>
+				        
+				    </p:dataGrid>
+					<!-- END OF - REVIEW DATAGRID -->
+					
 				</p:panelGrid>
-
-				<p:commandButton value="Spremi" action="#{myProfileMB.spremi}"
-					update=":messages" />
-
+				
 			</h:form>
-			
-			Moji filmovi:
-			<ui:include src="myMovies.xhtml" />
-			
-			Moji prijatelji:
-			<ui:include src="myFriends.xhtml" />
+
+			<p:dialog header="Ocjena" widgetVar="rateDialog"
+				showEffect="blind" hideEffect="explode" resizable="false" modal="true" appendTo="@(body)">
+				
+				<h:form id="rateForm">
+				
+					<p:outputPanel id="rateDetail" style="text-align:center;">
+					
+						<p:panelGrid columns="2"
+							rendered="#{not empty myProfileMB.selectedRate}"
+							columnClasses="label,value">
+	
+							<h:outputText value="Naziv:" />
+							<h:outputText value="#{myProfileMB.selectedRate.movie.name}" />
+	
+							<h:outputText value="Redatelj:" />
+							<h:outputText
+								value="#{myProfileMB.selectedRate.movie.director_name}" />
+	
+							<h:outputText value="Godina:" />
+							<h:outputText
+								value="#{myProfileMB.selectedRate.movie.year_of_creation}" />
+	
+							<h:outputText value="Trajanje:" />
+							<h:outputText value="#{myProfileMB.selectedRate.movie.duration}" />
+	
+							<h:outputText value="Informacije:" />
+							<h:outputText value="#{myProfileMB.selectedRate.movie.info}" />
+	
+							<h:outputText value="Ukupna ocjena" />
+							<h:outputText value="#{myProfileMB.averageRate}/10" />
+							
+						</p:panelGrid>
+						
+					</p:outputPanel>
+					
+				</h:form>
+					
+			</p:dialog>
+
+			<p:dialog header="Favoriti" widgetVar="favoriteDialog"
+				showEffect="blind" hideEffect="explode" resizable="false" modal="true" appendTo="@(body)">
+				
+				<h:form id="favoriteForm">
+				
+					<p:outputPanel id="favoriteDetail" style="text-align:center;">
+					
+						<p:panelGrid columns="2"
+							rendered="#{not empty myProfileMB.selectedFavorite}"
+							columnClasses="label,value">
+	
+							<h:outputText value="Naziv:" />
+							<h:outputText value="#{myProfileMB.selectedFavorite.movie.name}" />
+	
+							<h:outputText value="Redatelj:" />
+							<h:outputText
+								value="#{myProfileMB.selectedFavorite.movie.director_name}" />
+	
+							<h:outputText value="Godina:" />
+							<h:outputText
+								value="#{myProfileMB.selectedFavorite.movie.year_of_creation}" />
+	
+							<h:outputText value="Trajanje:" />
+							<h:outputText
+								value="#{myProfileMB.selectedFavorite.movie.duration}" />
+	
+							<h:outputText value="Informacije:" />
+							<h:outputText value="#{myProfileMB.selectedFavorite.movie.info}" />
+	
+						</p:panelGrid>
+						
+					</p:outputPanel>
+					
+				</h:form>
+					
+			</p:dialog>
+
+			<p:dialog header="Recenzije" widgetVar="reviewDialog"
+				showEffect="blind" hideEffect="explode" resizable="false" modal="true" appendTo="@(body)">
+				
+				<h:form id="reviewForm">
+					
+					<p:outputPanel id="reviewDetail" style="text-align:center;">
+					
+						<p:panelGrid columns="2"
+							rendered="#{not empty myProfileMB.selectedReview}"
+							columnClasses="label,value">
+							
+							<h:outputText value="Naziv:" />
+							<h:outputText value="#{myProfileMB.selectedReview.movie.name}" />
+	
+							<h:outputText value="Redatelj:" />
+							<h:outputText
+								value="#{myProfileMB.selectedReview.movie.director_name}" />
+	
+							<h:outputText value="Godina:" />
+							<h:outputText
+								value="#{myProfileMB.selectedReview.movie.year_of_creation}" />
+	
+							<h:outputText value="Trajanje:" />
+							<h:outputText value="#{myProfileMB.selectedReview.movie.duration}" />
+	
+							<h:outputText value="Informacije:" />
+							<h:outputText value="#{myProfileMB.selectedReview.movie.info}" />
+	
+						</p:panelGrid>
+						
+					</p:outputPanel>
+					
+				</h:form>	
+				
+			</p:dialog>
 
 		</ui:define>
 

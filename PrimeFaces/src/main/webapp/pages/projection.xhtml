@@ -35,104 +35,112 @@
 
 					<p:commandButton value="Pretraži" action="#{projectionMB.pretrazi}"
 						update="projection projection" />
+						
 				</p:panelGrid>
 
 				<p:dataGrid var="projection" value="#{projectionMB.projectionList}"
-					columns="2" layout="grid" rows="2" paginator="true" id="projection"
+					columns="3" layout="grid" rows="6" paginator="true" id="projection"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="6,12,16">
-
-					<p:panel style="text-align:center">
-
-						<h:panelGrid columns="2" style="width:40%; float:left;">
+					
+					 <p:panel header="#{projection.movie.name}" style="text-align:center">
+				        
+			            <h:panelGrid columns="2" style="width:100%">
+			        
 							<p:graphicImage value="#{movieImageMB.image}" width="100"
 								height="150">
 								<f:param value="#{projection.movie.id}" name="movie_id"></f:param>
 							</p:graphicImage>
-						</h:panelGrid>
-						<h:panelGrid columns="2" style="width:40%">
-
-							<h:outputText value="Film:" />
-							<h:outputText value="#{projection.movie.name}" />
-<!-- 							<h:outputText value="Redatelj:" /> -->
-<!-- 							<h:outputText value="#{projection.movie.director_name}" /> -->
-							<h:outputText value="Godina: " />
-							<h:outputText value="#{projection.movie.year_of_creation}" />
-							<h:outputText value="Trajanje:" />
-							<h:outputText value="#{projection.movie.duration}" />
-<!-- 							<h:outputText value="Glumci:" /> -->
-<!-- 							<h:outputText value="#{projection.movie.listOfActorsText}" /> -->
-							<h:outputText value="Žanr:" />
-							<h:outputText value="#{projection.movie.listOfGenresText}" />
 							
-						</h:panelGrid>
+							<p:panel style="text-align:center">
 							
-						<p:dataList value="#{projectionMB.doViewDistinctMovieProjections(projection)}"
-							var="distinctProjection" type="unordered" itemType="none">
-							<p:commandLink action="#{projectionMB.doViewReserveSeats}"
-								title="View Detail" styleClass="ui-icon ui-icon-search"
-								style="float:left;margin-right:10px">
-								<f:setPropertyActionListener value="#{distinctProjection}"
-									target="#{projectionMB.projection}" />
-								<h:outputText
-									value="#{distinctProjection.numberOfFreeSeatsText}, #{distinctProjection.start_time}, #{distinctProjection.cinema.number_of_seats}, #{distinctProjection.cinema.name}" />
-							</p:commandLink>
+								<h:panelGrid columns="2" style="width:100%">
+			        
+									<h:outputText value="Film:" />
+									<h:outputText value="#{projection.movie.name}" />
+									<h:outputText value="Godina: " />
+									<h:outputText value="#{projection.movie.year_of_creation}" />
+									<h:outputText value="Trajanje:" />
+									<h:outputText value="#{projection.movie.duration}" />
+									<h:outputText value="Žanr:" />
+									<h:outputText value="#{projection.movie.listOfGenresText}" />
+										
+								</h:panelGrid>
+								
+								<p:dataList value="#{projectionMB.doViewDistinctMovieProjections(projection)}"
+									var="distinctProjection" type="unordered" itemType="none">
+									
+									<p:commandLink action="#{projectionMB.doViewReserveSeats}"
+										title="View Detail" styleClass="ui-icon ui-icon-search"
+										style="float:left;margin-right:10px">
+										<f:setPropertyActionListener value="#{distinctProjection}"
+											target="#{projectionMB.projection}" />
+										<h:outputText
+											value="#{distinctProjection.numberOfFreeSeatsText}, #{distinctProjection.start_time}, #{distinctProjection.cinema.number_of_seats}, #{distinctProjection.cinema.name}" />
+									</p:commandLink>
+		
+									<h:outputText value="#{distinctProjection.start_time}">
+										<f:convertDateTime pattern="HH:mm" />
+									</h:outputText>
+		
+									<h:outputText
+										value=", #{distinctProjection.cinema.name} (#{distinctProjection.numberOfFreeSeatsText})">
+									</h:outputText>
+		
+								</p:dataList>
+								
+					        </p:panel>
+								
+						</h:panelGrid>
+						
+			        </p:panel>
 
-							<h:outputText value="#{distinctProjection.start_time}">
-								<f:convertDateTime pattern="HH:mm" />
-							</h:outputText>
+<!-- 					<p:panel style="text-align:center"> -->
 
-							<h:outputText
-								value=", #{distinctProjection.cinema.name} (#{distinctProjection.numberOfFreeSeatsText})">
-							</h:outputText>
+<!-- 						<h:panelGrid columns="2" style="width:40%; float:left;"> -->
+<!-- 							<p:graphicImage value="#{movieImageMB.image}" width="100" -->
+<!-- 								height="150"> -->
+<!-- 								<f:param value="#{projection.movie.id}" name="movie_id"></f:param> -->
+<!-- 							</p:graphicImage> -->
+<!-- 						</h:panelGrid> -->
+<!-- 						<h:panelGrid columns="2" style="width:40%"> -->
 
-						</p:dataList>
-
-<!-- 							<p:commandLink update=":projection:projectionDetail" -->
-<!-- 								action="#{projectionMB.doViewDistinctMovieProjections}" -->
-<!-- 								oncomplete="PF('projectionDialog').show()" title="View Detail"> -->
-<!-- 								<h:outputText styleClass="ui-icon ui-icon-search" -->
-<!-- 									style="margin:0 auto;" /> -->
-<!-- 								<f:setPropertyActionListener value="#{projection}" -->
-<!-- 									target="#{projectionMB.selectedProjection}" /> -->
-<!-- 							</p:commandLink> -->
-					</p:panel>
-				</p:dataGrid>
-
-<!-- 				<p:dialog header="Projection Info" widgetVar="projectionDialog" -->
-<!-- 					 showEffect="fade" hideEffect="fade" resizable="false" modal="true" appendTo="@(body)"> -->
-<!-- 					<p:outputPanel id="projectionDetail" style="text-align:center;"> -->
-<!-- 						<p:panelGrid columns="2" -->
-<!-- 							rendered="#{not empty projectionMB.projection}" -->
-<!-- 							columnClasses="label,value"> -->
-
-<!-- 							<p:dataList value="#{projectionMB.distinctMovieProjectionList}" -->
-<!-- 								var="distinctProjection" type="unordered" itemType="none" -->
-<!-- 								paginator="true" rows="5" styleClass="paginated"> -->
-<!-- 								<p:commandLink action="#{projectionMB.doViewReserveSeats}" -->
-<!-- 									title="View Detail" styleClass="ui-icon ui-icon-search" -->
-<!-- 									style="float:left;margin-right:10px"> -->
-<!-- 									<f:setPropertyActionListener value="#{distinctProjection}" -->
-<!-- 										target="#{projectionMB.projection}" /> -->
-<!-- 									<h:outputText -->
-<!-- 										value="#{distinctProjection.numberOfFreeSeatsText}, #{distinctProjection.start_time}, #{distinctProjection.cinema.number_of_seats}, #{distinctProjection.cinema.name}" /> -->
-<!-- 								</p:commandLink> -->
-
-<!-- 								<h:outputText value="#{distinctProjection.start_time}"> -->
-<!-- 									<f:convertDateTime pattern="HH:mm" /> -->
-<!-- 								</h:outputText> -->
-
+<!-- 							<h:outputText value="Film:" /> -->
+<!-- 							<h:outputText value="#{projection.movie.name}" /> -->
+<!-- 							<h:outputText value="Godina: " /> -->
+<!-- 							<h:outputText value="#{projection.movie.year_of_creation}" /> -->
+<!-- 							<h:outputText value="Trajanje:" /> -->
+<!-- 							<h:outputText value="#{projection.movie.duration}" /> -->
+<!-- 							<h:outputText value="Žanr:" /> -->
+<!-- 							<h:outputText value="#{projection.movie.listOfGenresText}" /> -->
+							
+<!-- 						</h:panelGrid> -->
+							
+<!-- 						<p:dataList value="#{projectionMB.doViewDistinctMovieProjections(projection)}" -->
+<!-- 							var="distinctProjection" type="unordered" itemType="none"> -->
+							
+<!-- 							<p:commandLink action="#{projectionMB.doViewReserveSeats}" -->
+<!-- 								title="View Detail" styleClass="ui-icon ui-icon-search" -->
+<!-- 								style="float:left;margin-right:10px"> -->
+<!-- 								<f:setPropertyActionListener value="#{distinctProjection}" -->
+<!-- 									target="#{projectionMB.projection}" /> -->
 <!-- 								<h:outputText -->
-<!-- 									value=", #{distinctProjection.cinema.name} (#{distinctProjection.numberOfFreeSeatsText})"> -->
-<!-- 								</h:outputText> -->
+<!-- 									value="#{distinctProjection.numberOfFreeSeatsText}, #{distinctProjection.start_time}, #{distinctProjection.cinema.number_of_seats}, #{distinctProjection.cinema.name}" /> -->
+<!-- 							</p:commandLink> -->
 
-<!-- 							</p:dataList> -->
+<!-- 							<h:outputText value="#{distinctProjection.start_time}"> -->
+<!-- 								<f:convertDateTime pattern="HH:mm" /> -->
+<!-- 							</h:outputText> -->
 
-<!-- 						</p:panelGrid> -->
+<!-- 							<h:outputText -->
+<!-- 								value=", #{distinctProjection.cinema.name} (#{distinctProjection.numberOfFreeSeatsText})"> -->
+<!-- 							</h:outputText> -->
 
-<!-- 					</p:outputPanel> -->
-
-<!-- 				</p:dialog> -->
+<!-- 						</p:dataList> -->
+						
+<!-- 					</p:panel> -->
+					
+				</p:dataGrid>
 
 			</h:form>
 

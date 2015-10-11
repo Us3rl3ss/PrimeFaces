@@ -44,12 +44,12 @@
 					<f:param name="i" value="3" />
 				</p:menuitem>
 				
-				<p:menuitem rendered="#{userSession.logged}"
-						value="Moj profil" 
-						icon="ui-icon-star"
-						action="#{navigationController.doViewMyProfile}">
-					<f:param name="i" value="6" />
-				</p:menuitem>
+<!-- 				<p:menuitem rendered="#{userSession.logged}" -->
+<!-- 						value="Moj profil"  -->
+<!-- 						icon="ui-icon-star" -->
+<!-- 						action="#{navigationController.doViewMyProfile}"> -->
+<!-- 					<f:param name="i" value="6" /> -->
+<!-- 				</p:menuitem> -->
 				
 				<p:menuitem 
 						value="Kontakt" 
@@ -75,6 +75,18 @@
 			</p:tabMenu>
 			
 		</h:form>
+		
+		<h:form id="loggedInUserForm" rendered="#{userSession.logged}" style="position:absolute; top:0px; right:0px; width:40px; margin:1em; font-size:10px;">
+			
+			<h:commandLink action="#{navigationController.doViewMyProfile}"> 
+				<p:graphicImage value="#{userImageMB.image}" width="40" height="40">
+					<f:param value="#{userSession.user.id}" name="user_id" />
+				</p:graphicImage>
+				<h:outputText value="#{userSession.user.username}" />
+			</h:commandLink>
+		</h:form>
+		
+		
 
 	</ui:composition>
 

@@ -36,7 +36,7 @@
 						style="display:inline-block" readonly="#{true}">
 					</p:rating>
 					<h:outputText value="#{rate.created}">
-						<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
+						<f:convertDateTime pattern="HH:mm dd.MM.yyyy" />
 					</h:outputText>
 					<h:outputText value="&#160;-&#160;#{rate.movie.name}"
 						style="display:inline-block" />
@@ -56,7 +56,7 @@
 							target="#{myMoviesMB.selectedFavorite}" />
 					</p:commandLink>
 					<h:outputText value="#{favorite.created}">
-						<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
+						<f:convertDateTime pattern="HH:mm dd.MM.yyyy" />
 					</h:outputText>
 					<h:outputText value="&#160;-&#160;#{favorite.movie.name}"
 						style="display:inline-block" />
@@ -76,7 +76,7 @@
 							target="#{myMoviesMB.selectedReview}" />
 					</p:commandLink>
 					<h:outputText value="#{review.created}">
-						<f:convertDateTime pattern="HH:MM dd.MM.yyyy" />
+						<f:convertDateTime pattern="HH:mm dd.MM.yyyy" />
 					</h:outputText>
 					<h:outputText value="&#160;-&#160;#{review.movie.name}"
 						style="display:inline-block" />

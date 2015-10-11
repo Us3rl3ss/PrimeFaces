@@ -1,6 +1,7 @@
 package hr.primefaces.service.impl;
 
 import hr.primefaces.dao.IUserFollowingDAO;
+import hr.primefaces.model.User;
 import hr.primefaces.model.UserFollowing;
 import hr.primefaces.service.IUserFollowingService;
 
@@ -51,6 +52,11 @@ public class UserFollowingService implements IUserFollowingService,
 	public void updateUserFollowing(UserFollowing userFollowing) {
 		getUserFollowingDAO().updateUserFollowing(userFollowing);
 	}
+	
+	@Override
+	public UserFollowing getUserFriends(User user, User user2) {
+		return getUserFollowingDAO().getUserFriends(user, user2);
+	}
 
 	public IUserFollowingDAO getUserFollowingDAO() {
 		return userFollowingDAO;
@@ -58,10 +64,6 @@ public class UserFollowingService implements IUserFollowingService,
 
 	public void setUserFollowingDAO(IUserFollowingDAO userFollowingDAO) {
 		this.userFollowingDAO = userFollowingDAO;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 }

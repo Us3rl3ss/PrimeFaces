@@ -1,5 +1,6 @@
 package hr.primefaces.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -8,11 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "user_movie_review")
-public class UserMovieReview implements java.io.Serializable {
+public class UserMovieReview implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

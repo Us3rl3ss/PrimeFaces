@@ -62,10 +62,6 @@ public class MovieDAO implements IMovieDAO, Serializable {
 		return list;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	@Override
 	public List<Actor> getAllMovieActors(Movie movie) {
 

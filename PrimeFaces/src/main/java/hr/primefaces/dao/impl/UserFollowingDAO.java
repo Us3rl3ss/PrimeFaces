@@ -1,9 +1,11 @@
 package hr.primefaces.dao.impl;
 
 import hr.primefaces.dao.IUserFollowingDAO;
+import hr.primefaces.model.User;
 import hr.primefaces.model.UserFollowing;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -38,8 +40,11 @@ public class UserFollowingDAO implements IUserFollowingDAO, Serializable {
 		getSessionFactory().getCurrentSession().update(userFollowing);
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	@Override
+	public UserFollowing getUserFriends(User user, User user2) {
+
+		return (UserFollowing) getSessionFactory().getCurrentSession().createQuery("from UserFollowing where user_id = :user_id and follow_id = :follow_id")
+				.setParameter("user_id", user.getId()).setParameter("follow_id", user2.getId()).uniqueResult();
 	}
 
 }

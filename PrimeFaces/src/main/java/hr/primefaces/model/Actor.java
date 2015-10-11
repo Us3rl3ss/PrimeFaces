@@ -1,5 +1,6 @@
 package hr.primefaces.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "actor")
-public class Actor implements java.io.Serializable {
+public class Actor implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

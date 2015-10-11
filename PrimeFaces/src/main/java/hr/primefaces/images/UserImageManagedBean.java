@@ -1,7 +1,7 @@
 package hr.primefaces.images;
 
-import hr.primefaces.model.Movie;
-import hr.primefaces.service.IMovieService;
+import hr.primefaces.model.User;
+import hr.primefaces.service.IUserService;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
@@ -15,14 +15,14 @@ import javax.faces.event.PhaseId;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-@ManagedBean(name = "movieImageMB")
+@ManagedBean(name = "userImageMB")
 @ApplicationScoped
-public class MovieImageManagedBean implements Serializable {
+public class UserImageManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{MovieService}")
-	IMovieService movieService;
+	@ManagedProperty(value = "#{UserService}")
+	IUserService userService;
 
 	public StreamedContent getImage() {
 		FacesContext fc = FacesContext.getCurrentInstance();
@@ -30,23 +30,23 @@ public class MovieImageManagedBean implements Serializable {
 			return new DefaultStreamedContent();
 		}
 
-		String movie_id = fc.getExternalContext().getRequestParameterMap().get("movie_id");
+		String user_id = fc.getExternalContext().getRequestParameterMap().get("user_id");
 
-		if ("".equals(movie_id))
-			return new DefaultStreamedContent(); 
-		
-		Movie m = movieService.getMovieById(Integer.parseInt(movie_id));
+		if ("".equals(user_id))
+			return new DefaultStreamedContent();
 
-		byte[] photoData = m.getImage(); // userPhotoJpaController.findUserPhoto(Integer.parseInt(id)).getPhotoData();
+		User u = userService.getUserById(Integer.parseInt(user_id));
+
+		byte[] photoData = u.getImage();
 		return new DefaultStreamedContent(new ByteArrayInputStream(photoData));
 	}
 
-	public IMovieService getMovieService() {
-		return movieService;
+	public IUserService getUserService() {
+		return userService;
 	}
 
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
 	}
 
 }
