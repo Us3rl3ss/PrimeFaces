@@ -95,51 +95,6 @@
 						
 			        </p:panel>
 
-<!-- 					<p:panel style="text-align:center"> -->
-
-<!-- 						<h:panelGrid columns="2" style="width:40%; float:left;"> -->
-<!-- 							<p:graphicImage value="#{movieImageMB.image}" width="100" -->
-<!-- 								height="150"> -->
-<!-- 								<f:param value="#{projection.movie.id}" name="movie_id"></f:param> -->
-<!-- 							</p:graphicImage> -->
-<!-- 						</h:panelGrid> -->
-<!-- 						<h:panelGrid columns="2" style="width:40%"> -->
-
-<!-- 							<h:outputText value="Film:" /> -->
-<!-- 							<h:outputText value="#{projection.movie.name}" /> -->
-<!-- 							<h:outputText value="Godina: " /> -->
-<!-- 							<h:outputText value="#{projection.movie.year_of_creation}" /> -->
-<!-- 							<h:outputText value="Trajanje:" /> -->
-<!-- 							<h:outputText value="#{projection.movie.duration}" /> -->
-<!-- 							<h:outputText value="Žanr:" /> -->
-<!-- 							<h:outputText value="#{projection.movie.listOfGenresText}" /> -->
-							
-<!-- 						</h:panelGrid> -->
-							
-<!-- 						<p:dataList value="#{projectionMB.doViewDistinctMovieProjections(projection)}" -->
-<!-- 							var="distinctProjection" type="unordered" itemType="none"> -->
-							
-<!-- 							<p:commandLink action="#{projectionMB.doViewReserveSeats}" -->
-<!-- 								title="View Detail" styleClass="ui-icon ui-icon-search" -->
-<!-- 								style="float:left;margin-right:10px"> -->
-<!-- 								<f:setPropertyActionListener value="#{distinctProjection}" -->
-<!-- 									target="#{projectionMB.projection}" /> -->
-<!-- 								<h:outputText -->
-<!-- 									value="#{distinctProjection.numberOfFreeSeatsText}, #{distinctProjection.start_time}, #{distinctProjection.cinema.number_of_seats}, #{distinctProjection.cinema.name}" /> -->
-<!-- 							</p:commandLink> -->
-
-<!-- 							<h:outputText value="#{distinctProjection.start_time}"> -->
-<!-- 								<f:convertDateTime pattern="HH:mm" /> -->
-<!-- 							</h:outputText> -->
-
-<!-- 							<h:outputText -->
-<!-- 								value=", #{distinctProjection.cinema.name} (#{distinctProjection.numberOfFreeSeatsText})"> -->
-<!-- 							</h:outputText> -->
-
-<!-- 						</p:dataList> -->
-						
-<!-- 					</p:panel> -->
-					
 				</p:dataGrid>
 
 			</h:form>

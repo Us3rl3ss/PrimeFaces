@@ -1,0 +1,16 @@
+TODO:
+
+1. Početna stranica za admina (poll sa aktivnostima) i za korisnike (sa promo i aktivnostima prijatelja) prijedlozi dodavanja prijatelja
+2. Rezerviranje sjedala - redizajn po uzoru na prethodne ekrane
+	-generiranje hash-a sha(username + id_cinema_seat + projection_id) + slanje na mail + barkod
+3. validacija reserviranja sjedala - ne može se rezervirati u prošlost
+4. registracija korisnika sa dodavanjem slike (webkamera + upload) + optimizacija forme - distinct username -http://www.primefaces.org/showcase/ui/multimedia/photoCam.xhtml cropper? + aktivacija računa preko email-a
+5. tražilica za filmove sa http://www.omdbapi.com/?t=terminator&y=2008&plot=short&r=json
+6. kontakt - button za određivanje najbližeg kina http://www.mkyong.com/java/java-find-location-using-ip-address/
+7. statistika - broj registriranih korisnika u nekom vremenskom periodu, najvise rezervacija sjedala za neki film, najposjecenije kino
+8. validacije po aplikaciji - scheduler, preklapanja vremena - automatsko postavljanje završetka filma
+9. scheduler - dialog - umjesto dropdowna za izbor filma, postaviti autocomplete
+10. admin - popis korisnika - filter za pretragu + stupac za aktivaciju ili bananje korisnika (ban - na neki rok + slanje mail-a sa porukom o banu)
+11. css
+12. optimizacija koda/refaktoring/error handling/statusne poruke
+13. dialozi resizable = false;

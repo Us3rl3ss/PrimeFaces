@@ -23,60 +23,136 @@
 		
 			<h:form id="seats">
 			
-				<p:panel style="text-align:center">
-					<h:panelGrid columns="2" style="width:40%; float:left;">
+				 <p:panel header="#{reserveSeatsMB.projection.movie.name}" style="text-align:center">
+				        
+		            <h:panelGrid columns="2" style="width:100%">
+		        
 						<p:graphicImage value="#{movieImageMB.image}" width="200"
 							height="300">
 							<f:param value="#{reserveSeatsMB.projection.movie.id}" name="movie_id" />
 						</p:graphicImage>
-					</h:panelGrid>
+						
+						<p:panel style="text-align:center">
+						
+							<h:panelGrid columns="2" style="width:100%">
+		        
+								<h:outputText value="Film:" />
+								<h:outputText value="#{reserveSeatsMB.projection.movie.name}" />
+								<h:outputText value="Redatelj:" />
+								<h:outputText value="#{reserveSeatsMB.projection.movie.director_name}" />
+								<h:outputText value="Godina: " />
+								<h:outputText value="#{reserveSeatsMB.projection.movie.year_of_creation}" />
+								<h:outputText value="Trajanje:" />
+								<h:outputText value="#{reserveSeatsMB.projection.movie.duration}" />
+								<h:outputText value="Glumci:" />
+								<h:outputText value="#{reserveSeatsMB.projection.movie.listOfActorsText}" />
+								<h:outputText value="Žanr:" />
+								<h:outputText value="#{reserveSeatsMB.projection.movie.listOfGenresText}" />
+								<h:outputText value="Info:" />
+								<h:outputText value="#{reserveSeatsMB.projection.movie.info}" />
+									
+							</h:panelGrid>
+							
+					</p:panel>
 					
-					<h:panelGrid columns="2" style="width:40%">
-						<h:outputText value="Film:" />
-						<h:outputText value="#{reserveSeatsMB.projection.movie.name}" />
-						<h:outputText value="Redatelj:" />
-						<h:outputText value="#{reserveSeatsMB.projection.movie.director_name}" />
-						<h:outputText value="Godina: " />
-						<h:outputText value="#{reserveSeatsMB.projection.movie.year_of_creation}" />
-						<h:outputText value="Trajanje:" />
-						<h:outputText value="#{reserveSeatsMB.projection.movie.duration}" />
-						<h:outputText value="Glumci:" />
-						<h:outputText value="#{reserveSeatsMB.projection.movie.listOfActorsText}" />
-						<h:outputText value="Žanr:" />
-						<h:outputText value="#{reserveSeatsMB.projection.movie.listOfGenresText}" />
-						<h:outputText value="Info:" />
-						<h:outputText value="#{reserveSeatsMB.projection.movie.info}" />
-					</h:panelGrid>
-				</p:panel>
+				</h:panelGrid>
+					
+				<p:panel header="" style="text-align:center">
 				
-				<p:panel style="text-align:center">
-					<h:panelGrid columns="2">
-						<h:outputText value="Dvorana:" />
-						<h:outputText value="#{reserveSeatsMB.projection.cinema.name}" />
-		
-						<h:outputText value="Mjesta:" />
-						<h:outputText value="#{reserveSeatsMB.projection.numberOfFreeSeatsText}" />
+					<h:panelGrid columns="2" style="width:100%">
+					
+						<p:panel style="text-align:center;">
+				
+							<h:panelGrid columns="2">
+							
+								<h:outputText value="Dvorana:" />
+								<h:outputText value="#{reserveSeatsMB.projection.cinema.name}" />
+								<h:outputText value="Mjesta:" />
+								<h:outputText value="#{reserveSeatsMB.projection.numberOfFreeSeatsText}" />
+								<h:outputText value="Početak:" />
+								<h:outputText value="#{reserveSeatsMB.projectionStart}" />
+								<h:outputText value="Kraj:" />
+								<h:outputText value="#{reserveSeatsMB.projectionEnd}" />
+								
+							</h:panelGrid>
+							
+						</p:panel>
+				
+						<p:selectManyButton id="cinemaSeats"
+							value="#{reserveSeatsMB.selectedCinemaSeatsList}">
+							<f:selectItems value="#{reserveSeatsMB.cinemaSeatsList}"
+								var="cinemaSeats"
+								itemLabel="#{(cinemaSeats.seats_row).concat(cinemaSeats.seats_number)}"
+								itemValue="#{cinemaSeats.id}" />
+						</p:selectManyButton>
 						
-						<h:outputText value="Početak:" />
-						<h:outputText value="#{reserveSeatsMB.projectionStart}" />
-						
-						<h:outputText value="Kraj:" />
-						<h:outputText value="#{reserveSeatsMB.projectionEnd}" />
 					</h:panelGrid>
+						
+					<f:facet name="actions">
+						<p:commandButton value="Rezerviraj"
+							action="#{reserveSeatsMB.reserveSeats}" />
+					</f:facet>
+					
 				</p:panel>
+					
+        </p:panel>
+		
+			
+<!-- 				<p:panel style="text-align:center"> -->
+				
+<!-- 					<h:panelGrid columns="2" style="width:40%; float:left;"> -->
+<!-- 						<p:graphicImage value="#{movieImageMB.image}" width="200" -->
+<!-- 							height="300"> -->
+<!-- 							<f:param value="#{reserveSeatsMB.projection.movie.id}" name="movie_id" /> -->
+<!-- 						</p:graphicImage> -->
+<!-- 					</h:panelGrid> -->
+					
+<!-- 					<h:panelGrid columns="2" style="width:40%"> -->
+<!-- 						<h:outputText value="Film:" /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projection.movie.name}" /> -->
+<!-- 						<h:outputText value="Redatelj:" /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projection.movie.director_name}" /> -->
+<!-- 						<h:outputText value="Godina: " /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projection.movie.year_of_creation}" /> -->
+<!-- 						<h:outputText value="Trajanje:" /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projection.movie.duration}" /> -->
+<!-- 						<h:outputText value="Glumci:" /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projection.movie.listOfActorsText}" /> -->
+<!-- 						<h:outputText value="Žanr:" /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projection.movie.listOfGenresText}" /> -->
+<!-- 						<h:outputText value="Info:" /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projection.movie.info}" /> -->
+<!-- 					</h:panelGrid> -->
+<!-- 				</p:panel> -->
+				
+<!-- 				<p:panel style="text-align:center"> -->
+<!-- 					<h:panelGrid columns="2"> -->
+<!-- 						<h:outputText value="Dvorana:" /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projection.cinema.name}" /> -->
+		
+<!-- 						<h:outputText value="Mjesta:" /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projection.numberOfFreeSeatsText}" /> -->
+						
+<!-- 						<h:outputText value="Početak:" /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projectionStart}" /> -->
+						
+<!-- 						<h:outputText value="Kraj:" /> -->
+<!-- 						<h:outputText value="#{reserveSeatsMB.projectionEnd}" /> -->
+<!-- 					</h:panelGrid> -->
+<!-- 				</p:panel> -->
 
-				<p:panelGrid columns="10">
-					<p:selectManyButton id="cinemaSeats"
-						value="#{reserveSeatsMB.selectedCinemaSeatsList}">
-						<f:selectItems value="#{reserveSeatsMB.cinemaSeatsList}"
-							var="cinemaSeats"
-							itemLabel="#{(cinemaSeats.seats_row).concat(cinemaSeats.seats_number)}"
-							itemValue="#{cinemaSeats.id}" />
-					</p:selectManyButton>
-				</p:panelGrid>
+<!-- 				<p:panelGrid columns="10"> -->
+<!-- 					<p:selectManyButton id="cinemaSeats" -->
+<!-- 						value="#{reserveSeatsMB.selectedCinemaSeatsList}"> -->
+<!-- 						<f:selectItems value="#{reserveSeatsMB.cinemaSeatsList}" -->
+<!-- 							var="cinemaSeats" -->
+<!-- 							itemLabel="#{(cinemaSeats.seats_row).concat(cinemaSeats.seats_number)}" -->
+<!-- 							itemValue="#{cinemaSeats.id}" /> -->
+<!-- 					</p:selectManyButton> -->
+<!-- 				</p:panelGrid> -->
 
-				<p:commandButton value="Rezerviraj"
-					action="#{reserveSeatsMB.reserveSeats}" />
+<!-- 				<p:commandButton value="Rezerviraj" -->
+<!-- 					action="#{reserveSeatsMB.reserveSeats}" /> -->
 
 			</h:form>
 
