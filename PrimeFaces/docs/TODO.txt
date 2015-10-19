@@ -14,3 +14,4 @@ TODO:
 11. css
 12. optimizacija koda/refaktoring/error handling/statusne poruke
 13. dialozi resizable = false;
+14. schedule ne radi - odabir filma

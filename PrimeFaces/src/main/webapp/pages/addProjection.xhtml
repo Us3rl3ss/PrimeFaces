@@ -36,29 +36,8 @@
 						<f:ajax listener="#{addProjectionMB.postaviProjectionList}" />
 					</p:selectOneMenu>
 
-<!-- 					<p:outputLabel for="movie" value="Film:" /> -->
-<!-- 					<p:selectOneMenu id="movie" value="#{addProjectionMB.projection.movie}" -->
-<!-- 						converter="#{movieConverter}" filter="true"> -->
-<!-- 						<f:selectItems value="#{addProjectionMB.movieList}" var="movie" -->
-<!-- 							itemValue="#{movie}" itemLabel="#{movie.name}" /> -->
-<!-- 					</p:selectOneMenu> -->
-					
-<!-- 					<p:outputLabel for="timeFrom" value="Početak" /> -->
-<!-- 					<p:calendar id="timeFrom" -->
-<!-- 						value="#{addProjectionMB.projection.start_time}" pattern="dd.MM.yyyy HH:mm" -->
-<!-- 						mask="true" /> -->
-
-<!-- 					<p:outputLabel for="timeTo" value="Kraj:" /> -->
-<!-- 					<p:calendar id="timeTo" -->
-<!-- 						value="#{addProjectionMB.projection.end_time}" pattern="dd.MM.yyyy HH:mm" -->
-<!-- 						mask="true" /> -->
-
 				</p:panelGrid>
 
-<!-- 				<p:commandButton value="Spremi" action="#{addProjectionMB.spremi}" -->
-<!-- 					update=":messages addProjection" /> -->
-
-					
 				<p:schedule id="schedule" value="#{addProjectionMB.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
  
 		            <p:ajax event="dateSelect" listener="#{addProjectionMB.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />

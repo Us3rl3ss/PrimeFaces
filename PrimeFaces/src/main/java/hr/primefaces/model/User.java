@@ -42,7 +42,7 @@ public class User implements Serializable {
 	@Column(name = "IMAGE")
 	private byte[] image;
 
-	@OneToOne(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(targetEntity = Role.class, fetch = FetchType.EAGER)
 	private Role role;
 
 	@OneToMany(targetEntity = ProjectionReservedSeats.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

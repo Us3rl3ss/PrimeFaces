@@ -20,26 +20,27 @@ import org.primefaces.context.RequestContext;
 public class IdleMonitorView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public Integer IDLE_TIME = 300000;
 
 	@ManagedProperty(value = "#{userSession}")
 	UserSession userSession;
-	
+
 	@PostConstruct
-	public void init(){}
+	public void init() {
+	}
 
 	public void onIdle() throws IOException {
-		
+
 		userSession.logout();
-//		redirectToStart();
+		// redirectToStart();
 
 		RequestContext.getCurrentInstance().execute("PF('idleDialog').show();");
 		MessageUtil.warn("Zbog neaktivnosti, istekla Vam je sesija. Molimo Vas da se ponovno prijavite!");
 	}
-	
+
 	public void redirectToStart() {
-		
+
 		InetAddress ip;
 		try {
 			ip = InetAddress.getLocalHost();

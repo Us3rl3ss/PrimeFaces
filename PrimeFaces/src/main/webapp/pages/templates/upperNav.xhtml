@@ -44,13 +44,6 @@
 					<f:param name="i" value="3" />
 				</p:menuitem>
 				
-<!-- 				<p:menuitem rendered="#{userSession.logged}" -->
-<!-- 						value="Moj profil"  -->
-<!-- 						icon="ui-icon-star" -->
-<!-- 						action="#{navigationController.doViewMyProfile}"> -->
-<!-- 					<f:param name="i" value="6" /> -->
-<!-- 				</p:menuitem> -->
-				
 				<p:menuitem 
 						value="Kontakt" 
 						icon="ui-icon-document"
@@ -63,6 +56,13 @@
 						icon="ui-icon-wrench"
 						onclick="PF('loginDialog').show();">
 					<f:param name="i" value="9" />
+				</p:menuitem>
+				
+				<p:menuitem rendered="#{!userSession.logged}"
+						value="Registracija" 
+						icon="ui-icon-wrench"
+						onclick="PF('registrationDialog').show();">
+					<f:param name="i" value="10" />
 				</p:menuitem>
 				
 				<p:menuitem rendered="#{userSession.logged}"

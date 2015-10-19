@@ -19,8 +19,12 @@ public class Role implements Serializable {
 	private Integer id;
 	private String code;
 	private String name;
-
+	
 	public Role() {
+	}
+	
+	public Role(int id) {
+		this.id = id;
 	}
 
 	public Role(String name, Date created) {

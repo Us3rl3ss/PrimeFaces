@@ -11,6 +11,7 @@ import hr.primefaces.service.IUserMovieRateService;
 import hr.primefaces.service.IUserMovieReviewService;
 import hr.primefaces.service.IUserService;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.poi.util.IOUtils;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "myProfileMB")
 @ViewScoped
@@ -59,6 +66,8 @@ public class MyProfileView implements Serializable {
 
 	private User user;
 
+	private String uploadedFileNames = "";
+
 	@PostConstruct
 	public void init() {
 		
@@ -81,11 +90,19 @@ public class MyProfileView implements Serializable {
 		try {
 			user.setUpdated(new Date());
 			userService.updateUser(user);
+			
+			refreshUserData();
 		} catch (Exception ex) { // TODO ERROR HANDLING
 			ex.printStackTrace();
 		}
 	}
 	
+	private void refreshUserData() {
+		
+		user = userService.getUserById(user.getId());
+		RequestContext.getCurrentInstance().execute("$(window).off('beforeunload'); location.reload();");
+	}
+
 	public List<User> completeUser(String input) {
 		List<User> list = (List<User>) userService.getUserByUsername(input);
 		return list;
@@ -124,6 +141,28 @@ public class MyProfileView implements Serializable {
 		}
 
 		this.averageRate = averageRate;
+	}
+	
+	/**
+	 * handleFileUpload
+	 */
+	public void handleFileUpload(FileUploadEvent event) {
+		
+		UploadedFile file;
+		byte[] byteData = null;
+		
+		file = event.getFile();
+		try {
+			byteData = IOUtils.toByteArray(file.getInputstream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if (byteData != null) {
+			
+			user.setImage(byteData);
+			setUploadedFileNames(getUploadedFileNames() + file.getFileName());
+		}
 	}
 
 	public UserSession getUserSession() {
@@ -244,6 +283,14 @@ public class MyProfileView implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getUploadedFileNames() {
+		return uploadedFileNames;
+	}
+
+	public void setUploadedFileNames(String uploadedFileNames) {
+		this.uploadedFileNames = uploadedFileNames;
 	}
 
 }

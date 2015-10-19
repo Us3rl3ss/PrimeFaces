@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><ui:insert name="title">CinePlex</ui:insert></title>
+</h:head>
+<h:body>
+
+	<p:dialog header="Registracija" widgetVar="registrationDialog"
+		minHeight="40">
+		
+		<h:form id="registrationForm">
+		
+			<h:panelGrid columns="2" cellpadding="5">
+
+				<h:outputLabel value="Ime:" />
+				<p:inputText value="#{registerMB.user.firstname}" />
+				
+				<h:outputLabel value="Prezime:" />
+				<p:inputText value="#{registerMB.user.lastname}" />
+				
+				<h:outputLabel value="Korisničko ime:" />
+				<p:inputText value="#{registerMB.user.username}" />
+				
+				<h:outputLabel value="Lozinka: " />
+				<p:password value="#{registerMB.user.password}" />
+				
+				<h:outputLabel value="Email adresa:" />
+				<p:inputText value="#{registerMB.user.email}" />
+				
+				<h:outputLabel value="Datum rođenja:" />
+				<p:calendar value="#{registerMB.user.date_of_birth}"
+					pattern="dd.MM.yyyy" mask="true" />
+
+			</h:panelGrid>
+
+			<p:fileUpload id="pic"
+				fileUploadListener="#{registerMB.handleFileUpload}"
+				mode="advanced" dragDropSupport="true" update="uploadFilesList"
+				sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+				multiple="false" />
+
+			<h:panelGrid columns="2" cellpadding="5">
+
+				<p:outputLabel value="Uploadano:" />
+				<p:inputText id="uploadFilesList"
+					value="#{registerMB.uploadedFileNames}" readonly="#{true}" />
+			
+				<p:commandButton value="Spremi" action="#{registerMB.register}" />
+				<p:commandButton value="Odustani" action="#{registerMB.odustani}" />
+				
+			</h:panelGrid>
+		
+		</h:form>
+
+	</p:dialog>
+
+</h:body>
+</html>

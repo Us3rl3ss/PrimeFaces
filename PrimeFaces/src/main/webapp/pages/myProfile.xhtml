@@ -60,8 +60,22 @@
 								
 								</h:panelGrid>
 								
-									<p:commandButton value="Spremi" action="#{myProfileMB.spremi}"
-										update=":messages" />
+								<p:fileUpload id="pic"
+									fileUploadListener="#{myProfileMB.handleFileUpload}"
+									mode="advanced" dragDropSupport="true" update="uploadFilesList"
+									sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+									multiple="false" />
+					
+								<h:panelGrid columns="2" cellpadding="5">
+					
+									<p:outputLabel value="Uploadano:" />
+									<p:inputText id="uploadFilesList"
+										value="#{myProfileMB.uploadedFileNames}" readonly="#{true}" />
+								
+								</h:panelGrid>
+								
+								<p:commandButton value="Spremi" action="#{myProfileMB.spremi}"
+									update=":messages :loggedInUserForm" />
 								
 					        </p:panel>
 
