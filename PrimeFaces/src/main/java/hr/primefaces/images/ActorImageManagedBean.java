@@ -1,7 +1,7 @@
 package hr.primefaces.images;
 
 import hr.primefaces.model.Actor;
-import hr.primefaces.service.IActorService;
+import hr.primefaces.service.IMovieService;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
@@ -21,8 +21,8 @@ public class ActorImageManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{ActorService}")
-	IActorService actorService;
+	@ManagedProperty(value = "#{MovieService}")
+	IMovieService movieService;
 
 	public StreamedContent getImage() {
 		FacesContext fc = FacesContext.getCurrentInstance();
@@ -31,22 +31,29 @@ public class ActorImageManagedBean implements Serializable {
 		}
 
 		String actor_id = fc.getExternalContext().getRequestParameterMap().get("actor_id");
-		
-		if ("".equals(actor_id))
-			return new DefaultStreamedContent(); 
 
-		Actor a = actorService.getActorById(Integer.parseInt(actor_id));
+		if ("".equals(actor_id))
+			return new DefaultStreamedContent();
+
+		Actor a = movieService.getActorById(Integer.parseInt(actor_id));
 
 		byte[] photoData = a.getImage();
 		return new DefaultStreamedContent(new ByteArrayInputStream(photoData));
 	}
 
-	public IActorService getActorService() {
-		return actorService;
+	/**
+	 * @return the movieService
+	 */
+	public IMovieService getMovieService() {
+		return movieService;
 	}
 
-	public void setActorService(IActorService actorService) {
-		this.actorService = actorService;
+	/**
+	 * @param movieService
+	 *            the movieService to set
+	 */
+	public void setMovieService(IMovieService movieService) {
+		this.movieService = movieService;
 	}
 
 }

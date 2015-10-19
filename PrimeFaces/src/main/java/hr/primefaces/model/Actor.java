@@ -34,114 +34,255 @@ public class Actor implements Serializable {
 	private String lastname;
 
 	@Column(name = "date_of_birth", nullable = false)
-	private Date date_of_birth;
+	private Date dateOfBirth;
 
-	private String place_of_birth;
+	@Column(name = "place_of_birth", nullable = false)
+	private String placeOfBirth;
 	private String info;
-	
+
 	@Lob
 	@Basic(fetch = FetchType.EAGER)
 	@Column(name = "IMAGE")
 	private byte[] image;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "movie_actor", joinColumns = { @JoinColumn(name = "actor_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "movie_id", referencedColumnName = "id") })
+	@JoinTable(name = "movie_actor", joinColumns = { @JoinColumn(name = "actor_id", referencedColumnName = "id") },
+		inverseJoinColumns = { @JoinColumn(name = "movie_id", referencedColumnName = "id") })
 	private List<Movie> movieList;
 
 	public Actor() {
 	}
 
-	public Actor(String firstname, String lastname, Date dateOfBirth,
-			Date created) {
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.date_of_birth = dateOfBirth;
+	public Actor(final String p_firstname, final String p_lastname, final Date p_dateOfBirth, final Date p_created) {
+		this.firstname = p_firstname;
+		this.lastname = p_lastname;
+		this.dateOfBirth = p_dateOfBirth;
 	}
 
-	public Actor(String firstname, String lastname, Date dateOfBirth,
-			String placeOfBirth, String info, Date created) {
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.date_of_birth = dateOfBirth;
-		this.place_of_birth = placeOfBirth;
-		this.info = info;
+	public Actor(final String p_firstname, final String p_lastname, final Date p_dateOfBirth, final String p_placeOfBirth, final String p_info,
+			final Date p_created) {
+		this.firstname = p_firstname;
+		this.lastname = p_lastname;
+		this.dateOfBirth = p_dateOfBirth;
+		this.placeOfBirth = p_placeOfBirth;
+		this.info = p_info;
 	}
-	
+
 	@Override
-	public boolean equals(Object obj) {
-		
-		if (this.getId() == ((Actor) obj).getId())
-				return true;
-		else
-			return false;
+	public boolean equals(final Object p_obj){
+
+		return this.getId() == ((Actor) p_obj).getId();
 	}
 
+//	/* (non-Javadoc)
+//	 * @see java.lang.Object#hashCode()
+//	 */
+//	@Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((date_of_birth == null) ? 0 : date_of_birth.hashCode());
+//		result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
+//		result = prime * result + ((id == null) ? 0 : id.hashCode());
+//		result = prime * result + Arrays.hashCode(image);
+//		result = prime * result + ((info == null) ? 0 : info.hashCode());
+//		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
+//		result = prime * result + ((movieList == null) ? 0 : movieList.hashCode());
+//		result = prime * result + ((place_of_birth == null) ? 0 : place_of_birth.hashCode());
+//		return result;
+//	}
+//
+//	/* (non-Javadoc)
+//	 * @see java.lang.Object#equals(java.lang.Object)
+//	 */
+//	@Override
+//	public boolean equals(final Object p_obj) {
+//		if (this == p_obj) {
+//			return true;
+//		}
+//		if (p_obj == null) {
+//			return false;
+//		}
+//		if (getClass() != p_obj.getClass()) {
+//			return false;
+//		}
+//		final Actor other = (Actor) p_obj;
+//		if (date_of_birth == null) {
+//			if (other.date_of_birth != null) {
+//				return false;
+//			}
+//		}
+//		else if (!date_of_birth.equals(other.date_of_birth)) {
+//			return false;
+//		}
+//		if (firstname == null) {
+//			if (other.firstname != null) {
+//				return false;
+//			}
+//		}
+//		else if (!firstname.equals(other.firstname)) {
+//			return false;
+//		}
+//		if (id == null) {
+//			if (other.id != null) {
+//				return false;
+//			}
+//		}
+//		else if (!id.equals(other.id)) {
+//			return false;
+//		}
+//		if (!Arrays.equals(image, other.image)) {
+//			return false;
+//		}
+//		if (info == null) {
+//			if (other.info != null) {
+//				return false;
+//			}
+//		}
+//		else if (!info.equals(other.info)) {
+//			return false;
+//		}
+//		if (lastname == null) {
+//			if (other.lastname != null) {
+//				return false;
+//			}
+//		}
+//		else if (!lastname.equals(other.lastname)) {
+//			return false;
+//		}
+//		if (movieList == null) {
+//			if (other.movieList != null) {
+//				return false;
+//			}
+//		}
+//		else if (!movieList.equals(other.movieList)) {
+//			return false;
+//		}
+//		if (place_of_birth == null) {
+//			if (other.place_of_birth != null) {
+//				return false;
+//			}
+//		}
+//		else if (!place_of_birth.equals(other.place_of_birth)) {
+//			return false;
+//		}
+//		return true;
+//	}
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the id
+	 */
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+	/**
+	 * @return the firstname
+	 */
 	public String getFirstname() {
 		return firstname;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
+	/**
+	 * @return the lastname
+	 */
 	public String getLastname() {
 		return lastname;
 	}
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	public Date getDate_of_birth() {
-		return date_of_birth;
-	}
-
-	public void setDate_of_birth(Date date_of_birth) {
-		this.date_of_birth = date_of_birth;
-	}
-
-	public String getPlace_of_birth() {
-		return place_of_birth;
-	}
-
-	public void setPlace_of_birth(String place_of_birth) {
-		this.place_of_birth = place_of_birth;
-	}
-
+	/**
+	 * @return the info
+	 */
 	public String getInfo() {
 		return info;
 	}
 
-	public void setInfo(String info) {
-		this.info = info;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public List<Movie> getMovieList() {
-		return movieList;
-	}
-
-	public void setMovieList(List<Movie> movieList) {
-		this.movieList = movieList;
-	}
-
+	/**
+	 * @return the image
+	 */
 	public byte[] getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
-		this.image = image;
+	/**
+	 * @return the movieList
+	 */
+	public List<Movie> getMovieList() {
+		return movieList;
+	}
+
+	/**
+	 * @param p_id the id to set
+	 */
+	public void setId(final Integer p_id) {
+		this.id = p_id;
+	}
+
+	/**
+	 * @param p_firstname the firstname to set
+	 */
+	public void setFirstname(final String p_firstname) {
+		this.firstname = p_firstname;
+	}
+
+	/**
+	 * @param p_lastname the lastname to set
+	 */
+	public void setLastname(final String p_lastname) {
+		this.lastname = p_lastname;
+	}
+
+	/**
+	 * @param p_info the info to set
+	 */
+	public void setInfo(final String p_info) {
+		this.info = p_info;
+	}
+
+	/**
+	 * @return the dateOfBirth
+	 */
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	/**
+	 * @return the placeOfBirth
+	 */
+	public String getPlaceOfBirth() {
+		return placeOfBirth;
+	}
+
+	/**
+	 * @param p_dateOfBirth the dateOfBirth to set
+	 */
+	public void setDateOfBirth(final Date p_dateOfBirth) {
+		this.dateOfBirth = p_dateOfBirth;
+	}
+
+	/**
+	 * @param p_placeOfBirth the placeOfBirth to set
+	 */
+	public void setPlaceOfBirth(final String p_placeOfBirth) {
+		this.placeOfBirth = p_placeOfBirth;
+	}
+
+	/**
+	 * @param p_image the image to set
+	 */
+	public void setImage(final byte[] p_image) {
+		this.image = p_image;
+	}
+
+	/**
+	 * @param p_movieList the movieList to set
+	 */
+	public void setMovieList(final List<Movie> p_movieList) {
+		this.movieList = p_movieList;
 	}
 
 }

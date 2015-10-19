@@ -1,7 +1,7 @@
 package hr.primefaces.bean;
 
 import hr.primefaces.model.Genre;
-import hr.primefaces.service.IGenreService;
+import hr.primefaces.service.IMovieService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,8 +17,8 @@ public class GetGenreView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{GenreService}")
-	IGenreService genreService;
+	@ManagedProperty(value = "#{MovieService}")
+	IMovieService movieService;
 
 	private Genre genre = new Genre();
 
@@ -26,15 +26,7 @@ public class GetGenreView implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		genreList = genreService.getGenres();
-	}
-
-	public IGenreService getGenreService() {
-		return genreService;
-	}
-
-	public void setGenreService(IGenreService genreService) {
-		this.genreService = genreService;
+		genreList = movieService.getGenres();
 	}
 
 	public Genre getGenre() {
@@ -45,16 +37,27 @@ public class GetGenreView implements Serializable {
 		this.genre = genre;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public List<Genre> getGenreList() {
 		return genreList;
 	}
 
 	public void setGenreList(List<Genre> genreList) {
 		this.genreList = genreList;
+	}
+
+	/**
+	 * @return the movieService
+	 */
+	public IMovieService getMovieService() {
+		return movieService;
+	}
+
+	/**
+	 * @param movieService
+	 *            the movieService to set
+	 */
+	public void setMovieService(IMovieService movieService) {
+		this.movieService = movieService;
 	}
 
 }

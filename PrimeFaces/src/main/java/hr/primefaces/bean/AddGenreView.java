@@ -1,7 +1,7 @@
 package hr.primefaces.bean;
 
 import hr.primefaces.model.Genre;
-import hr.primefaces.service.IGenreService;
+import hr.primefaces.service.IMovieService;
 import hr.primefaces.util.MessageUtil;
 
 import java.io.Serializable;
@@ -20,8 +20,8 @@ public class AddGenreView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{GenreService}")
-	IGenreService genreService;
+	@ManagedProperty(value = "#{MovieService}")
+	IMovieService movieService;
 
 	private Genre genre = new Genre();
 
@@ -36,7 +36,7 @@ public class AddGenreView implements Serializable {
 
 		try {
 			genre.setCreated(new Date());
-			genreService.addGenre(genre);
+			movieService.addGenre(genre);
 			genre = new Genre();
 			MessageUtil.info("Podaci uspješno spremljeni!");
 		} catch (HibernateException hex) {
@@ -48,12 +48,19 @@ public class AddGenreView implements Serializable {
 		}
 	}
 
-	public IGenreService getGenreService() {
-		return genreService;
+	/**
+	 * @return the movieService
+	 */
+	public IMovieService getMovieService() {
+		return movieService;
 	}
 
-	public void setGenreService(IGenreService genreService) {
-		this.genreService = genreService;
+	/**
+	 * @param movieService
+	 *            the movieService to set
+	 */
+	public void setMovieService(IMovieService movieService) {
+		this.movieService = movieService;
 	}
 
 	public Genre getGenre() {

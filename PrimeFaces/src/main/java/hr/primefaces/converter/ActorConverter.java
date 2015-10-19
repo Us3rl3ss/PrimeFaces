@@ -1,7 +1,7 @@
 package hr.primefaces.converter;
 
 import hr.primefaces.model.Actor;
-import hr.primefaces.service.IActorService;
+import hr.primefaces.service.IMovieService;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -16,14 +16,14 @@ import javax.faces.convert.ConverterException;
 @RequestScoped
 public class ActorConverter implements Converter {
 
-	@ManagedProperty("#{ActorService}")
-	private IActorService actorService;
+	@ManagedProperty("#{MovieService}")
+	private IMovieService movieService;
 
 	public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
 
 		if (value != null && value.trim().length() > 0) {
 			try {
-				return actorService.getActorById(Integer.parseInt(value));
+				return movieService.getActorById(Integer.parseInt(value));
 			} catch (NumberFormatException e) {
 				throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid object."));
 			}
@@ -40,12 +40,19 @@ public class ActorConverter implements Converter {
 		}
 	}
 
-	public IActorService getActorService() {
-		return actorService;
+	/**
+	 * @return the movieService
+	 */
+	public IMovieService getMovieService() {
+		return movieService;
 	}
 
-	public void setActorService(IActorService actorService) {
-		this.actorService = actorService;
+	/**
+	 * @param movieService
+	 *            the movieService to set
+	 */
+	public void setMovieService(IMovieService movieService) {
+		this.movieService = movieService;
 	}
 
 }

@@ -29,45 +29,28 @@
 	<!-- Service Declaration -->
 	<bean id="UserService" class="hr.primefaces.service.impl.UserService">
 		<property name="userDAO" ref="UserDAO" />
+		<property name="userMovieRateDAO" ref="UserMovieRateDAO" />
+		<property name="userMovieReviewDAO" ref="UserMovieReviewDAO" />
+		<property name="userFavoriteMovieDAO" ref="UserFavoriteMovieDAO" />
+		<property name="userFollowingDAO" ref="UserFollowingDAO" />
 	</bean>
-	<bean id="MovieService" class="hr.primefaces.service.impl.MovieService">
-		<property name="movieDAO" ref="MovieDAO" />
-	</bean>
-	<bean id="ActorService" class="hr.primefaces.service.impl.ActorService">
-		<property name="actorDAO" ref="ActorDAO" />
-	</bean>
-	<bean id="GenreService" class="hr.primefaces.service.impl.GenreService">
-		<property name="genreDAO" ref="GenreDAO" />
-	</bean>
+	
 	<bean id="TheaterService" class="hr.primefaces.service.impl.TheaterService">
 		<property name="theaterDAO" ref="TheaterDAO" />
-	</bean>
-	<bean id="CinemaService" class="hr.primefaces.service.impl.CinemaService">
 		<property name="cinemaDAO" ref="CinemaDAO" />
-	</bean>
-	<bean id="CinemaMovieService" class="hr.primefaces.service.impl.CinemaMovieService">
+		<property name="cinemaSeatsDAO" ref="CinemaSeatsDAO" />
 		<property name="cinemaMovieDAO" ref="CinemaMovieDAO" />
 	</bean>
+	
+	<bean id="MovieService" class="hr.primefaces.service.impl.MovieService">
+		<property name="movieDAO" ref="MovieDAO" />
+		<property name="actorDAO" ref="ActorDAO" />
+		<property name="genreDAO" ref="GenreDAO" />
+	</bean>
+	
 	<bean id="ProjectionService" class="hr.primefaces.service.impl.ProjectionService">
 		<property name="projectionDAO" ref="ProjectionDAO" />
-	</bean>
-	<bean id="CinemaSeatsService" class="hr.primefaces.service.impl.CinemaSeatsService">
-		<property name="cinemaSeatsDAO" ref="CinemaSeatsDAO" />
-	</bean>
-	<bean id="ProjectionReservedSeatsService" class="hr.primefaces.service.impl.ProjectionReservedSeatsService">
 		<property name="projectionReservedSeatsDAO" ref="ProjectionReservedSeatsDAO" />
-	</bean>
-	<bean id="UserMovieRateService" class="hr.primefaces.service.impl.UserMovieRateService">
-		<property name="userMovieRateDAO" ref="UserMovieRateDAO" />
-	</bean>
-	<bean id="UserMovieReviewService" class="hr.primefaces.service.impl.UserMovieReviewService">
-		<property name="userMovieReviewDAO" ref="UserMovieReviewDAO" />
-	</bean>
-	<bean id="UserFavoriteMovieService" class="hr.primefaces.service.impl.UserFavoriteMovieService">
-		<property name="userFavoriteMovieDAO" ref="UserFavoriteMovieDAO" />
-	</bean>
-	<bean id="UserFollowingService" class="hr.primefaces.service.impl.UserFollowingService">
-		<property name="userFollowingDAO" ref="UserFollowingDAO" />
 	</bean>
 	
 	

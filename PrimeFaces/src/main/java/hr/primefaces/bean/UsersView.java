@@ -6,10 +6,6 @@ import hr.primefaces.model.UserFollowing;
 import hr.primefaces.model.UserMovieRate;
 import hr.primefaces.model.UserMovieReview;
 import hr.primefaces.service.IMovieService;
-import hr.primefaces.service.IUserFavoriteMovieService;
-import hr.primefaces.service.IUserFollowingService;
-import hr.primefaces.service.IUserMovieRateService;
-import hr.primefaces.service.IUserMovieReviewService;
 import hr.primefaces.service.IUserService;
 
 import java.io.Serializable;
@@ -34,20 +30,8 @@ public class UsersView implements Serializable {
 	@ManagedProperty(value = "#{UserService}")
 	IUserService userService;
 
-	@ManagedProperty(value = "#{UserMovieRateService}")
-	IUserMovieRateService userMovieRateService;
-
-	@ManagedProperty(value = "#{UserMovieReviewService}")
-	IUserMovieReviewService userMovieReviewService;
-
-	@ManagedProperty(value = "#{UserFavoriteMovieService}")
-	IUserFavoriteMovieService userFavoriteMovieService;
-
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
-
-	@ManagedProperty(value = "#{UserFollowingService}")
-	IUserFollowingService userFollowingService;
 
 	private List<UserMovieRate> userMovieRateList;
 	private List<UserMovieReview> userMovieReviewList;
@@ -62,7 +46,7 @@ public class UsersView implements Serializable {
 	private User user;
 
 	private boolean inFollowList = false;
-	
+
 	private String userInfoRenderCss = "display:none;";
 
 	@PostConstruct
@@ -70,13 +54,10 @@ public class UsersView implements Serializable {
 	}
 
 	public void postavi() {
-		
-		this.userMovieRateList = userMovieRateService
-				.getUserMovieRateByUser(this.user);
-		this.userMovieReviewList = userMovieReviewService
-				.getUserMovieReviewByUser(this.user);
-		this.userFavoriteMovieList = userFavoriteMovieService
-				.getUserFavoriteMovieByUser(this.user);
+
+		this.userMovieRateList = userService.getUserMovieRateByUser(this.user);
+		this.userMovieReviewList = userService.getUserMovieReviewByUser(this.user);
+		this.userFavoriteMovieList = userService.getUserFavoriteMovieByUser(this.user);
 
 		boolean inFollowList = isInFollowList(userSession.getUser(), this.user);
 
@@ -121,9 +102,9 @@ public class UsersView implements Serializable {
 		uf.setUser_id(user_id);
 		uf.setFollow_id(follow_id);
 		uf.setCreated(new Date());
-		
-		userFollowingService.addUserFollowing(uf);
-		
+
+		userService.addUserFollowing(uf);
+
 		postavi();
 	}
 
@@ -132,18 +113,17 @@ public class UsersView implements Serializable {
 		Integer user_id = userSession.getUser().getId();
 		Integer follow_id = this.user.getId();
 
-		UserFollowing uf = userFollowingService.getUserFriends(new User(user_id), new User(follow_id));
-		userFollowingService.deleteUserFollowing(uf);
-		
+		UserFollowing uf = userService.getUserFriends(new User(user_id), new User(follow_id));
+		userService.deleteUserFollowing(uf);
+
 		postavi();
 	}
-	
+
 	public void calculateAverageRate() {
 
 		int averageRate = 0;
 
-		Double avg = userMovieRateService
-				.getAverageRateByMovie(this.selectedRate.getMovie());
+		Double avg = userService.getAverageRateByMovie(this.selectedRate.getMovie());
 
 		try {
 
@@ -183,33 +163,6 @@ public class UsersView implements Serializable {
 		this.user = user;
 	}
 
-	public IUserMovieRateService getUserMovieRateService() {
-		return userMovieRateService;
-	}
-
-	public void setUserMovieRateService(
-			IUserMovieRateService userMovieRateService) {
-		this.userMovieRateService = userMovieRateService;
-	}
-
-	public IUserMovieReviewService getUserMovieReviewService() {
-		return userMovieReviewService;
-	}
-
-	public void setUserMovieReviewService(
-			IUserMovieReviewService userMovieReviewService) {
-		this.userMovieReviewService = userMovieReviewService;
-	}
-
-	public IUserFavoriteMovieService getUserFavoriteMovieService() {
-		return userFavoriteMovieService;
-	}
-
-	public void setUserFavoriteMovieService(
-			IUserFavoriteMovieService userFavoriteMovieService) {
-		this.userFavoriteMovieService = userFavoriteMovieService;
-	}
-
 	public IMovieService getMovieService() {
 		return movieService;
 	}
@@ -238,8 +191,7 @@ public class UsersView implements Serializable {
 		return userFavoriteMovieList;
 	}
 
-	public void setUserFavoriteMovieList(
-			List<UserFavoriteMovie> userFavoriteMovieList) {
+	public void setUserFavoriteMovieList(List<UserFavoriteMovie> userFavoriteMovieList) {
 		this.userFavoriteMovieList = userFavoriteMovieList;
 	}
 
@@ -281,15 +233,6 @@ public class UsersView implements Serializable {
 
 	public void setInFollowList(boolean inFollowList) {
 		this.inFollowList = inFollowList;
-	}
-
-	public IUserFollowingService getUserFollowingService() {
-		return userFollowingService;
-	}
-
-	public void setUserFollowingService(
-			IUserFollowingService userFollowingService) {
-		this.userFollowingService = userFollowingService;
 	}
 
 	public String getUserInfoRenderCss() {

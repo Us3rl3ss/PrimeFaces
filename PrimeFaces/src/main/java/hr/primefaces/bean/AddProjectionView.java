@@ -4,7 +4,6 @@ import hr.primefaces.model.Cinema;
 import hr.primefaces.model.Movie;
 import hr.primefaces.model.Projection;
 import hr.primefaces.model.Theater;
-import hr.primefaces.service.ICinemaService;
 import hr.primefaces.service.IMovieService;
 import hr.primefaces.service.IProjectionService;
 import hr.primefaces.service.ITheaterService;
@@ -42,9 +41,6 @@ public class AddProjectionView implements Serializable {
 	@ManagedProperty(value = "#{TheaterService}")
 	ITheaterService theaterService;
 
-	@ManagedProperty(value = "#{CinemaService}")
-	ICinemaService cinemaService;
-
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
 
@@ -56,10 +52,10 @@ public class AddProjectionView implements Serializable {
 
 	private ScheduleModel eventModel = new DefaultScheduleModel();
 	private ScheduleEvent event = new DefaultScheduleEvent();
-	
+
 	private Date currStartDate;
 	private Date currEndDate;
-	
+
 	private boolean forUpdate;
 
 	@PostConstruct
@@ -68,18 +64,19 @@ public class AddProjectionView implements Serializable {
 		theaterList = theaterService.getTheaters();
 		projection.setTheater(theaterList.get(0));
 		postaviCinemaList();
-	
-		//lazy fetch - projectionService - dohvat čiji je početak između dvaju datuma
-//		eventModel = new LazyScheduleModel() {
-//            
-//            @Override
-//            public void loadEvents(Date start, Date end) {
-//            	
-//            	currStartDate = start;
-//            	currEndDate = end;
-//            	postaviProjectionListInDateRange();
-//            }   
-//        };
+
+		// lazy fetch - projectionService - dohvat čiji je početak između dvaju
+		// datuma
+		// eventModel = new LazyScheduleModel() {
+		//
+		// @Override
+		// public void loadEvents(Date start, Date end) {
+		//
+		// currStartDate = start;
+		// currEndDate = end;
+		// postaviProjectionListInDateRange();
+		// }
+		// };
 	}
 
 	/**
@@ -99,7 +96,7 @@ public class AddProjectionView implements Serializable {
 			MessageUtil.error("Došlo je do greške!");
 		}
 	}
-	
+
 	/**
 	 * uredi
 	 */
@@ -117,7 +114,7 @@ public class AddProjectionView implements Serializable {
 			MessageUtil.error("Došlo je do greške!");
 		}
 	}
-	
+
 	/**
 	 * obrisi
 	 */
@@ -139,40 +136,40 @@ public class AddProjectionView implements Serializable {
 	/**
 	 * postaviCinemaList
 	 */
-	public void postaviCinemaList(){
+	public void postaviCinemaList() {
 
-		cinemaList = cinemaService.getCinemaByTheater(projection.getTheater());
-		
+		cinemaList = theaterService.getCinemaByTheater(projection.getTheater());
+
 		if (cinemaList.size() > 0) {
-			
+
 			projection.setCinema(cinemaList.get(0));
 			RequestContext.getCurrentInstance().update("addProjectionForm:dropdownPanel");
 			postaviProjectionList();
 		}
 	}
-	
+
 	/**
 	 * postaviProjectionList
 	 */
-	public void postaviProjectionList(){
+	public void postaviProjectionList() {
 
 		eventModel = new DefaultScheduleModel();
-    	for (Projection p: projectionService.getProjectionsByCinema(projection.getCinema())) {
-    		eventModel.addEvent(new DefaultScheduleEvent(p.getMovie().getName(), p.getStart_time(), p.getEnd_time()));
-    	}		
-    	RequestContext.getCurrentInstance().update("addProjectionForm:schedule");
+		for (Projection p : projectionService.getProjectionsByCinema(projection.getCinema())) {
+			eventModel.addEvent(new DefaultScheduleEvent(p.getMovie().getName(), p.getStart_time(), p.getEnd_time()));
+		}
+		RequestContext.getCurrentInstance().update("addProjectionForm:schedule");
 	}
-	
+
 	/**
 	 * postaviProjectionListInDateRange
 	 */
-	public void postaviProjectionListInDateRange(){
+	public void postaviProjectionListInDateRange() {
 
 		eventModel = new DefaultScheduleModel();
-    	for (Projection p: projectionService.getProjectionByCinemaBetweenStartEnd(projection.getCinema(), currStartDate, currEndDate)) {
-    		eventModel.addEvent(new DefaultScheduleEvent(p.getMovie().getName(), p.getStart_time(), p.getEnd_time()));
-    	}		
-    	RequestContext.getCurrentInstance().update("addProjectionForm:schedule");
+		for (Projection p : projectionService.getProjectionByCinemaBetweenStartEnd(projection.getCinema(), currStartDate, currEndDate)) {
+			eventModel.addEvent(new DefaultScheduleEvent(p.getMovie().getName(), p.getStart_time(), p.getEnd_time()));
+		}
+		RequestContext.getCurrentInstance().update("addProjectionForm:schedule");
 	}
 
 	/**
@@ -183,52 +180,51 @@ public class AddProjectionView implements Serializable {
 		projection.setStart_time(((DefaultScheduleEvent) selectEvent.getObject()).getStartDate());
 		projection.setEnd_time(((DefaultScheduleEvent) selectEvent.getObject()).getEndDate());
 		projection = projectionService.getProjectionByCinemaStartEnd(projection.getCinema(), projection.getStart_time(), projection.getEnd_time());
-    }
+	}
 
 	/**
 	 * onDateSelect
 	 */
-    public void onDateSelect(SelectEvent selectEvent) {
-    	forUpdate = false;
-    	projection.setStart_time((Date) selectEvent.getObject());
-    	projection.setEnd_time((Date) selectEvent.getObject());
-        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-    }
+	public void onDateSelect(SelectEvent selectEvent) {
+		forUpdate = false;
+		projection.setStart_time((Date) selectEvent.getObject());
+		projection.setEnd_time((Date) selectEvent.getObject());
+		event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+	}
 
 	/**
 	 * onEventMove
 	 */
-    public void onEventMove(ScheduleEntryMoveEvent selectEvent) {
-    	Date initialStartTime = setDateDifference(selectEvent.getScheduleEvent().getStartDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
-    	Date initialEndTime = setDateDifference(selectEvent.getScheduleEvent().getEndDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
-    	projection = projectionService.getProjectionByCinemaStartEnd(projection.getCinema(), initialStartTime, initialEndTime);
-    	projection.setStart_time(selectEvent.getScheduleEvent().getStartDate());
+	public void onEventMove(ScheduleEntryMoveEvent selectEvent) {
+		Date initialStartTime = setDateDifference(selectEvent.getScheduleEvent().getStartDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
+		Date initialEndTime = setDateDifference(selectEvent.getScheduleEvent().getEndDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
+		projection = projectionService.getProjectionByCinemaStartEnd(projection.getCinema(), initialStartTime, initialEndTime);
+		projection.setStart_time(selectEvent.getScheduleEvent().getStartDate());
 		projection.setEnd_time(selectEvent.getScheduleEvent().getEndDate());
 		uredi();
-    }
+	}
 
 	/**
 	 * onEventResize
 	 */
-    public void onEventResize(ScheduleEntryResizeEvent selectEvent) {
-    	Date initialEndTime = setDateDifference(selectEvent.getScheduleEvent().getEndDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
-    	projection = projectionService.getProjectionByCinemaStartEnd(projection.getCinema(), selectEvent.getScheduleEvent().getStartDate(), initialEndTime);
-    	projection.setStart_time(selectEvent.getScheduleEvent().getStartDate());
+	public void onEventResize(ScheduleEntryResizeEvent selectEvent) {
+		Date initialEndTime = setDateDifference(selectEvent.getScheduleEvent().getEndDate(), selectEvent.getDayDelta(), selectEvent.getMinuteDelta());
+		projection = projectionService.getProjectionByCinemaStartEnd(projection.getCinema(), selectEvent.getScheduleEvent().getStartDate(), initialEndTime);
+		projection.setStart_time(selectEvent.getScheduleEvent().getStartDate());
 		projection.setEnd_time(selectEvent.getScheduleEvent().getEndDate());
 		uredi();
-    }
+	}
 
 	/**
 	 * setDateDifference
 	 */
-    public Date setDateDifference(Date initialDate, int dayDiff, int minDiff) {
-    	Calendar cal = Calendar.getInstance();
-    	cal.setTime(initialDate);
-    	cal.add(Calendar.DAY_OF_MONTH, dayDiff * (-1));
-    	cal.add(Calendar.MINUTE, minDiff * (-1));
-    	return cal.getTime();
-    }
-     
+	public Date setDateDifference(Date initialDate, int dayDiff, int minDiff) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(initialDate);
+		cal.add(Calendar.DAY_OF_MONTH, dayDiff * (-1));
+		cal.add(Calendar.MINUTE, minDiff * (-1));
+		return cal.getTime();
+	}
 
 	public IProjectionService getProjectionService() {
 		return projectionService;
@@ -244,14 +240,6 @@ public class AddProjectionView implements Serializable {
 
 	public void setTheaterService(ITheaterService theaterService) {
 		this.theaterService = theaterService;
-	}
-
-	public ICinemaService getCinemaService() {
-		return cinemaService;
-	}
-
-	public void setCinemaService(ICinemaService cinemaService) {
-		this.cinemaService = cinemaService;
 	}
 
 	public IMovieService getMovieService() {
@@ -333,6 +321,5 @@ public class AddProjectionView implements Serializable {
 	public void setCurrEndDate(Date currEndDate) {
 		this.currEndDate = currEndDate;
 	}
-
 
 }

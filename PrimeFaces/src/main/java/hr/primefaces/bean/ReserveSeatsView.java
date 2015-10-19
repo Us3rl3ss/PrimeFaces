@@ -6,10 +6,9 @@ import hr.primefaces.model.Genre;
 import hr.primefaces.model.Movie;
 import hr.primefaces.model.Projection;
 import hr.primefaces.model.ProjectionReservedSeats;
-import hr.primefaces.service.ICinemaSeatsService;
 import hr.primefaces.service.IMovieService;
-import hr.primefaces.service.IProjectionReservedSeatsService;
 import hr.primefaces.service.IProjectionService;
+import hr.primefaces.service.ITheaterService;
 import hr.primefaces.util.DateConverter;
 import hr.primefaces.util.MessageUtil;
 
@@ -39,12 +38,9 @@ public class ReserveSeatsView implements Serializable {
 	@ManagedProperty(value = "#{userSession}")
 	UserSession userSession;
 
-	@ManagedProperty(value = "#{CinemaSeatsService}")
-	ICinemaSeatsService cinemaSeatsService;
-
-	@ManagedProperty(value = "#{ProjectionReservedSeatsService}")
-	IProjectionReservedSeatsService projectionReservedSeatsService;
-
+	@ManagedProperty(value = "#{TheaterService}")
+	ITheaterService theaterService;
+	
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
 
@@ -81,7 +77,7 @@ public class ReserveSeatsView implements Serializable {
 			projection.getMovie().setListOfGenresText(getListOfGenresText(genreList));
 			
 			int numberOfSeats = projection.getCinema().getNumber_of_seats();
-			int numberOfFreeSeats = projectionReservedSeatsService.getProjectionReservedSeatsByProjection(projection).size();
+			int numberOfFreeSeats = projectionService.getProjectionReservedSeatsByProjection(projection).size();
 
 			String numberOfFreeSeatsText = numberOfFreeSeats + "/" + numberOfSeats;
 
@@ -140,7 +136,7 @@ public class ReserveSeatsView implements Serializable {
 				while (saveIter.hasNext()) {
 					
 					ProjectionReservedSeats prs = saveIter.next();
-					projectionReservedSeatsService.addProjectionReservedSeats(prs);
+					projectionService.addProjectionReservedSeats(prs);
 				}
 			}
 			
@@ -195,13 +191,13 @@ public class ReserveSeatsView implements Serializable {
 
 	public void setSeats() {
 
-		this.setCinemaSeatsList(cinemaSeatsService
+		this.setCinemaSeatsList(theaterService
 				.getCinemaSeatsByCinemaId(projection.getCinema().getId()));
 	}
 
 	public void setSelectedSeats() {
 
-		List<ProjectionReservedSeats> prsList = projectionReservedSeatsService
+		List<ProjectionReservedSeats> prsList = projectionService
 				.getProjectionReservedSeatsByProjection(this.projection);
 
 		Iterator<ProjectionReservedSeats> iter = prsList.iterator();
@@ -222,7 +218,7 @@ public class ReserveSeatsView implements Serializable {
 	
 	public void setSavedCinemaSeatsByCurrUserList() {
 
-		List<ProjectionReservedSeats> prsList = projectionReservedSeatsService
+		List<ProjectionReservedSeats> prsList = projectionService
 				.getProjectionReservedSeatsByProjectionAndUser(this.projection, userSession.getUser());
 
 		Iterator<ProjectionReservedSeats> iter = prsList.iterator();
@@ -299,14 +295,6 @@ public class ReserveSeatsView implements Serializable {
 	public void pretrazi() {
 	}
 
-	public ICinemaSeatsService getCinemaSeatsService() {
-		return cinemaSeatsService;
-	}
-
-	public void setCinemaSeatsService(ICinemaSeatsService cinemaSeatsService) {
-		this.cinemaSeatsService = cinemaSeatsService;
-	}
-
 	public Projection getProjection() {
 		return projection;
 	}
@@ -329,15 +317,6 @@ public class ReserveSeatsView implements Serializable {
 
 	public void setSelectedCinemaSeatsList(List<String> selectedCinemaSeatsList) {
 		this.selectedCinemaSeatsList = selectedCinemaSeatsList;
-	}
-
-	public IProjectionReservedSeatsService getProjectionReservedSeatsService() {
-		return projectionReservedSeatsService;
-	}
-
-	public void setProjectionReservedSeatsService(
-			IProjectionReservedSeatsService projectionReservedSeatsService) {
-		this.projectionReservedSeatsService = projectionReservedSeatsService;
 	}
 
 	public List<String> getSavedCinemaSeatsList() {
@@ -402,6 +381,20 @@ public class ReserveSeatsView implements Serializable {
 
 	public void setProjectionEnd(String projectionEnd) {
 		this.projectionEnd = projectionEnd;
+	}
+
+	/**
+	 * @return the theaterService
+	 */
+	public ITheaterService getTheaterService() {
+		return theaterService;
+	}
+
+	/**
+	 * @param theaterService the theaterService to set
+	 */
+	public void setTheaterService(ITheaterService theaterService) {
+		this.theaterService = theaterService;
 	}
 
 }

@@ -5,8 +5,6 @@ import hr.primefaces.model.Genre;
 import hr.primefaces.model.Movie;
 import hr.primefaces.model.Theater;
 import hr.primefaces.model.User;
-import hr.primefaces.service.IActorService;
-import hr.primefaces.service.IGenreService;
 import hr.primefaces.service.IMovieService;
 import hr.primefaces.service.ITheaterService;
 import hr.primefaces.service.IUserService;
@@ -31,14 +29,8 @@ public class SearchView implements Serializable {
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
 
-	@ManagedProperty(value = "#{ActorService}")
-	IActorService actorService;
-
 	@ManagedProperty(value = "#{TheaterService}")
 	ITheaterService theaterService;
-
-	@ManagedProperty(value = "#{GenreService}")
-	IGenreService genreService;
 
 	@ManagedProperty(value = "#{UserService}")
 	IUserService userService;
@@ -59,18 +51,17 @@ public class SearchView implements Serializable {
 	}
 
 	public List<Actor> completeActor(String input) {
-		List<Actor> list = (List<Actor>) actorService.getActorByName(input);
+		List<Actor> list = (List<Actor>) movieService.getActorByName(input);
 		return list;
 	}
 
 	public List<Theater> completeTheater(String input) {
-		List<Theater> list = (List<Theater>) theaterService
-				.getTheaterByName(input);
+		List<Theater> list = (List<Theater>) theaterService.getTheaterByName(input);
 		return list;
 	}
 
 	public List<Genre> completeGenre(String input) {
-		List<Genre> list = (List<Genre>) genreService.getGenreByName(input);
+		List<Genre> list = (List<Genre>) movieService.getGenreByName(input);
 		return list;
 	}
 
@@ -84,11 +75,7 @@ public class SearchView implements Serializable {
 	}
 
 	public void onItemSelect(SelectEvent event) {
-		FacesContext.getCurrentInstance()
-				.addMessage(
-						null,
-						new FacesMessage("Item Selected", event.getObject()
-								.toString()));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item Selected", event.getObject().toString()));
 	}
 
 	public IMovieService getMovieService() {
@@ -97,18 +84,6 @@ public class SearchView implements Serializable {
 
 	public void setMovieService(IMovieService movieService) {
 		this.movieService = movieService;
-	}
-
-	public IActorService getActorService() {
-		return actorService;
-	}
-
-	public void setActorService(IActorService actorService) {
-		this.actorService = actorService;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	public String getSearchInput() {
@@ -157,14 +132,6 @@ public class SearchView implements Serializable {
 
 	public void setSelectedMovieList(List<Movie> selectedMovieList) {
 		this.selectedMovieList = selectedMovieList;
-	}
-
-	public IGenreService getGenreService() {
-		return genreService;
-	}
-
-	public void setGenreService(IGenreService genreService) {
-		this.genreService = genreService;
 	}
 
 	public Genre getGenre() {

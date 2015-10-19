@@ -1,7 +1,7 @@
 package hr.primefaces.converter;
 
 import hr.primefaces.model.Cinema;
-import hr.primefaces.service.ICinemaService;
+import hr.primefaces.service.ITheaterService;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -16,14 +16,14 @@ import javax.faces.convert.ConverterException;
 @RequestScoped
 public class CinemaConverter implements Converter {
 
-	@ManagedProperty("#{CinemaService}")
-	private ICinemaService cinemaService;
+	@ManagedProperty("#{TheaterService}")
+	private ITheaterService theaterService;
 
 	public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
 
 		if (value != null && value.trim().length() > 0) {
 			try {
-				return cinemaService.getCinemaById(Integer.parseInt(value));
+				return theaterService.getCinemaById(Integer.parseInt(value));
 			} catch (NumberFormatException e) {
 				throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid object."));
 			}
@@ -40,12 +40,19 @@ public class CinemaConverter implements Converter {
 		}
 	}
 
-	public ICinemaService getCinemaService() {
-		return cinemaService;
+	/**
+	 * @return the theaterService
+	 */
+	public ITheaterService getTheaterService() {
+		return theaterService;
 	}
 
-	public void setCinemaService(ICinemaService cinemaService) {
-		this.cinemaService = cinemaService;
+	/**
+	 * @param theaterService
+	 *            the theaterService to set
+	 */
+	public void setTheaterService(ITheaterService theaterService) {
+		this.theaterService = theaterService;
 	}
 
 }

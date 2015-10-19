@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class DateConverter {
 
-	public static final String dd_mm_yyyy = "dd.MM.yyyy";
+	public static final String dd_MM_yyyy = "dd.MM.yyyy";
 	public static final String HH_mm = "HH:mm";
 
 	public static void main(String[] args) {

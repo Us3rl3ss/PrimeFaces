@@ -5,13 +5,8 @@ import hr.primefaces.model.UserFavoriteMovie;
 import hr.primefaces.model.UserMovieRate;
 import hr.primefaces.model.UserMovieReview;
 import hr.primefaces.service.IMovieService;
-import hr.primefaces.service.IUserFavoriteMovieService;
-import hr.primefaces.service.IUserFollowingService;
-import hr.primefaces.service.IUserMovieRateService;
-import hr.primefaces.service.IUserMovieReviewService;
 import hr.primefaces.service.IUserService;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +15,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.apache.poi.util.IOUtils;
 import org.primefaces.context.RequestContext;
@@ -35,24 +29,12 @@ public class MyProfileView implements Serializable {
 
 	@ManagedProperty(value = "#{userSession}")
 	UserSession userSession;
-	
+
 	@ManagedProperty(value = "#{UserService}")
 	IUserService userService;
-	
-	@ManagedProperty(value = "#{UserMovieRateService}")
-	IUserMovieRateService userMovieRateService;
-
-	@ManagedProperty(value = "#{UserMovieReviewService}")
-	IUserMovieReviewService userMovieReviewService;
-
-	@ManagedProperty(value = "#{UserFavoriteMovieService}")
-	IUserFavoriteMovieService userFavoriteMovieService;
 
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
-
-	@ManagedProperty(value = "#{UserFollowingService}")
-	IUserFollowingService userFollowingService;
 
 	private List<UserMovieRate> userMovieRateList;
 	private List<UserMovieReview> userMovieReviewList;
@@ -70,35 +52,32 @@ public class MyProfileView implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		
+
 		this.user = userSession.getUser();
 		postavi();
 	}
-	
+
 	public void postavi() {
-		
-		this.userMovieRateList = userMovieRateService
-				.getUserMovieRateByUser(this.user);
-		this.userMovieReviewList = userMovieReviewService
-				.getUserMovieReviewByUser(this.user);
-		this.userFavoriteMovieList = userFavoriteMovieService
-				.getUserFavoriteMovieByUser(this.user);
+
+		this.userMovieRateList = userService.getUserMovieRateByUser(this.user);
+		this.userMovieReviewList = userService.getUserMovieReviewByUser(this.user);
+		this.userFavoriteMovieList = userService.getUserFavoriteMovieByUser(this.user);
 	}
-	
+
 	public void spremi() {
 
 		try {
 			user.setUpdated(new Date());
 			userService.updateUser(user);
-			
+
 			refreshUserData();
 		} catch (Exception ex) { // TODO ERROR HANDLING
 			ex.printStackTrace();
 		}
 	}
-	
+
 	private void refreshUserData() {
-		
+
 		user = userService.getUserById(user.getId());
 		RequestContext.getCurrentInstance().execute("$(window).off('beforeunload'); location.reload();");
 	}
@@ -126,8 +105,7 @@ public class MyProfileView implements Serializable {
 
 		int averageRate = 0;
 
-		Double avg = userMovieRateService
-				.getAverageRateByMovie(this.selectedRate.getMovie());
+		Double avg = userService.getAverageRateByMovie(this.selectedRate.getMovie());
 
 		try {
 
@@ -142,24 +120,24 @@ public class MyProfileView implements Serializable {
 
 		this.averageRate = averageRate;
 	}
-	
+
 	/**
 	 * handleFileUpload
 	 */
 	public void handleFileUpload(FileUploadEvent event) {
-		
+
 		UploadedFile file;
 		byte[] byteData = null;
-		
+
 		file = event.getFile();
 		try {
 			byteData = IOUtils.toByteArray(file.getInputstream());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		if (byteData != null) {
-			
+
 			user.setImage(byteData);
 			setUploadedFileNames(getUploadedFileNames() + file.getFileName());
 		}
@@ -181,44 +159,12 @@ public class MyProfileView implements Serializable {
 		this.userService = userService;
 	}
 
-	public IUserMovieRateService getUserMovieRateService() {
-		return userMovieRateService;
-	}
-
-	public void setUserMovieRateService(IUserMovieRateService userMovieRateService) {
-		this.userMovieRateService = userMovieRateService;
-	}
-
-	public IUserMovieReviewService getUserMovieReviewService() {
-		return userMovieReviewService;
-	}
-
-	public void setUserMovieReviewService(IUserMovieReviewService userMovieReviewService) {
-		this.userMovieReviewService = userMovieReviewService;
-	}
-
-	public IUserFavoriteMovieService getUserFavoriteMovieService() {
-		return userFavoriteMovieService;
-	}
-
-	public void setUserFavoriteMovieService(IUserFavoriteMovieService userFavoriteMovieService) {
-		this.userFavoriteMovieService = userFavoriteMovieService;
-	}
-
 	public IMovieService getMovieService() {
 		return movieService;
 	}
 
 	public void setMovieService(IMovieService movieService) {
 		this.movieService = movieService;
-	}
-
-	public IUserFollowingService getUserFollowingService() {
-		return userFollowingService;
-	}
-
-	public void setUserFollowingService(IUserFollowingService userFollowingService) {
-		this.userFollowingService = userFollowingService;
 	}
 
 	public List<UserMovieRate> getUserMovieRateList() {

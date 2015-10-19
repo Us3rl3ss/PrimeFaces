@@ -5,9 +5,7 @@ import hr.primefaces.model.Genre;
 import hr.primefaces.model.Movie;
 import hr.primefaces.model.Projection;
 import hr.primefaces.model.Theater;
-import hr.primefaces.service.ICinemaService;
 import hr.primefaces.service.IMovieService;
-import hr.primefaces.service.IProjectionReservedSeatsService;
 import hr.primefaces.service.IProjectionService;
 import hr.primefaces.service.ITheaterService;
 
@@ -37,14 +35,8 @@ public class ProjectionView implements Serializable {
 	@ManagedProperty(value = "#{TheaterService}")
 	ITheaterService theaterService;
 
-	@ManagedProperty(value = "#{CinemaService}")
-	ICinemaService cinemaService;
-
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
-
-	@ManagedProperty(value = "#{ProjectionReservedSeatsService}")
-	IProjectionReservedSeatsService projectionReservedSeatsService;
 
 	private Projection projection = new Projection();
 	private Theater theater = new Theater();
@@ -141,7 +133,7 @@ public class ProjectionView implements Serializable {
 			Projection tempProjection = tempProjectionList.get(i);
 
 			int numberOfSeats = tempProjection.getCinema().getNumber_of_seats();
-			int numberOfFreeSeats = projectionReservedSeatsService.getProjectionReservedSeatsByProjection(tempProjection).size();
+			int numberOfFreeSeats = projectionService.getProjectionReservedSeatsByProjection(tempProjection).size();
 
 			String numberOfFreeSeatsText = numberOfFreeSeats + "/" + numberOfSeats;
 
@@ -165,14 +157,6 @@ public class ProjectionView implements Serializable {
 
 	public void setTheaterService(ITheaterService theaterService) {
 		this.theaterService = theaterService;
-	}
-
-	public ICinemaService getCinemaService() {
-		return cinemaService;
-	}
-
-	public void setCinemaService(ICinemaService cinemaService) {
-		this.cinemaService = cinemaService;
 	}
 
 	public IMovieService getMovieService() {
@@ -269,14 +253,6 @@ public class ProjectionView implements Serializable {
 
 	public void setSelectedProjection(Projection selectedProjection) {
 		this.selectedProjection = selectedProjection;
-	}
-
-	public IProjectionReservedSeatsService getProjectionReservedSeatsService() {
-		return projectionReservedSeatsService;
-	}
-
-	public void setProjectionReservedSeatsService(IProjectionReservedSeatsService projectionReservedSeatsService) {
-		this.projectionReservedSeatsService = projectionReservedSeatsService;
 	}
 
 	public Date getDatumProjekcije() {

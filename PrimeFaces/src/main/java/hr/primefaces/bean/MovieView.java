@@ -6,9 +6,7 @@ import hr.primefaces.model.UserFavoriteMovie;
 import hr.primefaces.model.UserMovieRate;
 import hr.primefaces.model.UserMovieReview;
 import hr.primefaces.service.IMovieService;
-import hr.primefaces.service.IUserFavoriteMovieService;
-import hr.primefaces.service.IUserMovieRateService;
-import hr.primefaces.service.IUserMovieReviewService;
+import hr.primefaces.service.IUserService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,7 +19,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
-@ManagedBean( name = "movieMB" )
+@ManagedBean(name = "movieMB")
 @ViewScoped
 public class MovieView implements Serializable {
 
@@ -30,14 +28,8 @@ public class MovieView implements Serializable {
 	@ManagedProperty(value = "#{userSession}")
 	private UserSession userSession;
 
-	@ManagedProperty(value = "#{UserMovieRateService}")
-	private IUserMovieRateService userMovieRateService;
-
-	@ManagedProperty(value = "#{UserMovieReviewService}")
-	private IUserMovieReviewService userMovieReviewService;
-
-	@ManagedProperty(value = "#{UserFavoriteMovieService}")
-	private IUserFavoriteMovieService userFavoriteMovieService;
+	@ManagedProperty(value = "#{UserService}")
+	private IUserService userService;
 
 	@ManagedProperty(value = "#{MovieService}")
 	private IMovieService movieService;
@@ -70,11 +62,13 @@ public class MovieView implements Serializable {
 
 	/**
 	 * test
-	 * @param p_input test
+	 * 
+	 * @param p_input
+	 *            test
 	 * @return test
 	 */
-	public List<Movie> completeMovie( final String p_input ) {
-		return movieService.getMovieByName( p_input );
+	public List<Movie> completeMovie(final String p_input) {
+		return movieService.getMovieByName(p_input);
 	}
 
 	public void onItemSelect(AjaxBehaviorEvent event) {
@@ -103,8 +97,7 @@ public class MovieView implements Serializable {
 			if (reviewSaved) {
 				System.out.println("review postoji");
 				this.reviewDisabled = true;
-			}
-			else {
+			} else {
 				this.reviewDisabled = false;
 			}
 
@@ -124,7 +117,7 @@ public class MovieView implements Serializable {
 
 		int averageRate = 0;
 
-		Double avg = userMovieRateService.getAverageRateByMovie(movie);
+		Double avg = userService.getAverageRateByMovie(movie);
 
 		try {
 
@@ -147,7 +140,7 @@ public class MovieView implements Serializable {
 
 		boolean result = false;
 
-		final List<UserMovieRate> list = userMovieRateService.getUserMovieRateByUserAndMovie( user, movie );
+		final List<UserMovieRate> list = userService.getUserMovieRateByUserAndMovie(user, movie);
 
 		if (list.size() > 0) {
 
@@ -165,7 +158,7 @@ public class MovieView implements Serializable {
 
 		boolean result = false;
 
-		List<UserMovieReview> list = userMovieReviewService.getUserMovieReviewByUserAndMovie(user, movie);
+		List<UserMovieReview> list = userService.getUserMovieReviewByUserAndMovie(user, movie);
 
 		if (list.size() > 0) {
 
@@ -187,7 +180,7 @@ public class MovieView implements Serializable {
 			this.userMovieReview.setMovie(this.movie);
 			this.userMovieReview.setCreated(new Date());
 
-			userMovieReviewService.addUserMovieReview(userMovieReview);
+			userService.addUserMovieReview(userMovieReview);
 
 			pretrazi();
 		}
@@ -201,7 +194,7 @@ public class MovieView implements Serializable {
 			this.userMovieRate.setMovie(this.movie);
 			this.userMovieRate.setCreated(new Date());
 
-			userMovieRateService.addUserMovieRate(userMovieRate);
+			userService.addUserMovieRate(userMovieRate);
 
 			pretrazi();
 		}
@@ -216,15 +209,15 @@ public class MovieView implements Serializable {
 		ufm.setMovie(this.movie);
 		ufm.setUser(userSession.getUser());
 		ufm.setCreated(new Date());
-		userFavoriteMovieService.addUserFavoriteMovie(ufm);
+		userService.addUserFavoriteMovie(ufm);
 
 		pretrazi();
 	}
 
 	public void removeFromFavorites() {
 
-		UserFavoriteMovie ufm = userFavoriteMovieService.getMovieInUserFavorites(userSession.getUser(), movie);
-		userFavoriteMovieService.deleteUserFavoriteMovie(ufm);
+		UserFavoriteMovie ufm = userService.getMovieInUserFavorites(userSession.getUser(), movie);
+		userService.deleteUserFavoriteMovie(ufm);
 
 		pretrazi();
 	}
@@ -233,7 +226,7 @@ public class MovieView implements Serializable {
 
 		boolean result = false;
 
-		UserFavoriteMovie ufm = userFavoriteMovieService.getMovieInUserFavorites(user, movie);
+		UserFavoriteMovie ufm = userService.getMovieInUserFavorites(user, movie);
 
 		if (ufm != null) {
 
@@ -245,7 +238,7 @@ public class MovieView implements Serializable {
 
 	private List<UserMovieReview> getAllMovieReviews(Movie movie) {
 
-		List<UserMovieReview> result = userMovieReviewService.getAllMovieReviews(movie);
+		List<UserMovieReview> result = userService.getAllMovieReviews(movie);
 
 		if (result == null) {
 			result = new ArrayList<UserMovieReview>();
@@ -294,22 +287,6 @@ public class MovieView implements Serializable {
 		this.userMovieRate = userMovieRate;
 	}
 
-	public IUserMovieRateService getUserMovieRateService() {
-		return userMovieRateService;
-	}
-
-	public void setUserMovieRateService(IUserMovieRateService userMovieRateService) {
-		this.userMovieRateService = userMovieRateService;
-	}
-
-	public IUserMovieReviewService getUserMovieReviewService() {
-		return userMovieReviewService;
-	}
-
-	public void setUserMovieReviewService(IUserMovieReviewService userMovieReviewService) {
-		this.userMovieReviewService = userMovieReviewService;
-	}
-
 	public UserMovieReview getUserMovieReview() {
 		return userMovieReview;
 	}
@@ -342,12 +319,19 @@ public class MovieView implements Serializable {
 		this.averageRate = averageRate;
 	}
 
-	public IUserFavoriteMovieService getUserFavoriteMovieService() {
-		return userFavoriteMovieService;
+	/**
+	 * @return the userService
+	 */
+	public IUserService getUserService() {
+		return userService;
 	}
 
-	public void setUserFavoriteMovieService(IUserFavoriteMovieService userFavoriteMovieService) {
-		this.userFavoriteMovieService = userFavoriteMovieService;
+	/**
+	 * @param userService
+	 *            the userService to set
+	 */
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
 	}
 
 	public boolean isInFavorites() {

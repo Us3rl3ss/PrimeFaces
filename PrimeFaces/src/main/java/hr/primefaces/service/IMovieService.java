@@ -7,6 +7,10 @@ import hr.primefaces.model.Movie;
 import java.util.List;
 
 public interface IMovieService {
+	
+	/**
+	 * ################# MOVIE #################
+	 */
 
 	public void addMovie(Movie movie);
 
@@ -23,4 +27,48 @@ public interface IMovieService {
 	public List<Actor> getAllMovieActors(Movie movie);
 	
 	public List<Genre> getAllMovieGenres(Movie movie);
+	
+	/**
+	 * ################# END OF - MOVIE #################
+	 */
+	
+	/**
+	 * ################# ACTOR #################
+	 */
+	
+	public void addActor(Actor actor);
+	
+	public void updateActor(Actor actor);
+
+	public void deleteActor(Actor actor);
+	
+	public Actor getActorById(int id);
+	
+	public List<Actor> getActorByName(String name);
+	
+	public List<Actor> getActors();
+	
+	/**
+	 * ################# END OF - ACTOR #################
+	 */
+	
+	/**
+	 * ################# GENRE #################
+	 */
+	
+	public void addGenre(Genre genre);
+
+	public void updateGenre(Genre genre);
+
+	public void deleteGenre(Genre genre);
+
+	public Genre getGenreById(int id);
+
+	public List<Genre> getGenreByName(String name);
+
+	public List<Genre> getGenres();
+	
+	/**
+	 * ################# END OF - GENRE #################
+	 */
 }

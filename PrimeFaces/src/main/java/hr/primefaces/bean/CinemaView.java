@@ -3,7 +3,6 @@ package hr.primefaces.bean;
 import hr.primefaces.model.Cinema;
 import hr.primefaces.model.CinemaSeats;
 import hr.primefaces.model.Theater;
-import hr.primefaces.service.ICinemaService;
 import hr.primefaces.service.ITheaterService;
 import hr.primefaces.util.MessageUtil;
 
@@ -26,9 +25,6 @@ import org.primefaces.event.SelectEvent;
 public class CinemaView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	@ManagedProperty(value = "#{CinemaService}")
-	private ICinemaService cinemaService;
 
 	@ManagedProperty(value = "#{TheaterService}")
 	private ITheaterService theaterService;
@@ -60,7 +56,7 @@ public class CinemaView implements Serializable {
 
 			if (getTheater() != null) {
 
-				if(getCinemaService().getCinemaByTheaterAndName(getTheater(), getCinema().getName()) == null) {
+				if(getTheaterService().getCinemaByTheaterAndName(getTheater(), getCinema().getName()) == null) {
 
 					getCinema().setTheater(getTheater());
 					final int numberOfSeats = getCinema().getNumber_of_rows() * getCinema().getNumber_of_seats_in_row();
@@ -75,9 +71,9 @@ public class CinemaView implements Serializable {
 						getCinema().addToCinemaSeatsList(cs);
 					}
 
-					getCinemaService().addCinema(getCinema());
+					getTheaterService().addCinema(getCinema());
 					setCinema(new Cinema());
-					setCinemaList(getCinemaService().getCinemaByTheater(getTheater()));
+					setCinemaList(getTheaterService().getCinemaByTheater(getTheater()));
 					MessageUtil.info("Podaci uspješno spremljeni!");
 				}
 				else {
@@ -107,8 +103,8 @@ public class CinemaView implements Serializable {
 
 		try {
 
-			getCinemaService().deleteCinema(getCinema());
-			setCinemaList(getCinemaService().getCinemaByTheater(getTheater()));
+			getTheaterService().deleteCinema(getCinema());
+			setCinemaList(getTheaterService().getCinemaByTheater(getTheater()));
 
 			MessageUtil.info("Kino dvorana je uspješno obrisana!");
 		}
@@ -224,7 +220,7 @@ public class CinemaView implements Serializable {
 	 */
 	public void onRowSelect(final SelectEvent p_event) {
 
-		setCinemaList(getCinemaService().getCinemaByTheater(getTheater()));
+		setCinemaList(getTheaterService().getCinemaByTheater(getTheater()));
 
 		if (!(getCinemaList().size() > 0)) {
 
@@ -235,13 +231,6 @@ public class CinemaView implements Serializable {
 	/**
 	 * ################# GETTERS AND SETTERS #################
 	 */
-
-	/**
-	 * @return the cinemaService
-	 */
-	public ICinemaService getCinemaService() {
-		return cinemaService;
-	}
 
 	/**
 	 * @return the theaterService
@@ -290,13 +279,6 @@ public class CinemaView implements Serializable {
 	 */
 	public boolean isSaveDisabled() {
 		return saveDisabled;
-	}
-
-	/**
-	 * @param p_cinemaService the cinemaService to set
-	 */
-	public void setCinemaService(final ICinemaService p_cinemaService) {
-		this.cinemaService = p_cinemaService;
 	}
 
 	/**

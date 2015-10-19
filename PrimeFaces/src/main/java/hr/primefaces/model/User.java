@@ -34,9 +34,12 @@ public class User implements Serializable {
 	private String lastname;
 	private String password;
 	private String email;
-	private Date date_of_birth;
+
+	@Column(name = "date_of_birth", nullable = false)
+	private Date dateOfBirth;
+
 	private Date updated;
-	
+
 	@Lob
 	@Basic(fetch = FetchType.EAGER)
 	@Column(name = "IMAGE")
@@ -116,12 +119,19 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public Date getDate_of_birth() {
-		return date_of_birth;
+	/**
+	 * @return the dateOfBirth
+	 */
+	public Date getDateOfBirth() {
+		return dateOfBirth;
 	}
 
-	public void setDate_of_birth(Date date_of_birth) {
-		this.date_of_birth = date_of_birth;
+	/**
+	 * @param dateOfBirth the dateOfBirth to set
+	 */
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public Date getUpdated() {

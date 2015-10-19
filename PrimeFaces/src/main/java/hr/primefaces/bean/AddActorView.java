@@ -1,7 +1,7 @@
 package hr.primefaces.bean;
 
 import hr.primefaces.model.Actor;
-import hr.primefaces.service.IActorService;
+import hr.primefaces.service.IMovieService;
 import hr.primefaces.util.MessageUtil;
 
 import java.io.Serializable;
@@ -22,8 +22,8 @@ public class AddActorView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{ActorService}")
-	private IActorService actorService;
+	@ManagedProperty(value = "#{MovieService}")
+	private IMovieService movieService;
 
 	private Actor actor;
 	private String uploadedFileNames;
@@ -41,7 +41,7 @@ public class AddActorView implements Serializable {
 	public void save() {
 
 		try {
-			getActorService().addActor(getActor());
+			getMovieService().addActor(getActor());
 			setActor(new Actor());
 			MessageUtil.info("Podaci uspješno spremljeni!");
 		} catch (HibernateException hex) {
@@ -65,7 +65,8 @@ public class AddActorView implements Serializable {
 		file = p_event.getFile();
 		try {
 			byteData = IOUtils.toByteArray(file.getInputstream());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -81,10 +82,10 @@ public class AddActorView implements Serializable {
 	 */
 
 	/**
-	 * @return the actorService
+	 * @return the movieService
 	 */
-	public IActorService getActorService() {
-		return actorService;
+	public IMovieService getMovieService() {
+		return movieService;
 	}
 
 	/**
@@ -102,11 +103,10 @@ public class AddActorView implements Serializable {
 	}
 
 	/**
-	 * @param actorService
-	 *            the actorService to set
+	 * @param movieService the movieService to set
 	 */
-	public void setActorService(final IActorService p_actorService) {
-		this.actorService = p_actorService;
+	public void setMovieService(IMovieService movieService) {
+		this.movieService = movieService;
 	}
 
 	/**

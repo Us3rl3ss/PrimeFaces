@@ -2,7 +2,6 @@ package hr.primefaces.bean;
 
 import hr.primefaces.model.Cinema;
 import hr.primefaces.model.Theater;
-import hr.primefaces.service.ICinemaService;
 import hr.primefaces.service.ITheaterService;
 
 import java.io.Serializable;
@@ -27,9 +26,6 @@ public class ContactView implements Serializable {
 
 	@ManagedProperty(value = "#{TheaterService}")
 	ITheaterService theaterService;
-
-	@ManagedProperty(value = "#{CinemaService}")
-	ICinemaService cinemaService;
 
 	private Theater theater = new Theater();
 	
@@ -71,7 +67,7 @@ public class ContactView implements Serializable {
 	
 	public String calcBrojDvorana(Theater theater) {
 		
-		List<Cinema> cinemaList = cinemaService.getCinemaByTheater(theater);
+		List<Cinema> cinemaList = theaterService.getCinemaByTheater(theater);
 		return cinemaList.size() + "";
 	}
 	
@@ -79,7 +75,7 @@ public class ContactView implements Serializable {
 		
 		int brojSjedecihMjesta = 0;
 		
-		List<Cinema> cinemaList = cinemaService.getCinemaByTheater(theater);
+		List<Cinema> cinemaList = theaterService.getCinemaByTheater(theater);
 		
 		for(Cinema c : cinemaList) {
 			
@@ -135,14 +131,6 @@ public class ContactView implements Serializable {
 
 	public void setTheaterList(List<Theater> theaterList) {
 		this.theaterList = theaterList;
-	}
-
-	public ICinemaService getCinemaService() {
-		return cinemaService;
-	}
-
-	public void setCinemaService(ICinemaService cinemaService) {
-		this.cinemaService = cinemaService;
 	}
 
 }

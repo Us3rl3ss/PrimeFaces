@@ -1,7 +1,7 @@
 package hr.primefaces.bean;
 
 import hr.primefaces.model.Actor;
-import hr.primefaces.service.IActorService;
+import hr.primefaces.service.IMovieService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,28 +17,42 @@ public class GetActorView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{ActorService}")
-	IActorService actorService;
+	@ManagedProperty(value = "#{MovieService}")
+	IMovieService movieService;
 
 	private List<Actor> actorList;
 
 	@PostConstruct
 	public void init() {
-		actorList = actorService.getActors();
+		actorList = movieService.getActors();
 	}
 
-	public IActorService getActorService() {
-		return actorService;
+	/**
+	 * @return the movieService
+	 */
+	public IMovieService getMovieService() {
+		return movieService;
 	}
 
-	public void setActorService(IActorService actorService) {
-		this.actorService = actorService;
-	}
-
+	/**
+	 * @return the actorList
+	 */
 	public List<Actor> getActorList() {
 		return actorList;
 	}
 
+	/**
+	 * @param movieService
+	 *            the movieService to set
+	 */
+	public void setMovieService(IMovieService movieService) {
+		this.movieService = movieService;
+	}
+
+	/**
+	 * @param actorList
+	 *            the actorList to set
+	 */
 	public void setActorList(List<Actor> actorList) {
 		this.actorList = actorList;
 	}

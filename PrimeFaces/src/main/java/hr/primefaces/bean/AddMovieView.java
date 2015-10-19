@@ -3,8 +3,6 @@ package hr.primefaces.bean;
 import hr.primefaces.model.Actor;
 import hr.primefaces.model.Genre;
 import hr.primefaces.model.Movie;
-import hr.primefaces.service.IActorService;
-import hr.primefaces.service.IGenreService;
 import hr.primefaces.service.IMovieService;
 import hr.primefaces.util.MessageUtil;
 
@@ -26,15 +24,9 @@ import org.primefaces.model.UploadedFile;
 public class AddMovieView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
-	
-	@ManagedProperty(value = "#{ActorService}")
-	IActorService actorService;
-	
-	@ManagedProperty(value = "#{GenreService}")
-	IGenreService genreService;
 
 	private Movie movie = new Movie();
 	private List<Movie> movieList;
@@ -62,42 +54,35 @@ public class AddMovieView implements Serializable {
 			MessageUtil.error("Došlo je do greške!");
 		}
 	}
-	
+
 	/**
 	 * handleFileUpload
 	 */
 	public void handleFileUpload(FileUploadEvent event) {
 		System.out.println(event);
-		
+
 		UploadedFile file;
 		byte[] byteData = null;
-		
+
 		file = event.getFile();
 		try {
 			byteData = IOUtils.toByteArray(file.getInputstream());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		if (byteData != null) {
-			
+
 			movie.setImage(byteData);
 			setUploadedFileNames(getUploadedFileNames() + file.getFileName());
 		}
 	}
-	
+
 	/**
 	 * completeActor
 	 */
 	public List<Actor> completeActor(String input) {
-		return actorService.getActorByName(input);
-	}
-	
-	/**
-	 * completeGenre
-	 */
-	public List<Genre> completeGenre(String input) {
-		return genreService.getGenreByName(input);
+		return movieService.getActorByName(input);
 	}
 
 	public IMovieService getMovieService() {
@@ -140,22 +125,4 @@ public class AddMovieView implements Serializable {
 		this.uploadedFileNames = uploadedFileNames;
 	}
 
-	public IActorService getActorService() {
-		return actorService;
-	}
-
-	public void setActorService(IActorService actorService) {
-		this.actorService = actorService;
-	}
-
-	public IGenreService getGenreService() {
-		return genreService;
-	}
-
-	public void setGenreService(IGenreService genreService) {
-		this.genreService = genreService;
-	}
-	
-	
-	
 }

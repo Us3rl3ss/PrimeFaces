@@ -5,9 +5,6 @@ import hr.primefaces.model.UserFavoriteMovie;
 import hr.primefaces.model.UserMovieRate;
 import hr.primefaces.model.UserMovieReview;
 import hr.primefaces.service.IMovieService;
-import hr.primefaces.service.IUserFavoriteMovieService;
-import hr.primefaces.service.IUserMovieRateService;
-import hr.primefaces.service.IUserMovieReviewService;
 import hr.primefaces.service.IUserService;
 
 import java.io.Serializable;
@@ -30,15 +27,6 @@ public class MyMoviesView implements Serializable {
 	@ManagedProperty(value = "#{UserService}")
 	IUserService userService;
 
-	@ManagedProperty(value = "#{UserMovieRateService}")
-	IUserMovieRateService userMovieRateService;
-
-	@ManagedProperty(value = "#{UserMovieReviewService}")
-	IUserMovieReviewService userMovieReviewService;
-
-	@ManagedProperty(value = "#{UserFavoriteMovieService}")
-	IUserFavoriteMovieService userFavoriteMovieService;
-
 	@ManagedProperty(value = "#{MovieService}")
 	IMovieService movieService;
 
@@ -49,23 +37,23 @@ public class MyMoviesView implements Serializable {
 	private UserMovieRate selectedRate;
 	private UserMovieReview selectedReview;
 	private UserFavoriteMovie selectedFavorite;
-	
+
 	private Integer averageRate = 0;
 
 	private User user;
 
 	@PostConstruct
 	public void init() {
-		this.userMovieRateList = userMovieRateService.getUserMovieRateByUser(userSession.getUser());
-		this.userMovieReviewList = userMovieReviewService.getUserMovieReviewByUser(userSession.getUser());
-		this.userFavoriteMovieList = userFavoriteMovieService.getUserFavoriteMovieByUser(userSession.getUser());
+		this.userMovieRateList = userService.getUserMovieRateByUser(userSession.getUser());
+		this.userMovieReviewList = userService.getUserMovieReviewByUser(userSession.getUser());
+		this.userFavoriteMovieList = userService.getUserFavoriteMovieByUser(userSession.getUser());
 	}
-	
+
 	public void calculateAverageRate() {
 
 		int averageRate = 0;
 
-		Double avg = userMovieRateService.getAverageRateByMovie(this.selectedRate.getMovie());
+		Double avg = userService.getAverageRateByMovie(this.selectedRate.getMovie());
 
 		try {
 
@@ -99,10 +87,6 @@ public class MyMoviesView implements Serializable {
 		this.user = user;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public IUserService getUserService() {
 		return userService;
 	}
@@ -123,8 +107,7 @@ public class MyMoviesView implements Serializable {
 		return userFavoriteMovieList;
 	}
 
-	public void setUserFavoriteMovieList(
-			List<UserFavoriteMovie> userFavoriteMovieList) {
+	public void setUserFavoriteMovieList(List<UserFavoriteMovie> userFavoriteMovieList) {
 		this.userFavoriteMovieList = userFavoriteMovieList;
 	}
 
@@ -134,33 +117,6 @@ public class MyMoviesView implements Serializable {
 
 	public void setUserMovieReviewList(List<UserMovieReview> userMovieReviewList) {
 		this.userMovieReviewList = userMovieReviewList;
-	}
-
-	public IUserMovieRateService getUserMovieRateService() {
-		return userMovieRateService;
-	}
-
-	public void setUserMovieRateService(
-			IUserMovieRateService userMovieRateService) {
-		this.userMovieRateService = userMovieRateService;
-	}
-
-	public IUserMovieReviewService getUserMovieReviewService() {
-		return userMovieReviewService;
-	}
-
-	public void setUserMovieReviewService(
-			IUserMovieReviewService userMovieReviewService) {
-		this.userMovieReviewService = userMovieReviewService;
-	}
-
-	public IUserFavoriteMovieService getUserFavoriteMovieService() {
-		return userFavoriteMovieService;
-	}
-
-	public void setUserFavoriteMovieService(
-			IUserFavoriteMovieService userFavoriteMovieService) {
-		this.userFavoriteMovieService = userFavoriteMovieService;
 	}
 
 	public IMovieService getMovieService() {
