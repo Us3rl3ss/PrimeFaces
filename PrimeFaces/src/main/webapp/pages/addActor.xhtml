@@ -18,11 +18,6 @@
 
 			<h:form id="addActor">
 
-				<!-- 				<p:schedule id="schedule" value="#{addActorMB.scheduleModel}" widgetVar="movieSchedule" timeZone="GMT+2"> -->
-				<!-- 			    </p:schedule> -->
-
-				<!-- 				<p:chart type="pie" model="#{addActorMB.chart}" style="width:400px;height:300px" /> -->
-
 				<p:panelGrid columns="2">
 
 					<p:outputLabel for="firstname" value="Ime:" />
@@ -48,53 +43,55 @@
 
 					<p:outputLabel for="movie" value="Filmovi:" />
 					<p:autoComplete id="movie"
-						value="#{addActorMB.actor.movieList}" var="movie"
-						itemLabel="#{movie.name}" itemValue="#{movie}"
-						completeMethod="#{addActorMB.completeMovie}"
-						converter="#{movieConverter}" multiple="true"
-						forceSelection="true" minQueryLength="2" maxResults="10">
+						value="#{addActorMB.actor.movieList}" 
+						var="movie"
+						itemLabel="#{movie.name}" 
+						itemValue="#{movie}"
+						completeMethod="#{autocompleteMB.completeMovie}"
+						converter="#{movieConverter}" 
+						multiple="true"
+						forceSelection="true" 
+						minQueryLength="2" 
+						maxResults="10">
+						
 						<p:column>
 							<h:outputText value="#{movie.name}" />
 						</p:column>
 
 						<f:facet name="itemtip">
+						
 							<h:panelGrid columns="1" cellpadding="2">
 
 								<h:outputText value="#{movie.director_name}" />
 
-								<p:graphicImage value="#{movieImageMB.image}" width="100"
-									height="150">
-									<f:param value="#{movie.id}" name="movie_id"></f:param>
+								<p:graphicImage value="#{movieImageMB.image}" width="100" height="150">
+									<f:param value="#{movie.id}" name="movie_id" />
 								</p:graphicImage>
 
 								<h:outputText value="#{movie.year_of_creation}" />
 
 							</h:panelGrid>
+							
 						</f:facet>
 
 					</p:autoComplete>
 
 					<p:outputLabel for="pic" value="Slika:" />
-					<p:fileUpload id="pic" fileUploadListener="#{addActorMB.handleFileUpload}"
-						mode="advanced" dragDropSupport="true" update="uploadFilesList"
-						sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					<p:fileUpload id="pic" 
+						fileUploadListener="#{addActorMB.handleFileUpload}"
+						mode="advanced" 
+						dragDropSupport="true" 
+						update="uploadFilesList"
+						sizeLimit="100000" 
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 						multiple="false" />
 
-					<p:outputLabel for="uploadFilesList" value="Uploadano:"></p:outputLabel>
-					<p:inputText id="uploadFilesList"
-						value="#{addActorMB.uploadedFileNames}" readonly="#{true}"></p:inputText>
+					<p:outputLabel for="uploadFilesList" value="Uploadano:" />
+					<p:inputText id="uploadFilesList" value="#{addActorMB.uploadedFileNames}" readonly="#{true}" />
 
 				</p:panelGrid>
 
-				<p:commandButton value="Spremi" action="#{addActorMB.spremi}"
-					update=":messages addActor" />
-
-				<!-- 					<p:commandButton value="Download"  -->
-				<!-- 						ajax="false"  -->
-				<!-- 						onclick="PrimeFaces.monitorDownload(start, stop);"  -->
-				<!-- 						icon="ui-icon-arrowthick-1-s"> -->
-				<!-- 				        <p:fileDownload value="#{addActorMB.downloadFile}" /> -->
-				<!-- 				    </p:commandButton> -->
+				<p:commandButton value="Spremi" action="#{addActorMB.save}" update=":messages addActor" />
 
 			</h:form>
 

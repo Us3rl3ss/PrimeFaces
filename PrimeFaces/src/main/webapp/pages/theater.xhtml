@@ -22,8 +22,11 @@
 		
 			<h:form id="getTheater">
 
-				<p:dataTable id="theaterTable" var="theater"
-					value="#{theaterMB.theaterList}" rows="10" paginator="true"
+				<p:dataTable id="theaterTable" 
+					var="theater"
+					value="#{theaterMB.theaterList}" 
+					rows="10" 
+					paginator="true"
 					rowsPerPageTemplate="5,10,15" 
 					selectionMode="single" 
 					selection="#{theaterMB.theater}" 
@@ -35,7 +38,9 @@
 											{NextPageLink} 
 											{LastPageLink} 
 											{RowsPerPageDropdown}">
+											
 					<p:ajax event="rowSelect" listener="#{theaterMB.onRowSelect}" update=":theaterGMapForm" />
+					
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Naziv" />
@@ -55,14 +60,20 @@
 			</h:form>
 		
 			<h:form id="theaterGMapForm">
-				<p:gmap center="#{theaterMB.initCenter}" zoom="#{theaterMB.initZoom}" type="HYBRID" widgetVar="gmap" style="width:100%;height:400px" model="#{theaterMB.mapModel}">
+			
+				<p:gmap center="#{theaterMB.initCenter}" 
+					zoom="#{theaterMB.initZoom}" 
+					type="HYBRID" 
+					widgetVar="gmap" 
+					style="width:100%;height:400px" 
+					model="#{theaterMB.mapModel}">
+					
 					<p:ajax event="overlaySelect" listener="#{theaterMB.onMarkerSelect}" />
 				</p:gmap>
 				
 				<p:panelGrid columns="2">
 					<p:inputText id="pretragaTekst" value="#{theaterMB.pretragaTekst}" />
-					<p:commandButton value="Pretraži" action="#{theaterMB.pretrazi}"
-						update="theaterGMapForm" />
+					<p:commandButton value="Pretraži" action="#{theaterMB.search}" update="theaterGMapForm" />
 				</p:panelGrid>
 				
 			</h:form>

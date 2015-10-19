@@ -31,7 +31,9 @@
 											{NextPageLink} 
 											{LastPageLink} 
 											{RowsPerPageDropdown}">
+											
 					<p:ajax event="rowSelect" listener="#{cinemaMB.onRowSelect}" update=":messages :cinemaListForm" />
+					
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Naziv" />
