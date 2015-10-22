@@ -25,10 +25,10 @@
 					
 					<p:outputLabel for="director" value="Redatelj:" />
 					<p:inputText id="director"
-						value="#{addMovieMB.movie.director_name}" />
+						value="#{addMovieMB.movie.directorName}" />
 						
 					<p:outputLabel for="year" value="Godina:" />
-					<p:inputText id="year" value="#{addMovieMB.movie.year_of_creation}" />
+					<p:inputText id="year" value="#{addMovieMB.movie.yearOfCreation}" />
 					
 					<p:outputLabel for="duration" value="Trajanje (min):" />
 					<p:inputText id="duration" value="#{addMovieMB.movie.duration}" />
@@ -76,7 +76,7 @@
 						<p:column>
 							<h:outputText value="#{genre.name}" />
 						</p:column>
-						<p:ajax event="itemSelect" listener="#{addMovieMB.onItemSelect}"></p:ajax>
+<!-- 						<p:ajax event="itemSelect" listener="#{addMovieMB.onItemSelect}"></p:ajax> -->
 					</p:autoComplete>
 
 					<p:outputLabel for="pic" value="Naslovna slika:" />

@@ -59,7 +59,7 @@
 									<h:outputText value="Film:" />
 									<h:outputText value="#{projection.movie.name}" />
 									<h:outputText value="Godina: " />
-									<h:outputText value="#{projection.movie.year_of_creation}" />
+									<h:outputText value="#{projection.movie.yearOfCreation}" />
 									<h:outputText value="Trajanje:" />
 									<h:outputText value="#{projection.movie.duration}" />
 									<h:outputText value="Žanr:" />
@@ -76,10 +76,10 @@
 										<f:setPropertyActionListener value="#{distinctProjection}"
 											target="#{projectionMB.projection}" />
 										<h:outputText
-											value="#{distinctProjection.numberOfFreeSeatsText}, #{distinctProjection.start_time}, #{distinctProjection.cinema.number_of_seats}, #{distinctProjection.cinema.name}" />
+											value="#{distinctProjection.numberOfFreeSeatsText}, #{distinctProjection.startTime}, #{distinctProjection.cinema.numberOfSeats}, #{distinctProjection.cinema.name}" />
 									</p:commandLink>
 		
-									<h:outputText value="#{distinctProjection.start_time}">
+									<h:outputText value="#{distinctProjection.startTime}">
 										<f:convertDateTime pattern="HH:mm" />
 									</h:outputText>
 		

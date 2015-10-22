@@ -58,10 +58,10 @@
 						</p:selectOneMenu>
 			 
 			            <p:outputLabel for="from" value="Od:" />
-			            <p:calendar id="from" value="#{addProjectionMB.projection.start_time}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
+			            <p:calendar id="from" value="#{addProjectionMB.projection.startTime}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
 			 
 			            <p:outputLabel for="to" value="Do:" />
-			            <p:calendar id="to" value="#{addProjectionMB.projection.end_time}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
+			            <p:calendar id="to" value="#{addProjectionMB.projection.endTime}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
 			 
 			            <p:commandButton id="addButton" value="Spremi" actionListener="#{addProjectionMB.save}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{!addProjectionMB.forUpdate}" />
 			            <p:commandButton id="updateButton" value="Ažuriraj" actionListener="#{addProjectionMB.edit}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" />

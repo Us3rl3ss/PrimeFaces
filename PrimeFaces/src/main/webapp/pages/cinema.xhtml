@@ -68,7 +68,7 @@
 				        <p:commandLink update=":cinemaDialog" action="#{cinemaMB.updateCinema}" title="View Detail" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px">
 				            <f:setPropertyActionListener value="#{cinema}" target="#{cinemaMB.cinema}" />
 				        </p:commandLink>
-				        <h:outputText value="#{cinema.name}, #{cinema.number_of_seats}" style="display:inline-block"/>
+				        <h:outputText value="#{cinema.name}, #{cinema.numberOfSeats}" style="display:inline-block"/>
 				    </p:dataList>
 			
 				</p:panel>
@@ -88,10 +88,10 @@
 						<p:inputText id="name" value="#{cinemaMB.cinema.name}" />
 	
 						<p:outputLabel for="noRows" value="Broj redova:" />
-				        <p:spinner id="noRows" value="#{cinemaMB.cinema.number_of_rows}" min="0" max="50" stepFactor="1" />
+				        <p:spinner id="noRows" value="#{cinemaMB.cinema.numberOfRows}" min="0" max="50" stepFactor="1" />
 						
 						<p:outputLabel for="noSeats" value="Broj sjedala u svakom redu:" />
-						<p:spinner id="noSeats" value="#{cinemaMB.cinema.number_of_seats_in_row}" min="0" max="50" stepFactor="1" />
+						<p:spinner id="noSeats" value="#{cinemaMB.cinema.numberOfSeatsInRow}" min="0" max="50" stepFactor="1" />
 	
 					</p:panelGrid>
 	

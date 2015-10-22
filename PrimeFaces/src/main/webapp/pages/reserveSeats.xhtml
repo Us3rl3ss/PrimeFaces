@@ -38,9 +38,9 @@
 								<h:outputText value="Film:" />
 								<h:outputText value="#{reserveSeatsMB.projection.movie.name}" />
 								<h:outputText value="Redatelj:" />
-								<h:outputText value="#{reserveSeatsMB.projection.movie.director_name}" />
+								<h:outputText value="#{reserveSeatsMB.projection.movie.directorName}" />
 								<h:outputText value="Godina: " />
-								<h:outputText value="#{reserveSeatsMB.projection.movie.year_of_creation}" />
+								<h:outputText value="#{reserveSeatsMB.projection.movie.yearOfCreation}" />
 								<h:outputText value="Trajanje:" />
 								<h:outputText value="#{reserveSeatsMB.projection.movie.duration}" />
 								<h:outputText value="Glumci:" />
@@ -80,7 +80,7 @@
 							<p:selectManyButton id="cinemaSeats" value="#{reserveSeatsMB.selectedCinemaSeatsList}">
 								<f:selectItems value="#{reserveSeatsMB.cinemaSeatsList}"
 									var="cinemaSeats"
-									itemLabel="#{(cinemaSeats.seats_row).concat(cinemaSeats.seats_number)}"
+									itemLabel="#{(cinemaSeats.seatsRow).concat(cinemaSeats.seatsNumber)}"
 									itemValue="#{cinemaSeats.id}" />
 							</p:selectManyButton>
 

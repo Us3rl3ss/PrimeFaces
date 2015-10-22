@@ -70,7 +70,7 @@ public class ContactView implements Serializable {
 	 */
 	public String calcNoCinema(final Theater p_theater) {
 
-		return getTheaterService().getCinemaByTheater(p_theater) + "";
+		return getTheaterService().getCinemaByTheater(p_theater).size() + "";
 	}
 
 	/**
