@@ -246,7 +246,7 @@ public class MovieView implements Serializable {
 	 */
 	private List<UserMovieReview> getAllMovieReviews(final Movie p_movie) {
 
-		List<UserMovieReview> result = userService.getAllMovieReviews(p_movie);
+		List<UserMovieReview> result = getUserService().getAllMovieReviews(p_movie);
 
 		if (result == null) {
 			result = new ArrayList<UserMovieReview>();
@@ -263,8 +263,7 @@ public class MovieView implements Serializable {
 
 		search();
 		setMovieInfoRenderCss("");
-
-		movieInfoFormRender = true;
+		setMovieInfoFormRender(true);
 	}
 
 	/**

@@ -36,7 +36,6 @@ public class CinemaView implements Serializable {
 	private Theater theater;
 	private List<Theater> theaterList;
 	private List<Cinema> cinemaList;
-
 	private boolean deleteDisabled;
 	private boolean saveDisabled;
 

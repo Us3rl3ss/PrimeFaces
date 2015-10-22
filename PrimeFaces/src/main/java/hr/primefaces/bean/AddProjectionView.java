@@ -48,17 +48,13 @@ public class AddProjectionView implements Serializable {
 	private IMovieService movieService;
 
 	private Projection projection;
-
 	private List<Theater> theaterList;
 	private List<Cinema> cinemaList;
 	private List<Movie> movieList;
-
 	private ScheduleModel eventModel;
 	private ScheduleEvent event;
-
 	private Date currStartDate;
 	private Date currEndDate;
-
 	private boolean forUpdate;
 
 	@PostConstruct

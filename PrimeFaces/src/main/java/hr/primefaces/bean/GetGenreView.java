@@ -20,8 +20,7 @@ public class GetGenreView implements Serializable {
 	@ManagedProperty(value = "#{MovieService}")
 	private IMovieService movieService;
 
-	private Genre genre = new Genre();
-
+	private Genre genre;
 	private List<Genre> genreList;
 
 	@PostConstruct
