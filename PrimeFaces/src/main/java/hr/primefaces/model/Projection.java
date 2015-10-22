@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,11 +23,17 @@ public class Projection implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	// TODO equals and hash
+
 	@Id
 	@GeneratedValue
 	private Integer id;
-	private Date start_time;
-	private Date end_time;
+
+	@Column(name = "start_time", nullable = false)
+	private Date startTime;
+
+	@Column(name = "end_time", nullable = false)
+	private Date endTime;
 
 	@ManyToOne
 	@JoinColumn(name = "theater_id")
@@ -49,68 +56,120 @@ public class Projection implements Serializable {
 	public Projection() {
 	}
 
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the id
+	 */
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	/**
+	 * @return the startTime
+	 */
+	public Date getStartTime() {
+		return startTime;
 	}
 
-	public Date getStart_time() {
-		return start_time;
+	/**
+	 * @return the endTime
+	 */
+	public Date getEndTime() {
+		return endTime;
 	}
 
-	public void setStart_time(Date start_time) {
-		this.start_time = start_time;
-	}
-
-	public Date getEnd_time() {
-		return end_time;
-	}
-
-	public void setEnd_time(Date end_time) {
-		this.end_time = end_time;
-	}
-
-	public Cinema getCinema() {
-		return cinema;
-	}
-
-	public void setCinema(Cinema cinema) {
-		this.cinema = cinema;
-	}
-
-	public Movie getMovie() {
-		return movie;
-	}
-
-	public void setMovie(Movie movie) {
-		this.movie = movie;
-	}
-
-	public Set<ProjectionReservedSeats> getProjectionReservedSeatsList() {
-		return projectionReservedSeatsList;
-	}
-
-	public void setProjectionReservedSeatsList(Set<ProjectionReservedSeats> projectionReservedSeatsList) {
-		this.projectionReservedSeatsList = projectionReservedSeatsList;
-	}
-
+	/**
+	 * @return the theater
+	 */
 	public Theater getTheater() {
 		return theater;
 	}
 
-	public void setTheater(Theater theater) {
-		this.theater = theater;
+	/**
+	 * @return the cinema
+	 */
+	public Cinema getCinema() {
+		return cinema;
 	}
 
+	/**
+	 * @return the movie
+	 */
+	public Movie getMovie() {
+		return movie;
+	}
+
+	/**
+	 * @return the projectionReservedSeatsList
+	 */
+	public Set<ProjectionReservedSeats> getProjectionReservedSeatsList() {
+		return projectionReservedSeatsList;
+	}
+
+	/**
+	 * @return the numberOfFreeSeatsText
+	 */
 	public String getNumberOfFreeSeatsText() {
 		return numberOfFreeSeatsText;
 	}
 
-	public void setNumberOfFreeSeatsText(String numberOfFreeSeatsText) {
-		this.numberOfFreeSeatsText = numberOfFreeSeatsText;
+	/**
+	 * @param p_id the id to set
+	 */
+	public void setId(final Integer p_id) {
+		this.id = p_id;
+	}
+
+	/**
+	 * @param p_startTime the startTime to set
+	 */
+	public void setStartTime(final Date p_startTime) {
+		this.startTime = p_startTime;
+	}
+
+	/**
+	 * @param p_endTime the endTime to set
+	 */
+	public void setEndTime(final Date p_endTime) {
+		this.endTime = p_endTime;
+	}
+
+	/**
+	 * @param p_theater the theater to set
+	 */
+	public void setTheater(final Theater p_theater) {
+		this.theater = p_theater;
+	}
+
+	/**
+	 * @param p_cinema the cinema to set
+	 */
+	public void setCinema(final Cinema p_cinema) {
+		this.cinema = p_cinema;
+	}
+
+	/**
+	 * @param p_movie the movie to set
+	 */
+	public void setMovie(final Movie p_movie) {
+		this.movie = p_movie;
+	}
+
+	/**
+	 * @param p_projectionReservedSeatsList the projectionReservedSeatsList to set
+	 */
+	public void setProjectionReservedSeatsList(final Set<ProjectionReservedSeats> p_projectionReservedSeatsList) {
+		this.projectionReservedSeatsList = p_projectionReservedSeatsList;
+	}
+
+	/**
+	 * @param p_numberOfFreeSeatsText the numberOfFreeSeatsText to set
+	 */
+	public void setNumberOfFreeSeatsText(final String p_numberOfFreeSeatsText) {
+		this.numberOfFreeSeatsText = p_numberOfFreeSeatsText;
 	}
 
 }

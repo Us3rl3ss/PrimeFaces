@@ -25,65 +25,82 @@ public class UsersView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{userSession}")
-	UserSession userSession;
+	private UserSession userSession;
 
 	@ManagedProperty(value = "#{UserService}")
-	IUserService userService;
+	private IUserService userService;
 
 	@ManagedProperty(value = "#{MovieService}")
-	IMovieService movieService;
+	private IMovieService movieService;
 
 	private List<UserMovieRate> userMovieRateList;
 	private List<UserMovieReview> userMovieReviewList;
 	private List<UserFavoriteMovie> userFavoriteMovieList;
-
 	private UserMovieRate selectedRate;
 	private UserMovieReview selectedReview;
 	private UserFavoriteMovie selectedFavorite;
-
-	private Integer averageRate = 0;
-
+	private Integer averageRate;
 	private User user;
-
-	private boolean inFollowList = false;
-
-	private String userInfoRenderCss = "display:none;";
+	private boolean inFollowList;
+	private String userInfoRenderCss;
 
 	@PostConstruct
 	public void init() {
+
+		setAverageRate(0);
+		setUser(new User());
+		setInFollowList(false);
+		setUserInfoRenderCss("display:none;");
 	}
 
-	public void postavi() {
+	/**
+	 * setAll
+	 */
+	public void setAll() {
 
-		this.userMovieRateList = userService.getUserMovieRateByUser(this.user);
-		this.userMovieReviewList = userService.getUserMovieReviewByUser(this.user);
-		this.userFavoriteMovieList = userService.getUserFavoriteMovieByUser(this.user);
+		setUserMovieRateList(getUserService().getUserMovieRateByUser(getUser()));
+		setUserMovieReviewList(getUserService().getUserMovieReviewByUser(getUser()));
+		setUserFavoriteMovieList(getUserService().getUserFavoriteMovieByUser(getUser()));
 
-		boolean inFollowList = isInFollowList(userSession.getUser(), this.user);
+		if (isInFollowList(getUserSession().getUser(), getUser())) {
 
-		if (inFollowList) {
-			this.inFollowList = true;
-		} else {
-			this.inFollowList = false;
+			setInFollowList(true);
+		}
+		else {
+
+			setInFollowList(false);
 		}
 	}
 
-	public List<User> completeUser(String input) {
-		List<User> list = (List<User>) userService.getUserByUsername(input);
-		return list;
+	/**
+	 * addToFollowList
+	 */
+	public void addToFollowList() {
+
+		final Integer userId = getUserSession().getUser().getId();
+		final Integer followId = getUser().getId();
+
+		final UserFollowing uf = new UserFollowing();
+		uf.setUserId(userId);
+		uf.setFollowId(followId);
+		uf.setCreated(new Date());
+
+		getUserService().addUserFollowing(uf);
+
+		setAll();
 	}
 
-	public void onItemSelect(AjaxBehaviorEvent event) {
-
-		postavi();
-		setUserInfoRenderCss("");
-	}
-
-	public boolean isInFollowList(User loggedUser, User currUser) {
+	/**
+	 * isInFollowList
+	 * @param p_loggedUser
+	 * @param p_currUser
+	 * @return
+	 */
+	public boolean isInFollowList(final User p_loggedUser, final User p_currUser) {
 
 		boolean result = false;
 
-		List<User> list = userService.getUserFollow(loggedUser, currUser);
+		final List<User> list = getUserService().getUserFollow(p_loggedUser, p_currUser);
 
 		if (list.size() > 0) {
 
@@ -93,154 +110,240 @@ public class UsersView implements Serializable {
 		return result;
 	}
 
-	public void addToFollowList() {
-
-		Integer user_id = userSession.getUser().getId();
-		Integer follow_id = this.user.getId();
-
-		UserFollowing uf = new UserFollowing();
-		uf.setUser_id(user_id);
-		uf.setFollow_id(follow_id);
-		uf.setCreated(new Date());
-
-		userService.addUserFollowing(uf);
-
-		postavi();
-	}
-
+	/**
+	 * removeFromFollowList
+	 */
 	public void removeFromFollowList() {
 
-		Integer user_id = userSession.getUser().getId();
-		Integer follow_id = this.user.getId();
+		final Integer userId = getUserSession().getUser().getId();
+		final Integer followId = getUser().getId();
 
-		UserFollowing uf = userService.getUserFriends(new User(user_id), new User(follow_id));
-		userService.deleteUserFollowing(uf);
+		final UserFollowing uf = getUserService().getUserFriends(new User(userId), new User(followId));
 
-		postavi();
+		getUserService().deleteUserFollowing(uf);
+
+		setAll();
 	}
 
+	/**
+	 * calculateAverageRate
+	 */
 	public void calculateAverageRate() {
 
-		int averageRate = 0;
+		int avgRate = 0;
 
-		Double avg = userService.getAverageRateByMovie(this.selectedRate.getMovie());
+		final Double avg = getUserService().getAverageRateByMovie(getSelectedRate().getMovie());
 
 		try {
 
-			if (avg != null)
-				averageRate = avg.intValue();
-
-		} catch (NumberFormatException nex) {
+			if (avg != null) {
+				avgRate = avg.intValue();
+			}
+		}
+		catch (NumberFormatException nex) {
 			nex.printStackTrace();
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
-		this.averageRate = averageRate;
+		setAverageRate(avgRate);
 	}
 
+	/**
+	 * onItemSelect
+	 * @param p_event
+	 */
+	public void onItemSelect(final AjaxBehaviorEvent p_event) {
+
+		setAll();
+		setUserInfoRenderCss("");
+	}
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the userSession
+	 */
 	public UserSession getUserSession() {
 		return userSession;
 	}
 
-	public void setUserSession(UserSession userSession) {
-		this.userSession = userSession;
-	}
-
+	/**
+	 * @return the userService
+	 */
 	public IUserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
+	/**
+	 * @return the movieService
+	 */
 	public IMovieService getMovieService() {
 		return movieService;
 	}
 
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
-	}
-
+	/**
+	 * @return the userMovieRateList
+	 */
 	public List<UserMovieRate> getUserMovieRateList() {
 		return userMovieRateList;
 	}
 
-	public void setUserMovieRateList(List<UserMovieRate> userMovieRateList) {
-		this.userMovieRateList = userMovieRateList;
-	}
-
+	/**
+	 * @return the userMovieReviewList
+	 */
 	public List<UserMovieReview> getUserMovieReviewList() {
 		return userMovieReviewList;
 	}
 
-	public void setUserMovieReviewList(List<UserMovieReview> userMovieReviewList) {
-		this.userMovieReviewList = userMovieReviewList;
-	}
-
+	/**
+	 * @return the userFavoriteMovieList
+	 */
 	public List<UserFavoriteMovie> getUserFavoriteMovieList() {
 		return userFavoriteMovieList;
 	}
 
-	public void setUserFavoriteMovieList(List<UserFavoriteMovie> userFavoriteMovieList) {
-		this.userFavoriteMovieList = userFavoriteMovieList;
-	}
-
+	/**
+	 * @return the selectedRate
+	 */
 	public UserMovieRate getSelectedRate() {
 		return selectedRate;
 	}
 
-	public void setSelectedRate(UserMovieRate selectedRate) {
-		this.selectedRate = selectedRate;
-	}
-
+	/**
+	 * @return the selectedReview
+	 */
 	public UserMovieReview getSelectedReview() {
 		return selectedReview;
 	}
 
-	public void setSelectedReview(UserMovieReview selectedReview) {
-		this.selectedReview = selectedReview;
-	}
-
+	/**
+	 * @return the selectedFavorite
+	 */
 	public UserFavoriteMovie getSelectedFavorite() {
 		return selectedFavorite;
 	}
 
-	public void setSelectedFavorite(UserFavoriteMovie selectedFavorite) {
-		this.selectedFavorite = selectedFavorite;
-	}
-
+	/**
+	 * @return the averageRate
+	 */
 	public Integer getAverageRate() {
 		return averageRate;
 	}
 
-	public void setAverageRate(Integer averageRate) {
-		this.averageRate = averageRate;
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
 	}
 
+	/**
+	 * @return the inFollowList
+	 */
 	public boolean isInFollowList() {
 		return inFollowList;
 	}
 
-	public void setInFollowList(boolean inFollowList) {
-		this.inFollowList = inFollowList;
-	}
-
+	/**
+	 * @return the userInfoRenderCss
+	 */
 	public String getUserInfoRenderCss() {
 		return userInfoRenderCss;
 	}
 
-	public void setUserInfoRenderCss(String userInfoRenderCss) {
-		this.userInfoRenderCss = userInfoRenderCss;
+	/**
+	 * @param p_userSession the userSession to set
+	 */
+	public void setUserSession(final UserSession p_userSession) {
+		this.userSession = p_userSession;
+	}
+
+	/**
+	 * @param p_userService the userService to set
+	 */
+	public void setUserService(final IUserService p_userService) {
+		this.userService = p_userService;
+	}
+
+	/**
+	 * @param p_movieService the movieService to set
+	 */
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
+	}
+
+	/**
+	 * @param p_userMovieRateList the userMovieRateList to set
+	 */
+	public void setUserMovieRateList(final List<UserMovieRate> p_userMovieRateList) {
+		this.userMovieRateList = p_userMovieRateList;
+	}
+
+	/**
+	 * @param p_userMovieReviewList the userMovieReviewList to set
+	 */
+	public void setUserMovieReviewList(final List<UserMovieReview> p_userMovieReviewList) {
+		this.userMovieReviewList = p_userMovieReviewList;
+	}
+
+	/**
+	 * @param p_userFavoriteMovieList the userFavoriteMovieList to set
+	 */
+	public void setUserFavoriteMovieList(final List<UserFavoriteMovie> p_userFavoriteMovieList) {
+		this.userFavoriteMovieList = p_userFavoriteMovieList;
+	}
+
+	/**
+	 * @param p_selectedRate the selectedRate to set
+	 */
+	public void setSelectedRate(final UserMovieRate p_selectedRate) {
+		this.selectedRate = p_selectedRate;
+	}
+
+	/**
+	 * @param p_selectedReview the selectedReview to set
+	 */
+	public void setSelectedReview(final UserMovieReview p_selectedReview) {
+		this.selectedReview = p_selectedReview;
+	}
+
+	/**
+	 * @param p_selectedFavorite the selectedFavorite to set
+	 */
+	public void setSelectedFavorite(final UserFavoriteMovie p_selectedFavorite) {
+		this.selectedFavorite = p_selectedFavorite;
+	}
+
+	/**
+	 * @param p_averageRate the averageRate to set
+	 */
+	public void setAverageRate(final Integer p_averageRate) {
+		this.averageRate = p_averageRate;
+	}
+
+	/**
+	 * @param p_user the user to set
+	 */
+	public void setUser(final User p_user) {
+		this.user = p_user;
+	}
+
+	/**
+	 * @param p_inFollowList the inFollowList to set
+	 */
+	public void setInFollowList(final boolean p_inFollowList) {
+		this.inFollowList = p_inFollowList;
+	}
+
+	/**
+	 * @param p_userInfoRenderCss the userInfoRenderCss to set
+	 */
+	public void setUserInfoRenderCss(final String p_userInfoRenderCss) {
+		this.userInfoRenderCss = p_userInfoRenderCss;
 	}
 
 }

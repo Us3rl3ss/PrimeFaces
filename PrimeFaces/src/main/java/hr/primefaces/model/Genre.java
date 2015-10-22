@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -19,66 +20,94 @@ public class Genre implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	// TODO equals and hash
+
 	@Id
 	@GeneratedValue
 	private Integer id;
+
+	@Column(name = "name", nullable = false)
 	private String name;
+
+	@Column(name = "created", nullable = false)
 	private Date created;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "movie_genre", joinColumns = { @JoinColumn(name = "genre_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "movie_id", referencedColumnName = "id") })
+	@JoinTable(name = "movie_genre", joinColumns = { @JoinColumn(name = "genre_id", referencedColumnName = "id") },
+		inverseJoinColumns = { @JoinColumn(name = "movie_id", referencedColumnName = "id") })
 	private List<Genre> genreList;
 
 	public Genre() {
 	}
-	
+
+	public Genre(final String p_name, final Date p_created) {
+		this.name = p_name;
+	}
+
 	@Override
-	public boolean equals(Object obj) {
-		
-		if (this.getId() == ((Genre) obj).getId())
-				return true;
-		else
-			return false;
+	public boolean equals(final Object p_obj) {
+
+		return this.getId() == ((Genre) p_obj).getId();
 	}
 
-	public Genre(String name, Date created) {
-		this.name = name;
-	}
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
 
+	/**
+	 * @return the id
+	 */
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+	/**
+	 * @return the name
+	 */
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<Genre> getGenreList() {
-		return genreList;
-	}
-
-	public void setGenreList(List<Genre> genreList) {
-		this.genreList = genreList;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
+	/**
+	 * @return the created
+	 */
 	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
-		this.created = created;
+	/**
+	 * @return the genreList
+	 */
+	public List<Genre> getGenreList() {
+		return genreList;
+	}
+
+	/**
+	 * @param p_id the id to set
+	 */
+	public void setId(final Integer p_id) {
+		this.id = p_id;
+	}
+
+	/**
+	 * @param p_name the name to set
+	 */
+	public void setName(final String p_name) {
+		this.name = p_name;
+	}
+
+	/**
+	 * @param p_created the created to set
+	 */
+	public void setCreated(final Date p_created) {
+		this.created = p_created;
+	}
+
+	/**
+	 * @param p_genreList the genreList to set
+	 */
+	public void setGenreList(final List<Genre> p_genreList) {
+		this.genreList = p_genreList;
 	}
 
 }

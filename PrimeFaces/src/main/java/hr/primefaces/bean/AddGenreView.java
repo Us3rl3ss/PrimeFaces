@@ -21,32 +21,40 @@ public class AddGenreView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{MovieService}")
-	IMovieService movieService;
+	private IMovieService movieService;
 
-	private Genre genre = new Genre();
+	private Genre genre;
 
 	@PostConstruct
 	public void init() {
+
+		setGenre(new Genre());
 	}
 
 	/**
-	 * spremi
+	 * save
 	 */
-	public void spremi() {
+	public void save() {
 
 		try {
-			genre.setCreated(new Date());
-			movieService.addGenre(genre);
-			genre = new Genre();
+			getGenre().setCreated(new Date());
+			getMovieService().addGenre(getGenre());
+			setGenre(new Genre());
 			MessageUtil.info("Podaci uspješno spremljeni!");
-		} catch (HibernateException hex) {
+		}
+		catch (HibernateException hex) {
 			hex.printStackTrace();
 			MessageUtil.error("Došlo je do hibernate greške!");
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			ex.printStackTrace();
 			MessageUtil.error("Došlo je do greške!");
 		}
 	}
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
 
 	/**
 	 * @return the movieService
@@ -56,19 +64,24 @@ public class AddGenreView implements Serializable {
 	}
 
 	/**
-	 * @param movieService
-	 *            the movieService to set
+	 * @return the genre
 	 */
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
-	}
-
 	public Genre getGenre() {
 		return genre;
 	}
 
-	public void setGenre(Genre genre) {
-		this.genre = genre;
+	/**
+	 * @param p_movieService the movieService to set
+	 */
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
+	}
+
+	/**
+	 * @param p_genre the genre to set
+	 */
+	public void setGenre(final Genre p_genre) {
+		this.genre = p_genre;
 	}
 
 }

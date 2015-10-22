@@ -18,29 +18,46 @@ public class GetMovieView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{MovieService}")
-	IMovieService movieService;
+	private IMovieService movieService;
 
 	private List<Movie> movieList;
 
 	@PostConstruct
 	public void init() {
-		movieList = movieService.getMovies();
+
+		setMovieList(getMovieService().getMovies());
 	}
 
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the movieService
+	 */
 	public IMovieService getMovieService() {
 		return movieService;
 	}
 
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
-	}
-
+	/**
+	 * @return the movieList
+	 */
 	public List<Movie> getMovieList() {
 		return movieList;
 	}
 
-	public void setMovieList(List<Movie> movieList) {
-		this.movieList = movieList;
+	/**
+	 * @param p_movieService the movieService to set
+	 */
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
+	}
+
+	/**
+	 * @param p_movieList the movieList to set
+	 */
+	public void setMovieList(final List<Movie> p_movieList) {
+		this.movieList = p_movieList;
 	}
 
 }

@@ -1,6 +1,5 @@
 package hr.primefaces.bean;
 
-import hr.primefaces.model.Actor;
 import hr.primefaces.model.Genre;
 import hr.primefaces.model.Movie;
 import hr.primefaces.service.IMovieService;
@@ -26,30 +25,35 @@ public class AddMovieView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{MovieService}")
-	IMovieService movieService;
+	private IMovieService movieService;
 
-	private Movie movie = new Movie();
+	private Movie movie;
 	private List<Movie> movieList;
 	private List<Genre> genreList;
-	private String uploadedFileNames = "";
+	private String uploadedFileNames;
 
 	@PostConstruct
 	public void init() {
+
+		setMovie(new Movie());
+		setUploadedFileNames("");
 	}
 
 	/**
-	 * spremi
+	 * save
 	 */
-	public void spremi() {
+	public void save() {
 
 		try {
-			movieService.addMovie(movie);
-			movie = new Movie();
+			getMovieService().addMovie(getMovie());
+			setMovie(new Movie());
 			MessageUtil.info("Podaci uspješno spremljeni!");
-		} catch (HibernateException hex) {
+		}
+		catch (HibernateException hex) {
 			hex.printStackTrace();
 			MessageUtil.error("Došlo je do hibernate greške!");
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			ex.printStackTrace();
 			MessageUtil.error("Došlo je do greške!");
 		}
@@ -58,71 +62,98 @@ public class AddMovieView implements Serializable {
 	/**
 	 * handleFileUpload
 	 */
-	public void handleFileUpload(FileUploadEvent event) {
-		System.out.println(event);
+	public void handleFileUpload(final FileUploadEvent p_event) {
 
 		UploadedFile file;
 		byte[] byteData = null;
 
-		file = event.getFile();
+		file = p_event.getFile();
 		try {
 			byteData = IOUtils.toByteArray(file.getInputstream());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		if (byteData != null) {
 
-			movie.setImage(byteData);
+			getMovie().setImage(byteData);
 			setUploadedFileNames(getUploadedFileNames() + file.getFileName());
 		}
 	}
 
 	/**
-	 * completeActor
+	 * ################# GETTERS AND SETTERS #################
 	 */
-	public List<Actor> completeActor(String input) {
-		return movieService.getActorByName(input);
-	}
 
+	/**
+	 * @return the movieService
+	 */
 	public IMovieService getMovieService() {
 		return movieService;
 	}
 
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
-	}
-
+	/**
+	 * @return the movie
+	 */
 	public Movie getMovie() {
 		return movie;
 	}
 
-	public void setMovie(Movie movie) {
-		this.movie = movie;
-	}
-
+	/**
+	 * @return the movieList
+	 */
 	public List<Movie> getMovieList() {
 		return movieList;
 	}
 
-	public void setMovieList(List<Movie> movieList) {
-		this.movieList = movieList;
-	}
-
+	/**
+	 * @return the genreList
+	 */
 	public List<Genre> getGenreList() {
 		return genreList;
 	}
 
-	public void setGenreList(List<Genre> genreList) {
-		this.genreList = genreList;
-	}
-
+	/**
+	 * @return the uploadedFileNames
+	 */
 	public String getUploadedFileNames() {
 		return uploadedFileNames;
 	}
 
-	public void setUploadedFileNames(String uploadedFileNames) {
-		this.uploadedFileNames = uploadedFileNames;
+	/**
+	 * @param p_movieService the movieService to set
+	 */
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
+	}
+
+	/**
+	 * @param p_movie the movie to set
+	 */
+	public void setMovie(final Movie p_movie) {
+		this.movie = p_movie;
+	}
+
+	/**
+	 * @param p_movieList the movieList to set
+	 */
+	public void setMovieList(final List<Movie> p_movieList) {
+		this.movieList = p_movieList;
+	}
+
+	/**
+	 * @param p_genreList the genreList to set
+	 */
+	public void setGenreList(final List<Genre> p_genreList) {
+		this.genreList = p_genreList;
+	}
+
+	/**
+	 * @param p_uploadedFileNames the uploadedFileNames to set
+	 */
+	public void setUploadedFileNames(final String p_uploadedFileNames) {
+		this.uploadedFileNames = p_uploadedFileNames;
 	}
 
 }

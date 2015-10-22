@@ -23,6 +23,8 @@ public class Actor implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	// TODO equals and hash
+
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -38,6 +40,8 @@ public class Actor implements Serializable {
 
 	@Column(name = "place_of_birth", nullable = false)
 	private String placeOfBirth;
+
+	@Column(name = "info", nullable = true)
 	private String info;
 
 	@Lob

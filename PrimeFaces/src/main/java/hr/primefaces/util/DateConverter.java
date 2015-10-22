@@ -2,25 +2,48 @@ package hr.primefaces.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
-public class DateConverter {
+public final class DateConverter {
 
 	public static final String dd_MM_yyyy = "dd.MM.yyyy";
 	public static final String HH_mm = "HH:mm";
 
-	public static void main(String[] args) {
-		System.out.println(covertDateToString(new Date(), HH_mm));
+	private DateConverter(){}
+
+	/**
+	 * covertDateToString
+	 * @param p_date
+	 * @param p_format
+	 * @return
+	 */
+	public static String covertDateToString(final Date p_date, final String p_format) {
+
+		String result = null;
+
+		if (p_date != null) {
+
+			DateFormat df = new SimpleDateFormat(p_format);
+			result = df.format(p_date);
+		}
+
+		return result;
 	}
 
-	public static String covertDateToString(Date date, String format) {
+	public static Date setDateDifference(final Date p_initialDate, final  int p_dayDiff, final int p_minDiff) {
 
-		String result = "";
-		
-		if (date != null) {
-			
-			DateFormat df = new SimpleDateFormat(format);
-			result = df.format(date);
+		Date result = null;
+
+		if (p_initialDate != null) {
+
+			final Calendar cal = Calendar.getInstance();
+
+			cal.setTime(p_initialDate);
+			cal.add(Calendar.DAY_OF_MONTH, p_dayDiff * (-1));
+			cal.add(Calendar.MINUTE, p_minDiff * (-1));
+
+			result = cal.getTime();
 		}
 
 		return result;

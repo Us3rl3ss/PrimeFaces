@@ -19,7 +19,6 @@
 		<mapping class="hr.primefaces.model.Genre" />
 		<mapping class="hr.primefaces.model.Theater" />
 		<mapping class="hr.primefaces.model.Cinema" />
-		<mapping class="hr.primefaces.model.CinemaMovie" />
 		<mapping class="hr.primefaces.model.Projection" />
 		<mapping class="hr.primefaces.model.CinemaSeats" />
 		<mapping class="hr.primefaces.model.ProjectionReservedSeats" />

@@ -30,6 +30,9 @@ public class TheaterView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String THEATER_JS = "PF('theaterDialog').show();";
+	private static final String THEATER_DIALOG_COMPONENT = "theaterDialog";
+
 	@ManagedProperty(value = "#{TheaterService}")
 	private ITheaterService theaterService;
 
@@ -184,12 +187,13 @@ public class TheaterView implements Serializable {
 			setDeleteDisabled(true);
 		}
 
-		RequestContext.getCurrentInstance().execute("PF('theaterDialog').show();");
-		RequestContext.getCurrentInstance().update("theaterDialog");
+		RequestContext.getCurrentInstance().execute(THEATER_JS);
+		RequestContext.getCurrentInstance().update(THEATER_DIALOG_COMPONENT);
 	}
 
 	/**
 	 * onRowSelect
+	 * @param p_event
 	 */
 	public void onRowSelect(final SelectEvent p_event) {
 

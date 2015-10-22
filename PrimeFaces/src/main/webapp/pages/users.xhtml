@@ -23,7 +23,7 @@
 					<p:outputLabel value="Korisnici:"></p:outputLabel>
 					<p:autoComplete id="searchUser" minQueryLength="3" maxResults="5"
 						placeholder="Pretraži" value="#{usersMB.user}"
-						completeMethod="#{usersMB.completeUser}" effect="fade"
+						completeMethod="#{autocompleteMB.completeUser}" effect="fade"
 						var="user" itemLabel="#{user.username}" itemValue="#{user}"
 						converter="#{userConverter}" forceSelection="true">
 

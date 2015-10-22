@@ -25,15 +25,15 @@
 						converter="#{theaterConverter}">
 						<f:selectItems value="#{projectionMB.theaterList}" var="theater"
 							itemValue="#{theater}" itemLabel="#{theater.name}" />
-						<f:ajax listener="#{projectionMB.pretrazi}" />
+						<f:ajax listener="#{projectionMB.search}" />
 					</p:selectOneMenu>
 					<p:outputLabel for="datumProjekcije" value="Datum:" />
 					<p:calendar id="datumProjekcije" value="#{projectionMB.datumProjekcije}"
 						pattern="dd.MM.yyyy" mask="true">
-						<p:ajax event="dateSelect" listener="#{projectionMB.pretrazi}"/>
+						<p:ajax event="dateSelect" listener="#{projectionMB.search}"/>
 					</p:calendar>
 
-					<p:commandButton value="Pretraži" action="#{projectionMB.pretrazi}"
+					<p:commandButton value="Pretraži" action="#{projectionMB.search}"
 						update="projection projection" />
 						
 				</p:panelGrid>

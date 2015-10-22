@@ -26,13 +26,25 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	// TODO equals and hash
+
 	@Id
 	@GeneratedValue
 	private Integer id;
+
+	@Column(name = "username", nullable = false)
 	private String username;
+
+	@Column(name = "firstname", nullable = false)
 	private String firstname;
+
+	@Column(name = "lastname", nullable = false)
 	private String lastname;
+
+	@Column(name = "password", nullable = false)
 	private String password;
+
+	@Column(name = "email", nullable = false)
 	private String email;
 
 	@Column(name = "date_of_birth", nullable = false)
@@ -67,56 +79,54 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(int id) {
-		this.id = id;
+	public User(final int p_id) {
+		this.id = p_id;
 	}
-	
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the id
+	 */
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+	/**
+	 * @return the username
+	 */
 	public String getUsername() {
 		return username;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
+	/**
+	 * @return the firstname
+	 */
 	public String getFirstname() {
 		return firstname;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
+	/**
+	 * @return the lastname
+	 */
 	public String getLastname() {
 		return lastname;
 	}
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
+	/**
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
+	/**
+	 * @return the email
+	 */
 	public String getEmail() {
 		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	/**
@@ -127,75 +137,164 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param dateOfBirth the dateOfBirth to set
+	 * @return the updated
 	 */
-
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
 	public Date getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	public Set<ProjectionReservedSeats> getProjectionReservedSeats() {
-		return projectionReservedSeats;
-	}
-
-	public void setProjectionReservedSeats(Set<ProjectionReservedSeats> projectionReservedSeats) {
-		this.projectionReservedSeats = projectionReservedSeats;
-	}
-
-	public Set<UserMovieRate> getUserMovieRate() {
-		return userMovieRate;
-	}
-
-	public void setUserMovieRate(Set<UserMovieRate> userMovieRate) {
-		this.userMovieRate = userMovieRate;
-	}
-
-	public Set<UserMovieReview> getUserMovieReview() {
-		return userMovieReview;
-	}
-
-	public void setUserMovieReview(Set<UserMovieReview> userMovieReview) {
-		this.userMovieReview = userMovieReview;
-	}
-
-	public List<User> getUserFollowList() {
-		return userFollowList;
-	}
-
-	public void setUserFollowList(List<User> userFollowList) {
-		this.userFollowList = userFollowList;
-	}
-
-	public List<User> getFollow() {
-		return follow;
-	}
-
-	public void setFollow(List<User> follow) {
-		this.follow = follow;
-	}
-
+	/**
+	 * @return the image
+	 */
 	public byte[] getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
-		this.image = image;
+	/**
+	 * @return the role
+	 */
+	public Role getRole() {
+		return role;
+	}
+
+	/**
+	 * @return the projectionReservedSeats
+	 */
+	public Set<ProjectionReservedSeats> getProjectionReservedSeats() {
+		return projectionReservedSeats;
+	}
+
+	/**
+	 * @return the userMovieRate
+	 */
+	public Set<UserMovieRate> getUserMovieRate() {
+		return userMovieRate;
+	}
+
+	/**
+	 * @return the userMovieReview
+	 */
+	public Set<UserMovieReview> getUserMovieReview() {
+		return userMovieReview;
+	}
+
+	/**
+	 * @return the userFollowList
+	 */
+	public List<User> getUserFollowList() {
+		return userFollowList;
+	}
+
+	/**
+	 * @return the follow
+	 */
+	public List<User> getFollow() {
+		return follow;
+	}
+
+	/**
+	 * @param p_id the id to set
+	 */
+	public void setId(final Integer p_id) {
+		this.id = p_id;
+	}
+
+	/**
+	 * @param p_username the username to set
+	 */
+	public void setUsername(final String p_username) {
+		this.username = p_username;
+	}
+
+	/**
+	 * @param p_firstname the firstname to set
+	 */
+	public void setFirstname(final String p_firstname) {
+		this.firstname = p_firstname;
+	}
+
+	/**
+	 * @param p_lastname the lastname to set
+	 */
+	public void setLastname(final String p_lastname) {
+		this.lastname = p_lastname;
+	}
+
+	/**
+	 * @param p_password the password to set
+	 */
+	public void setPassword(final String p_password) {
+		this.password = p_password;
+	}
+
+	/**
+	 * @param p_email the email to set
+	 */
+	public void setEmail(final String p_email) {
+		this.email = p_email;
+	}
+
+	/**
+	 * @param p_dateOfBirth the dateOfBirth to set
+	 */
+	public void setDateOfBirth(final Date p_dateOfBirth) {
+		this.dateOfBirth = p_dateOfBirth;
+	}
+
+	/**
+	 * @param p_updated the updated to set
+	 */
+	public void setUpdated(final Date p_updated) {
+		this.updated = p_updated;
+	}
+
+	/**
+	 * @param p_image the image to set
+	 */
+	public void setImage(final byte[] p_image) {
+		this.image = p_image;
+	}
+
+	/**
+	 * @param p_role the role to set
+	 */
+	public void setRole(final Role p_role) {
+		this.role = p_role;
+	}
+
+	/**
+	 * @param p_projectionReservedSeats the projectionReservedSeats to set
+	 */
+	public void setProjectionReservedSeats(final Set<ProjectionReservedSeats> p_projectionReservedSeats) {
+		this.projectionReservedSeats = p_projectionReservedSeats;
+	}
+
+	/**
+	 * @param p_userMovieRate the userMovieRate to set
+	 */
+	public void setUserMovieRate(final Set<UserMovieRate> p_userMovieRate) {
+		this.userMovieRate = p_userMovieRate;
+	}
+
+	/**
+	 * @param p_userMovieReview the userMovieReview to set
+	 */
+	public void setUserMovieReview(final Set<UserMovieReview> p_userMovieReview) {
+		this.userMovieReview = p_userMovieReview;
+	}
+
+	/**
+	 * @param p_userFollowList the userFollowList to set
+	 */
+	public void setUserFollowList(final List<User> p_userFollowList) {
+		this.userFollowList = p_userFollowList;
+	}
+
+	/**
+	 * @param p_follow the follow to set
+	 */
+	public void setFollow(final List<User> p_follow) {
+		this.follow = p_follow;
 	}
 
 }

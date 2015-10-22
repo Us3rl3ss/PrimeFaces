@@ -6,6 +6,7 @@ import hr.primefaces.model.UserMovieRate;
 import hr.primefaces.model.UserMovieReview;
 import hr.primefaces.service.IMovieService;
 import hr.primefaces.service.IUserService;
+import hr.primefaces.util.MessageUtil;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.poi.util.IOUtils;
+import org.hibernate.HibernateException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -27,73 +29,79 @@ public class MyProfileView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String REFRESH_PAGE_JS = "$(window).off('beforeunload'); location.reload();";
+
 	@ManagedProperty(value = "#{userSession}")
-	UserSession userSession;
+	private UserSession userSession;
 
 	@ManagedProperty(value = "#{UserService}")
-	IUserService userService;
+	private IUserService userService;
 
 	@ManagedProperty(value = "#{MovieService}")
-	IMovieService movieService;
+	private IMovieService movieService;
 
+	private User user;
 	private List<UserMovieRate> userMovieRateList;
 	private List<UserMovieReview> userMovieReviewList;
 	private List<UserFavoriteMovie> userFavoriteMovieList;
-
 	private UserMovieRate selectedRate;
 	private UserMovieReview selectedReview;
 	private UserFavoriteMovie selectedFavorite;
-
-	private Integer averageRate = 0;
-
-	private User user;
-
-	private String uploadedFileNames = "";
+	private Integer averageRate;
+	private String uploadedFileNames;
 
 	@PostConstruct
 	public void init() {
 
-		this.user = userSession.getUser();
-		postavi();
+		setAverageRate(0);
+		setUploadedFileNames("");
+		setUser(getUserSession().getUser());
+		setUserMovieRateList(getUserService().getUserMovieRateByUser(getUser()));
+		setUserMovieReviewList(getUserService().getUserMovieReviewByUser(getUser()));
+		setUserFavoriteMovieList(getUserService().getUserFavoriteMovieByUser(getUser()));
 	}
 
-	public void postavi() {
-
-		this.userMovieRateList = userService.getUserMovieRateByUser(this.user);
-		this.userMovieReviewList = userService.getUserMovieReviewByUser(this.user);
-		this.userFavoriteMovieList = userService.getUserFavoriteMovieByUser(this.user);
-	}
-
-	public void spremi() {
+	/**
+	 * save
+	 */
+	public void save() {
 
 		try {
-			user.setUpdated(new Date());
-			userService.updateUser(user);
-
+			getUser().setUpdated(new Date());
+			getUserService().updateUser(getUser());
+			MessageUtil.info("Podaci uspješno spremljeni!");
 			refreshUserData();
-		} catch (Exception ex) { // TODO ERROR HANDLING
+		}
+		catch (HibernateException hex) {
+			hex.printStackTrace();
+			MessageUtil.error("Došlo je do hibernate greške!");
+		}
+		catch (Exception ex) {
 			ex.printStackTrace();
+			MessageUtil.error("Došlo je do greške!");
 		}
 	}
 
+	/**
+	 * refreshUserData
+	 */
 	private void refreshUserData() {
 
-		user = userService.getUserById(user.getId());
-		RequestContext.getCurrentInstance().execute("$(window).off('beforeunload'); location.reload();");
+		setUser(getUserService().getUserById(getUser().getId()));
+		RequestContext.getCurrentInstance().execute(REFRESH_PAGE_JS);
 	}
 
-	public List<User> completeUser(String input) {
-		List<User> list = (List<User>) userService.getUserByUsername(input);
-		return list;
-	}
-
-	public boolean isInFollowList(User loggedUser, User currUser) {
+	/**
+	 * isInFollowList
+	 * @param p_loggedUser
+	 * @param p_currUser
+	 * @return
+	 */
+	public boolean isInFollowList(final User p_loggedUser, final User p_currUser) {
 
 		boolean result = false;
 
-		List<User> list = userService.getUserFollow(loggedUser, currUser);
-
-		if (list.size() > 0) {
+		if (getUserService().getUserFollow(p_loggedUser, p_currUser).size() > 0) {
 
 			result = true;
 		}
@@ -101,142 +109,224 @@ public class MyProfileView implements Serializable {
 		return result;
 	}
 
+	/**
+	 * calculateAverageRate
+	 */
 	public void calculateAverageRate() {
 
-		int averageRate = 0;
+		int avgRate = 0;
 
-		Double avg = userService.getAverageRateByMovie(this.selectedRate.getMovie());
+		final Double avg = getUserService().getAverageRateByMovie(getSelectedRate().getMovie());
 
 		try {
 
-			if (avg != null)
-				averageRate = avg.intValue();
-
-		} catch (NumberFormatException nex) {
+			if (avg != null) {
+				avgRate = avg.intValue();
+			}
+		}
+		catch (NumberFormatException nex) {
 			nex.printStackTrace();
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
-		this.averageRate = averageRate;
+		setAverageRate(avgRate);
 	}
 
 	/**
 	 * handleFileUpload
 	 */
-	public void handleFileUpload(FileUploadEvent event) {
+	public void handleFileUpload(final FileUploadEvent p_event) {
 
 		UploadedFile file;
 		byte[] byteData = null;
 
-		file = event.getFile();
+		file = p_event.getFile();
 		try {
 			byteData = IOUtils.toByteArray(file.getInputstream());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		if (byteData != null) {
 
-			user.setImage(byteData);
+			getUser().setImage(byteData);
 			setUploadedFileNames(getUploadedFileNames() + file.getFileName());
 		}
 	}
 
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the userSession
+	 */
 	public UserSession getUserSession() {
 		return userSession;
 	}
 
-	public void setUserSession(UserSession userSession) {
-		this.userSession = userSession;
-	}
-
+	/**
+	 * @return the userService
+	 */
 	public IUserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
-	}
-
+	/**
+	 * @return the movieService
+	 */
 	public IMovieService getMovieService() {
 		return movieService;
 	}
 
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
-	}
-
-	public List<UserMovieRate> getUserMovieRateList() {
-		return userMovieRateList;
-	}
-
-	public void setUserMovieRateList(List<UserMovieRate> userMovieRateList) {
-		this.userMovieRateList = userMovieRateList;
-	}
-
-	public List<UserMovieReview> getUserMovieReviewList() {
-		return userMovieReviewList;
-	}
-
-	public void setUserMovieReviewList(List<UserMovieReview> userMovieReviewList) {
-		this.userMovieReviewList = userMovieReviewList;
-	}
-
-	public List<UserFavoriteMovie> getUserFavoriteMovieList() {
-		return userFavoriteMovieList;
-	}
-
-	public void setUserFavoriteMovieList(List<UserFavoriteMovie> userFavoriteMovieList) {
-		this.userFavoriteMovieList = userFavoriteMovieList;
-	}
-
-	public UserMovieRate getSelectedRate() {
-		return selectedRate;
-	}
-
-	public void setSelectedRate(UserMovieRate selectedRate) {
-		this.selectedRate = selectedRate;
-	}
-
-	public UserMovieReview getSelectedReview() {
-		return selectedReview;
-	}
-
-	public void setSelectedReview(UserMovieReview selectedReview) {
-		this.selectedReview = selectedReview;
-	}
-
-	public UserFavoriteMovie getSelectedFavorite() {
-		return selectedFavorite;
-	}
-
-	public void setSelectedFavorite(UserFavoriteMovie selectedFavorite) {
-		this.selectedFavorite = selectedFavorite;
-	}
-
-	public Integer getAverageRate() {
-		return averageRate;
-	}
-
-	public void setAverageRate(Integer averageRate) {
-		this.averageRate = averageRate;
-	}
-
+	/**
+	 * @return the user
+	 */
 	public User getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	/**
+	 * @return the userMovieRateList
+	 */
+	public List<UserMovieRate> getUserMovieRateList() {
+		return userMovieRateList;
 	}
 
+	/**
+	 * @return the userMovieReviewList
+	 */
+	public List<UserMovieReview> getUserMovieReviewList() {
+		return userMovieReviewList;
+	}
+
+	/**
+	 * @return the userFavoriteMovieList
+	 */
+	public List<UserFavoriteMovie> getUserFavoriteMovieList() {
+		return userFavoriteMovieList;
+	}
+
+	/**
+	 * @return the selectedRate
+	 */
+	public UserMovieRate getSelectedRate() {
+		return selectedRate;
+	}
+
+	/**
+	 * @return the selectedReview
+	 */
+	public UserMovieReview getSelectedReview() {
+		return selectedReview;
+	}
+
+	/**
+	 * @return the selectedFavorite
+	 */
+	public UserFavoriteMovie getSelectedFavorite() {
+		return selectedFavorite;
+	}
+
+	/**
+	 * @return the averageRate
+	 */
+	public Integer getAverageRate() {
+		return averageRate;
+	}
+
+	/**
+	 * @return the uploadedFileNames
+	 */
 	public String getUploadedFileNames() {
 		return uploadedFileNames;
 	}
 
-	public void setUploadedFileNames(String uploadedFileNames) {
-		this.uploadedFileNames = uploadedFileNames;
+	/**
+	 * @param p_userSession the userSession to set
+	 */
+	public void setUserSession(final UserSession p_userSession) {
+		this.userSession = p_userSession;
+	}
+
+	/**
+	 * @param p_userService the userService to set
+	 */
+	public void setUserService(final IUserService p_userService) {
+		this.userService = p_userService;
+	}
+
+	/**
+	 * @param p_movieService the movieService to set
+	 */
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
+	}
+
+	/**
+	 * @param p_user the user to set
+	 */
+	public void setUser(final User p_user) {
+		this.user = p_user;
+	}
+
+	/**
+	 * @param p_userMovieRateList the userMovieRateList to set
+	 */
+	public void setUserMovieRateList(final List<UserMovieRate> p_userMovieRateList) {
+		this.userMovieRateList = p_userMovieRateList;
+	}
+
+	/**
+	 * @param p_userMovieReviewList the userMovieReviewList to set
+	 */
+	public void setUserMovieReviewList(final List<UserMovieReview> p_userMovieReviewList) {
+		this.userMovieReviewList = p_userMovieReviewList;
+	}
+
+	/**
+	 * @param p_userFavoriteMovieList the userFavoriteMovieList to set
+	 */
+	public void setUserFavoriteMovieList(final List<UserFavoriteMovie> p_userFavoriteMovieList) {
+		this.userFavoriteMovieList = p_userFavoriteMovieList;
+	}
+
+	/**
+	 * @param p_selectedRate the selectedRate to set
+	 */
+	public void setSelectedRate(final UserMovieRate p_selectedRate) {
+		this.selectedRate = p_selectedRate;
+	}
+
+	/**
+	 * @param p_selectedReview the selectedReview to set
+	 */
+	public void setSelectedReview(final UserMovieReview p_selectedReview) {
+		this.selectedReview = p_selectedReview;
+	}
+
+	/**
+	 * @param p_selectedFavorite the selectedFavorite to set
+	 */
+	public void setSelectedFavorite(final UserFavoriteMovie p_selectedFavorite) {
+		this.selectedFavorite = p_selectedFavorite;
+	}
+
+	/**
+	 * @param p_averageRate the averageRate to set
+	 */
+	public void setAverageRate(final Integer p_averageRate) {
+		this.averageRate = p_averageRate;
+	}
+
+	/**
+	 * @param p_uploadedFileNames the uploadedFileNames to set
+	 */
+	public void setUploadedFileNames(final String p_uploadedFileNames) {
+		this.uploadedFileNames = p_uploadedFileNames;
 	}
 
 }

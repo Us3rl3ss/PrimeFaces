@@ -44,10 +44,12 @@ public class AddActorView implements Serializable {
 			getMovieService().addActor(getActor());
 			setActor(new Actor());
 			MessageUtil.info("Podaci uspješno spremljeni!");
-		} catch (HibernateException hex) {
+		}
+		catch (HibernateException hex) {
 			hex.printStackTrace();
 			MessageUtil.error("Došlo je do hibernate greške!");
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			ex.printStackTrace();
 			MessageUtil.error("Došlo je do greške!");
 		}
@@ -72,7 +74,7 @@ public class AddActorView implements Serializable {
 
 		if (byteData != null) {
 
-			actor.setImage(byteData);
+			getActor().setImage(byteData);
 			setUploadedFileNames(getUploadedFileNames() + file.getFileName());
 		}
 	}
@@ -103,10 +105,10 @@ public class AddActorView implements Serializable {
 	}
 
 	/**
-	 * @param movieService the movieService to set
+	 * @param p_movieService the movieService to set
 	 */
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
 	}
 
 	/**

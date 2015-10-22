@@ -26,6 +26,9 @@ public class CinemaView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String CINEMA_DIALOG_JS = "PF('cinemaDialog').show();";
+	private static final String CINEMA_DIALOG_COMPONENT = "cinemaDialog";
+
 	@ManagedProperty(value = "#{TheaterService}")
 	private ITheaterService theaterService;
 
@@ -59,10 +62,10 @@ public class CinemaView implements Serializable {
 				if(getTheaterService().getCinemaByTheaterAndName(getTheater(), getCinema().getName()) == null) {
 
 					getCinema().setTheater(getTheater());
-					final int numberOfSeats = getCinema().getNumber_of_rows() * getCinema().getNumber_of_seats_in_row();
-					final List<CinemaSeats> cinemaSeatsList = setCinemaSeatsList(getCinema().getNumber_of_rows(),
-							getCinema().getNumber_of_seats_in_row());
-					getCinema().setNumber_of_seats(numberOfSeats);
+					final int numberOfSeats = getCinema().getNumberOfRows() * getCinema().getNumberOfSeatsInRow();
+					final List<CinemaSeats> cinemaSeatsList = setCinemaSeatsList(getCinema().getNumberOfRows(),
+							getCinema().getNumberOfSeatsInRow());
+					getCinema().setNumberOfSeats(numberOfSeats);
 
 					final Iterator<CinemaSeats> iter = cinemaSeatsList.iterator();
 					while (iter.hasNext()) {
@@ -128,8 +131,8 @@ public class CinemaView implements Serializable {
 		setSaveDisabled(false);
 		setDeleteDisabled(true);
 
-		RequestContext.getCurrentInstance().execute("PF('cinemaDialog').show();");
-		RequestContext.getCurrentInstance().update("cinemaDialog");
+		RequestContext.getCurrentInstance().execute(CINEMA_DIALOG_JS);
+		RequestContext.getCurrentInstance().update(CINEMA_DIALOG_COMPONENT);
     }
 
 	/**
@@ -140,8 +143,8 @@ public class CinemaView implements Serializable {
 		setSaveDisabled(true);
 		setDeleteDisabled(false);
 
-		RequestContext.getCurrentInstance().execute("PF('cinemaDialog').show();");
-		RequestContext.getCurrentInstance().update("cinemaDialog");
+		RequestContext.getCurrentInstance().execute(CINEMA_DIALOG_JS);
+		RequestContext.getCurrentInstance().update(CINEMA_DIALOG_COMPONENT);
     }
 
 	/**
@@ -156,8 +159,8 @@ public class CinemaView implements Serializable {
 			for (int seat = 1; seat <= p_numberOfSeatsInRow; seat++) {
 
 				final CinemaSeats cs = new CinemaSeats();
-				cs.setSeats_row(remapRows(row));
-				cs.setSeats_number(seat);
+				cs.setSeatsRow(remapRows(row));
+				cs.setSeatsNumber(seat);
 
 				result.add(cs);
 			}

@@ -44,7 +44,7 @@
 					<p:outputLabel for="actor" value="Glumci:" />
 					<p:autoComplete id="actor" multiple="true"
 						value="#{addMovieMB.movie.actorList}"
-						completeMethod="#{addMovieMB.completeActor}" var="actor"
+						completeMethod="#{autocompleteMB.completeActor}" var="actor"
 						itemLabel="#{(actor.firstname).concat(' ').concat(actor.lastname)}"
 						itemValue="#{actor}" converter="#{actorConverter}"
 						forceSelection="true">
@@ -70,7 +70,7 @@
 					<p:outputLabel for="genres" value="Žanr/ovi:" />
 					<p:autoComplete id="genres" multiple="true"
 						value="#{addMovieMB.movie.genreList}"
-						completeMethod="#{addMovieMB.completeGenre}" var="genre"
+						completeMethod="#{autocompleteMB.completeGenre}" var="genre"
 						itemLabel="#{genre.name}" itemValue="#{genre}"
 						converter="#{genreConverter}" forceSelection="true">
 						<p:column>
@@ -92,7 +92,7 @@
 
 				</p:panelGrid>
 
-				<p:commandButton value="Spremi" action="#{addMovieMB.spremi}"
+				<p:commandButton value="Spremi" action="#{addMovieMB.save}"
 					update=":messages addMovie" />
 
 			</h:form>

@@ -18,7 +18,7 @@ public class GetGenreView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{MovieService}")
-	IMovieService movieService;
+	private IMovieService movieService;
 
 	private Genre genre = new Genre();
 
@@ -26,23 +26,13 @@ public class GetGenreView implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		genreList = movieService.getGenres();
+
+		setGenre(new Genre());
+		setGenreList(getMovieService().getGenres());
 	}
 
 	public Genre getGenre() {
 		return genre;
-	}
-
-	public void setGenre(Genre genre) {
-		this.genre = genre;
-	}
-
-	public List<Genre> getGenreList() {
-		return genreList;
-	}
-
-	public void setGenreList(List<Genre> genreList) {
-		this.genreList = genreList;
 	}
 
 	/**
@@ -53,11 +43,31 @@ public class GetGenreView implements Serializable {
 	}
 
 	/**
-	 * @param movieService
-	 *            the movieService to set
+	 * @return the genreList
 	 */
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
+	public List<Genre> getGenreList() {
+		return genreList;
+	}
+
+	/**
+	 * @param p_movieService the movieService to set
+	 */
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
+	}
+
+	/**
+	 * @param p_genre the genre to set
+	 */
+	public void setGenre(final Genre p_genre) {
+		this.genre = p_genre;
+	}
+
+	/**
+	 * @param p_genreList the genreList to set
+	 */
+	public void setGenreList(final List<Genre> p_genreList) {
+		this.genreList = p_genreList;
 	}
 
 }

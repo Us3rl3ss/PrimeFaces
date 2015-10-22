@@ -11,7 +11,7 @@
 </h:head>
 <h:body>
 	
-    <p:idleMonitor timeout="#{idleMonitorMB.IDLE_TIME}">
+    <p:idleMonitor timeout="#{idleMonitorMB.idleTime}">
         <p:ajax event="idle" listener="#{idleMonitorMB.onIdle}" update=":messages" />
         <p:ajax event="active" listener="#{idleMonitorMB.onActive}" update=":messages" />
     </p:idleMonitor>

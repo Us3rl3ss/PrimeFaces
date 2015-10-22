@@ -15,6 +15,8 @@ public class ProjectionReservedSeats implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	// TODO equals and hash
+
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -25,7 +27,7 @@ public class ProjectionReservedSeats implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "cinema_seats_id")
-	private CinemaSeats cinema_seats;
+	private CinemaSeats cinemaSeats;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -34,40 +36,64 @@ public class ProjectionReservedSeats implements Serializable {
 	public ProjectionReservedSeats() {
 	}
 
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the id
+	 */
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+	/**
+	 * @return the projection
+	 */
 	public Projection getProjection() {
 		return projection;
 	}
 
-	public void setProjection(Projection projection) {
-		this.projection = projection;
+	/**
+	 * @return the cinemaSeats
+	 */
+	public CinemaSeats getCinemaSeats() {
+		return cinemaSeats;
 	}
 
-	public CinemaSeats getCinema_seats() {
-		return cinema_seats;
-	}
-
-	public void setCinema_seats(CinemaSeats cinema_seats) {
-		this.cinema_seats = cinema_seats;
-	}
-
+	/**
+	 * @return the user
+	 */
 	public User getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	/**
+	 * @param p_id the id to set
+	 */
+	public void setId(final Integer p_id) {
+		this.id = p_id;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	/**
+	 * @param p_projection the projection to set
+	 */
+	public void setProjection(final Projection p_projection) {
+		this.projection = p_projection;
+	}
+
+	/**
+	 * @param p_cinemaSeats the cinemaSeats to set
+	 */
+	public void setCinemaSeats(final CinemaSeats p_cinemaSeats) {
+		this.cinemaSeats = p_cinemaSeats;
+	}
+
+	/**
+	 * @param p_user the user to set
+	 */
+	public void setUser(final User p_user) {
+		this.user = p_user;
 	}
 
 }

@@ -18,14 +18,19 @@ public class GetActorView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{MovieService}")
-	IMovieService movieService;
+	private IMovieService movieService;
 
 	private List<Actor> actorList;
 
 	@PostConstruct
 	public void init() {
-		actorList = movieService.getActors();
+
+		setActorList(getMovieService().getActors());
 	}
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
 
 	/**
 	 * @return the movieService
@@ -42,19 +47,17 @@ public class GetActorView implements Serializable {
 	}
 
 	/**
-	 * @param movieService
-	 *            the movieService to set
+	 * @param p_movieService the movieService to set
 	 */
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
 	}
 
 	/**
-	 * @param actorList
-	 *            the actorList to set
+	 * @param p_actorList the actorList to set
 	 */
-	public void setActorList(List<Actor> actorList) {
-		this.actorList = actorList;
+	public void setActorList(final List<Actor> p_actorList) {
+		this.actorList = p_actorList;
 	}
 
 }

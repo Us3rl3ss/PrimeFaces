@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,106 +22,145 @@ import javax.persistence.Table;
 public class Theater implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	
-	/*
-	 * Private Attributes
-	 */
+
+	// TODO equals and hash
 
 	@Id
 	@GeneratedValue
 	private Integer id;
+
+	@Column(name = "name", nullable = false)
 	private String name;
+
+	@Column(name = "address", nullable = false)
 	private String address;
+
+	@Column(name = "lat", nullable = false)
 	private Double lat;
+
+	@Column(name = "lng", nullable = false)
 	private Double lng;
 
-	@OneToMany(targetEntity = Cinema.class, 
-			mappedBy = "theater", 
-			cascade = CascadeType.ALL, 
+	@OneToMany(targetEntity = Cinema.class,
+			mappedBy = "theater",
+			cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
 	private List<Cinema> cinema;
 
-	@OneToMany(targetEntity = Projection.class, 
-			mappedBy = "theater", 
-			cascade = CascadeType.ALL, 
+	@OneToMany(targetEntity = Projection.class,
+			mappedBy = "theater",
+			cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
 	private List<Projection> projection;
 
-	
-	/*
-	 * Constructors
-	 */
-	
 	public Theater() {}
-	
+
 	@Override
-	public boolean equals(Object obj) {
-		
-		if (this.getId() == ((Theater) obj).getId())
-				return true;
-		else
-			return false;
+	public boolean equals(final Object p_obj) {
+
+		return this.getId() == ((Theater) p_obj).getId();
 	}
-	
-	/*
-	 * Getters and Setters
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
 	 */
 
+	/**
+	 * @return the id
+	 */
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+	/**
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	/**
+	 * @return the address
+	 */
 	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public List<Cinema> getCinema() {
-		return cinema;
-	}
-
-	public void setCinema(List<Cinema> cinema) {
-		this.cinema = cinema;
-	}
-
-	public List<Projection> getProjection() {
-		return projection;
-	}
-
-	public void setProjection(List<Projection> projection) {
-		this.projection = projection;
-	}
-
+	/**
+	 * @return the lat
+	 */
 	public Double getLat() {
 		return lat;
 	}
 
-	public void setLat(Double lat) {
-		this.lat = lat;
-	}
-
+	/**
+	 * @return the lng
+	 */
 	public Double getLng() {
 		return lng;
 	}
 
-	public void setLng(Double lng) {
-		this.lng = lng;
+	/**
+	 * @return the cinema
+	 */
+	public List<Cinema> getCinema() {
+		return cinema;
 	}
-	
+
+	/**
+	 * @return the projection
+	 */
+	public List<Projection> getProjection() {
+		return projection;
+	}
+
+	/**
+	 * @param p_id the id to set
+	 */
+	public void setId(final Integer p_id) {
+		this.id = p_id;
+	}
+
+	/**
+	 * @param p_name the name to set
+	 */
+	public void setName(final String p_name) {
+		this.name = p_name;
+	}
+
+	/**
+	 * @param p_address the address to set
+	 */
+	public void setAddress(final String p_address) {
+		this.address = p_address;
+	}
+
+	/**
+	 * @param p_lat the lat to set
+	 */
+	public void setLat(final Double p_lat) {
+		this.lat = p_lat;
+	}
+
+	/**
+	 * @param p_lng the lng to set
+	 */
+	public void setLng(final Double p_lng) {
+		this.lng = p_lng;
+	}
+
+	/**
+	 * @param p_cinema the cinema to set
+	 */
+	public void setCinema(final List<Cinema> p_cinema) {
+		this.cinema = p_cinema;
+	}
+
+	/**
+	 * @param p_projection the projection to set
+	 */
+	public void setProjection(final List<Projection> p_projection) {
+		this.projection = p_projection;
+	}
+
 }

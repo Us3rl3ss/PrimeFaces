@@ -16,7 +16,6 @@
 	<bean id="Genre" class="hr.primefaces.model.Genre"/>
 	<bean id="Theater" class="hr.primefaces.model.Theater"/>
 	<bean id="Cinema" class="hr.primefaces.model.Cinema"/>
-	<bean id="CinemaMovie" class="hr.primefaces.model.CinemaMovie"/>
 	<bean id="Projection" class="hr.primefaces.model.Projection"/>
 	<bean id="CinemaSeats" class="hr.primefaces.model.CinemaSeats"/>
 	<bean id="ProjectionReservedSeats" class="hr.primefaces.model.ProjectionReservedSeats"/>
@@ -39,7 +38,6 @@
 		<property name="theaterDAO" ref="TheaterDAO" />
 		<property name="cinemaDAO" ref="CinemaDAO" />
 		<property name="cinemaSeatsDAO" ref="CinemaSeatsDAO" />
-		<property name="cinemaMovieDAO" ref="CinemaMovieDAO" />
 	</bean>
 	
 	<bean id="MovieService" class="hr.primefaces.service.impl.MovieService">
@@ -71,9 +69,6 @@
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
 	<bean id="CinemaDAO" class="hr.primefaces.dao.impl.CinemaDAO">
-		<property name="sessionFactory" ref="SessionFactory" />
-	</bean>
-	<bean id="CinemaMovieDAO" class="hr.primefaces.dao.impl.CinemaMovieDAO">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
 	<bean id="ProjectionDAO" class="hr.primefaces.dao.impl.ProjectionDAO">
@@ -122,7 +117,6 @@
 				<value>hr.primefaces.model.Genre</value>
 				<value>hr.primefaces.model.Theater</value>
 				<value>hr.primefaces.model.Cinema</value>
-				<value>hr.primefaces.model.CinemaMovie</value>
 				<value>hr.primefaces.model.Projection</value>
 				<value>hr.primefaces.model.CinemaSeats</value>
 				<value>hr.primefaces.model.ProjectionReservedSeats</value>

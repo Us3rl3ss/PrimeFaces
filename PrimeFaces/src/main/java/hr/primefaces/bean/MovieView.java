@@ -34,201 +34,204 @@ public class MovieView implements Serializable {
 	@ManagedProperty(value = "#{MovieService}")
 	private IMovieService movieService;
 
-	private Movie movie = new Movie();
-
 	private List<Movie> movieList;
-
-	private String movieInfoRenderCss = "display:none;";
-
-	private UserMovieRate userMovieRate = new UserMovieRate();
-	private boolean rateDisabled = false;
-	private UserMovieReview userMovieReview = new UserMovieReview();
-	private boolean reviewDisabled = false;
-
-	private Integer averageRate = 0;
-
-	private boolean inFavorites = false;
-
+	private Movie movie;
+	private UserMovieRate userMovieRate;
+	private UserMovieReview userMovieReview;
 	private List<UserMovieReview> userMovieReviewList;
-
-	private boolean movieInfoFormRender = false;
+	private String movieInfoRenderCss;
+	private Integer averageRate;
+	private boolean inFavorites;
+	private boolean movieInfoFormRender;
+	private boolean rateDisabled;
+	private boolean reviewDisabled;
 
 	/**
 	 * init
 	 */
 	@PostConstruct
 	public void init() {
+
+		setMovie(new Movie());
+		setUserMovieRate(new UserMovieRate());
+		setUserMovieReview(new UserMovieReview());
+		setMovieInfoRenderCss("display:none;");
+		setAverageRate(0);
+		setInFavorites(false);
+		setMovieInfoFormRender(false);
+		setRateDisabled(false);
+		setReviewDisabled(false);
 	}
 
 	/**
-	 * test
-	 * 
-	 * @param p_input
-	 *            test
-	 * @return test
+	 * search
 	 */
-	public List<Movie> completeMovie(final String p_input) {
-		return movieService.getMovieByName(p_input);
-	}
+	public void search() {
 
-	public void onItemSelect(AjaxBehaviorEvent event) {
+		if (getUserSession().getUser() != null) {
 
-		pretrazi();
-		setMovieInfoRenderCss("");
+			if (isRateSaved(getUserSession().getUser(), getMovie())) {
 
-		movieInfoFormRender = true;
-	}
+				setRateDisabled(true);
+			}
+			else {
 
-	public void pretrazi() {
-
-		if (userSession.getUser() != null) {
-
-			boolean rateSaved = isRateSaved(userSession.getUser(), this.movie);
-			boolean reviewSaved = isReviewSaved(userSession.getUser(), this.movie);
-			boolean inFavorites = isInFavorites(userSession.getUser(), this.movie);
-
-			if (rateSaved) {
-				System.out.println("rate postoji");
-				this.rateDisabled = true;
-			} else {
-				this.rateDisabled = false;
+				setRateDisabled(false);
 			}
 
-			if (reviewSaved) {
-				System.out.println("review postoji");
-				this.reviewDisabled = true;
-			} else {
-				this.reviewDisabled = false;
+			if (isReviewSaved(getUserSession().getUser(), getMovie())) {
+
+				setReviewDisabled(true);
+			}
+			else {
+
+				setReviewDisabled(false);
 			}
 
-			if (inFavorites) {
-				System.out.println("u favoritima");
-				this.inFavorites = true;
-			} else {
-				this.inFavorites = false;
+			if (isInFavorites(getUserSession().getUser(), getMovie())) {
+
+				setInFavorites(true);
+			}
+			else {
+
+				setInFavorites(false);
 			}
 		}
 
-		this.averageRate = calculateAverageRate(this.movie);
-		this.userMovieReviewList = getAllMovieReviews(this.movie);
+		setAverageRate(calculateAverageRate(getMovie()));
+		setUserMovieReviewList(getAllMovieReviews(getMovie()));
 	}
 
-	public int calculateAverageRate(Movie movie) {
+	/**
+	 * calculateAverageRate
+	 * @param p_movie
+	 * @return
+	 */
+	public int calculateAverageRate(final Movie p_movie) {
 
-		int averageRate = 0;
+		int avgRate = 0;
 
-		Double avg = userService.getAverageRateByMovie(movie);
+		final Double avg = getUserService().getAverageRateByMovie(p_movie);
 
 		try {
 
 			if (avg != null) {
-				averageRate = avg.intValue();
+				avgRate = avg.intValue();
 			}
-
-		} catch (NumberFormatException nex) {
+		}
+		catch (NumberFormatException nex) {
 			nex.printStackTrace();
-			System.out.println("NEX");
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			ex.printStackTrace();
-			System.out.println("EX");
 		}
 
-		return averageRate;
+		return avgRate;
 	}
 
-	public boolean isRateSaved(User user, Movie movie) {
-
-		boolean result = false;
-
-		final List<UserMovieRate> list = userService.getUserMovieRateByUserAndMovie(user, movie);
-
-		if (list.size() > 0) {
-
-			this.userMovieRate = list.get(0);
-			result = true;
-		} else {
-
-			this.userMovieRate = new UserMovieRate();
-		}
-
-		return result;
-	}
-
-	public boolean isReviewSaved(User user, Movie movie) {
-
-		boolean result = false;
-
-		List<UserMovieReview> list = userService.getUserMovieReviewByUserAndMovie(user, movie);
-
-		if (list.size() > 0) {
-
-			this.userMovieReview = list.get(0);
-			result = true;
-		} else {
-
-			this.userMovieReview = new UserMovieReview();
-		}
-
-		return result;
-	}
-
+	/**
+	 * addReview
+	 */
 	public void addReview() {
 
-		if (this.userMovieReview.getReview() != null) {
+		if (getUserMovieReview().getReview() != null) {
 
-			this.userMovieReview.setUser(userSession.getUser());
-			this.userMovieReview.setMovie(this.movie);
-			this.userMovieReview.setCreated(new Date());
+			getUserMovieReview().setUser(getUserSession().getUser());
+			getUserMovieReview().setMovie(getMovie());
+			getUserMovieReview().setCreated(new Date());
 
-			userService.addUserMovieReview(userMovieReview);
+			getUserService().addUserMovieReview(getUserMovieReview());
 
-			pretrazi();
+			search();
 		}
 	}
 
-	public void onRate() {
-
-		if (this.userMovieRate.getRate() > 0) {
-
-			this.userMovieRate.setUser(userSession.getUser());
-			this.userMovieRate.setMovie(this.movie);
-			this.userMovieRate.setCreated(new Date());
-
-			userService.addUserMovieRate(userMovieRate);
-
-			pretrazi();
-		}
-	}
-
-	public void onCancel() {
-	}
-
+	/**
+	 * addToFavorites
+	 */
 	public void addToFavorites() {
 
-		UserFavoriteMovie ufm = new UserFavoriteMovie();
-		ufm.setMovie(this.movie);
-		ufm.setUser(userSession.getUser());
+		final UserFavoriteMovie ufm = new UserFavoriteMovie();
+		ufm.setMovie(getMovie());
+		ufm.setUser(getUserSession().getUser());
 		ufm.setCreated(new Date());
-		userService.addUserFavoriteMovie(ufm);
+		getUserService().addUserFavoriteMovie(ufm);
 
-		pretrazi();
+		search();
 	}
 
+	/**
+	 * removeFromFavorites
+	 */
 	public void removeFromFavorites() {
 
-		UserFavoriteMovie ufm = userService.getMovieInUserFavorites(userSession.getUser(), movie);
-		userService.deleteUserFavoriteMovie(ufm);
+		final UserFavoriteMovie ufm = getUserService().getMovieInUserFavorites(getUserSession().getUser(), getMovie());
+		getUserService().deleteUserFavoriteMovie(ufm);
 
-		pretrazi();
+		search();
 	}
 
-	public boolean isInFavorites(User user, Movie movie) {
+	/**
+	 * isRateSaved
+	 * @param p_user
+	 * @param p_movie
+	 * @return
+	 */
+	public boolean isRateSaved(final User p_user, final Movie p_movie) {
 
 		boolean result = false;
 
-		UserFavoriteMovie ufm = userService.getMovieInUserFavorites(user, movie);
+		final List<UserMovieRate> list = getUserService().getUserMovieRateByUserAndMovie(p_user, p_movie);
 
-		if (ufm != null) {
+		if (list.size() > 0) {
+
+			setUserMovieRate(list.get(0));
+			result = true;
+		}
+		else {
+
+			setUserMovieRate(new UserMovieRate());
+		}
+
+		return result;
+	}
+
+	/**
+	 * isReviewSaved
+	 * @param p_user
+	 * @param p_movie
+	 * @return
+	 */
+	public boolean isReviewSaved(final User p_user, final Movie p_movie) {
+
+		boolean result = false;
+
+		final List<UserMovieReview> list = getUserService().getUserMovieReviewByUserAndMovie(p_user, p_movie);
+
+		if (list.size() > 0) {
+
+			setUserMovieReview(list.get(0));
+			result = true;
+		}
+		else {
+
+			setUserMovieReview(new UserMovieReview());
+		}
+
+		return result;
+	}
+
+	/**
+	 * isInFavorites
+	 * @param p_user
+	 * @param p_movie
+	 * @return
+	 */
+	public boolean isInFavorites(final User p_user, final Movie p_movie) {
+
+		boolean result = false;
+
+		if (getUserService().getMovieInUserFavorites(p_user, p_movie) != null) {
 
 			result = true;
 		}
@@ -236,9 +239,14 @@ public class MovieView implements Serializable {
 		return result;
 	}
 
-	private List<UserMovieReview> getAllMovieReviews(Movie movie) {
+	/**
+	 * getAllMovieReviews
+	 * @param p_movie
+	 * @return
+	 */
+	private List<UserMovieReview> getAllMovieReviews(final Movie p_movie) {
 
-		List<UserMovieReview> result = userService.getAllMovieReviews(movie);
+		List<UserMovieReview> result = userService.getAllMovieReviews(p_movie);
 
 		if (result == null) {
 			result = new ArrayList<UserMovieReview>();
@@ -247,76 +255,50 @@ public class MovieView implements Serializable {
 		return result;
 	}
 
-	public IMovieService getMovieService() {
-		return movieService;
+	/**
+	 * onItemSelect
+	 * @param p_event
+	 */
+	public void onItemSelect(final AjaxBehaviorEvent p_event) {
+
+		search();
+		setMovieInfoRenderCss("");
+
+		movieInfoFormRender = true;
 	}
 
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
+	/**
+	 * onRate
+	 */
+	public void onRate() {
+
+		if (getUserMovieRate().getRate() > 0) {
+
+			getUserMovieRate().setUser(getUserSession().getUser());
+			getUserMovieRate().setMovie(getMovie());
+			getUserMovieRate().setCreated(new Date());
+
+			getUserService().addUserMovieRate(getUserMovieRate());
+
+			search();
+		}
 	}
 
-	public Movie getMovie() {
-		return movie;
+	/**
+	 * onCancel
+	 */
+	public void onCancel() {
 	}
 
-	public void setMovie(Movie movie) {
-		this.movie = movie;
-	}
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
 
-	public List<Movie> getMovieList() {
-		return movieList;
-	}
-
-	public void setMovieList(List<Movie> movieList) {
-		this.movieList = movieList;
-	}
-
+	/**
+	 * @return the userSession
+	 */
 	public UserSession getUserSession() {
 		return userSession;
-	}
-
-	public void setUserSession(UserSession userSession) {
-		this.userSession = userSession;
-	}
-
-	public UserMovieRate getUserMovieRate() {
-		return userMovieRate;
-	}
-
-	public void setUserMovieRate(UserMovieRate userMovieRate) {
-		this.userMovieRate = userMovieRate;
-	}
-
-	public UserMovieReview getUserMovieReview() {
-		return userMovieReview;
-	}
-
-	public void setUserMovieReview(UserMovieReview userMovieReview) {
-		this.userMovieReview = userMovieReview;
-	}
-
-	public boolean isRateDisabled() {
-		return rateDisabled;
-	}
-
-	public void setRateDisabled(boolean rateDisabled) {
-		this.rateDisabled = rateDisabled;
-	}
-
-	public boolean isReviewDisabled() {
-		return reviewDisabled;
-	}
-
-	public void setReviewDisabled(boolean reviewDisabled) {
-		this.reviewDisabled = reviewDisabled;
-	}
-
-	public Integer getAverageRate() {
-		return averageRate;
-	}
-
-	public void setAverageRate(Integer averageRate) {
-		this.averageRate = averageRate;
 	}
 
 	/**
@@ -327,43 +309,185 @@ public class MovieView implements Serializable {
 	}
 
 	/**
-	 * @param userService
-	 *            the userService to set
+	 * @return the movieService
 	 */
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
+	public IMovieService getMovieService() {
+		return movieService;
 	}
 
-	public boolean isInFavorites() {
-		return inFavorites;
+	/**
+	 * @return the movie
+	 */
+	public Movie getMovie() {
+		return movie;
 	}
 
-	public void setInFavorites(boolean inFavorites) {
-		this.inFavorites = inFavorites;
+	/**
+	 * @return the movieList
+	 */
+	public List<Movie> getMovieList() {
+		return movieList;
 	}
 
-	public List<UserMovieReview> getUserMovieReviewList() {
-		return userMovieReviewList;
-	}
-
-	public void setUserMovieReviewList(List<UserMovieReview> userMovieReviewList) {
-		this.userMovieReviewList = userMovieReviewList;
-	}
-
+	/**
+	 * @return the movieInfoRenderCss
+	 */
 	public String getMovieInfoRenderCss() {
 		return movieInfoRenderCss;
 	}
 
-	public void setMovieInfoRenderCss(String movieInfoRenderCss) {
-		this.movieInfoRenderCss = movieInfoRenderCss;
+	/**
+	 * @return the userMovieRate
+	 */
+	public UserMovieRate getUserMovieRate() {
+		return userMovieRate;
 	}
 
+	/**
+	 * @return the rateDisabled
+	 */
+	public boolean isRateDisabled() {
+		return rateDisabled;
+	}
+
+	/**
+	 * @return the userMovieReview
+	 */
+	public UserMovieReview getUserMovieReview() {
+		return userMovieReview;
+	}
+
+	/**
+	 * @return the reviewDisabled
+	 */
+	public boolean isReviewDisabled() {
+		return reviewDisabled;
+	}
+
+	/**
+	 * @return the averageRate
+	 */
+	public Integer getAverageRate() {
+		return averageRate;
+	}
+
+	/**
+	 * @return the inFavorites
+	 */
+	public boolean isInFavorites() {
+		return inFavorites;
+	}
+
+	/**
+	 * @return the userMovieReviewList
+	 */
+	public List<UserMovieReview> getUserMovieReviewList() {
+		return userMovieReviewList;
+	}
+
+	/**
+	 * @return the movieInfoFormRender
+	 */
 	public boolean isMovieInfoFormRender() {
 		return movieInfoFormRender;
 	}
 
-	public void setMovieInfoFormRender(boolean movieInfoFormRender) {
-		this.movieInfoFormRender = movieInfoFormRender;
+	/**
+	 * @param p_userSession the userSession to set
+	 */
+	public void setUserSession(final UserSession p_userSession) {
+		this.userSession = p_userSession;
+	}
+
+	/**
+	 * @param p_userService the userService to set
+	 */
+	public void setUserService(final IUserService p_userService) {
+		this.userService = p_userService;
+	}
+
+	/**
+	 * @param p_movieService the movieService to set
+	 */
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
+	}
+
+	/**
+	 * @param p_movie the movie to set
+	 */
+	public void setMovie(final Movie p_movie) {
+		this.movie = p_movie;
+	}
+
+	/**
+	 * @param p_movieList the movieList to set
+	 */
+	public void setMovieList(final List<Movie> p_movieList) {
+		this.movieList = p_movieList;
+	}
+
+	/**
+	 * @param p_movieInfoRenderCss the movieInfoRenderCss to set
+	 */
+	public void setMovieInfoRenderCss(final String p_movieInfoRenderCss) {
+		this.movieInfoRenderCss = p_movieInfoRenderCss;
+	}
+
+	/**
+	 * @param p_userMovieRate the userMovieRate to set
+	 */
+	public void setUserMovieRate(final UserMovieRate p_userMovieRate) {
+		this.userMovieRate = p_userMovieRate;
+	}
+
+	/**
+	 * @param p_rateDisabled the rateDisabled to set
+	 */
+	public void setRateDisabled(final boolean p_rateDisabled) {
+		this.rateDisabled = p_rateDisabled;
+	}
+
+	/**
+	 * @param p_userMovieReview the userMovieReview to set
+	 */
+	public void setUserMovieReview(final UserMovieReview p_userMovieReview) {
+		this.userMovieReview = p_userMovieReview;
+	}
+
+	/**
+	 * @param p_reviewDisabled the reviewDisabled to set
+	 */
+	public void setReviewDisabled(final boolean p_reviewDisabled) {
+		this.reviewDisabled = p_reviewDisabled;
+	}
+
+	/**
+	 * @param p_averageRate the averageRate to set
+	 */
+	public void setAverageRate(final Integer p_averageRate) {
+		this.averageRate = p_averageRate;
+	}
+
+	/**
+	 * @param p_inFavorites the inFavorites to set
+	 */
+	public void setInFavorites(final boolean p_inFavorites) {
+		this.inFavorites = p_inFavorites;
+	}
+
+	/**
+	 * @param p_userMovieReviewList the userMovieReviewList to set
+	 */
+	public void setUserMovieReviewList(final List<UserMovieReview> p_userMovieReviewList) {
+		this.userMovieReviewList = p_userMovieReviewList;
+	}
+
+	/**
+	 * @param p_movieInfoFormRender the movieInfoFormRender to set
+	 */
+	public void setMovieInfoFormRender(final boolean p_movieInfoFormRender) {
+		this.movieInfoFormRender = p_movieInfoFormRender;
 	}
 
 }

@@ -24,7 +24,7 @@
 					
 					<p:autoComplete id="movie" minQueryLength="3" maxResults="5"
 						placeholder="Pretraži" value="#{movieMB.movie}"
-						completeMethod="#{movieMB.completeMovie}" effect="fade"
+						completeMethod="#{autocompleteMB.completeMovie}" effect="fade"
 						var="movie" itemLabel="#{movie.name}" itemValue="#{movie}"
 						converter="#{movieConverter}" forceSelection="true">
 

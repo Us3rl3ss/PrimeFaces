@@ -5,7 +5,6 @@ package hr.primefaces.service;
  */
 
 import hr.primefaces.model.Cinema;
-import hr.primefaces.model.CinemaMovie;
 import hr.primefaces.model.CinemaSeats;
 import hr.primefaces.model.Theater;
 
@@ -57,26 +56,6 @@ public interface ITheaterService {
 
 	/**
 	 * ################# END OF - CINEMA #################
-	 */
-
-	/**
-	 * ################# CINEMA MOVIE #################
-	 */
-
-	public void addCinemaMovie(CinemaMovie cinemaMovie);
-
-	public void updateCinemaMovie(CinemaMovie cinemaMovie);
-
-	public void deleteCinemaMovie(CinemaMovie cinemaMovie);
-
-	public CinemaMovie getCinemaMovieById(int id);
-
-	public List<CinemaMovie> getCinemaMovieByName(String name);
-
-	public List<CinemaMovie> getCinemaMovies();
-
-	/**
-	 * ################# END OF - CINEMA MOVIE #################
 	 */
 
 	/**

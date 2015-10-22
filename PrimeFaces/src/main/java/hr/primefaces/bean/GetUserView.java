@@ -18,29 +18,46 @@ public class GetUserView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{UserService}")
-	IUserService userService;
+	private IUserService userService;
 
 	private List<User> userList;
 
 	@PostConstruct
 	public void init() {
-		userList = userService.getUsers();
+
+		setUserList(getUserService().getUsers());
 	}
 
-	public List<User> getUserList() {
-		return userList;
-	}
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
 
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
-	}
-
+	/**
+	 * @return the userService
+	 */
 	public IUserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
+	/**
+	 * @return the userList
+	 */
+	public List<User> getUserList() {
+		return userList;
+	}
+
+	/**
+	 * @param p_userService the userService to set
+	 */
+	public void setUserService(final IUserService p_userService) {
+		this.userService = p_userService;
+	}
+
+	/**
+	 * @param p_userList the userList to set
+	 */
+	public void setUserList(final List<User> p_userList) {
+		this.userList = p_userList;
 	}
 
 }

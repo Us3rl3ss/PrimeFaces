@@ -3,6 +3,7 @@ package hr.primefaces.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,74 +15,82 @@ public class UserFollowing implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	// TODO equals and hash
+
 	@Id
 	@GeneratedValue
 	private Integer id;
-	private Date created;
-	private Integer user_id;
-	private Integer follow_id;
 
-	// @ManyToMany
-	// @JoinColumn(name = "user_id")
-	// Set<User> user_follower;
-	//
-	// @ManyToMany
-	// @JoinColumn(name = "user_id")
-	// Set<User> user_followed;
+	@Column(name = "place_of_birth", nullable = false)
+	private Date created;
+
+	@Column(name = "user_id", nullable = false)
+	private Integer userId;
+
+	@Column(name = "follow_id", nullable = false)
+	private Integer followId;
 
 	public UserFollowing() {
 	}
 
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the id
+	 */
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+	/**
+	 * @return the created
+	 */
 	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
-		this.created = created;
+	/**
+	 * @return the userId
+	 */
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	/**
+	 * @return the followId
+	 */
+	public Integer getFollowId() {
+		return followId;
 	}
 
-	public Integer getUser_id() {
-		return user_id;
+	/**
+	 * @param p_id the id to set
+	 */
+	public void setId(final Integer p_id) {
+		this.id = p_id;
 	}
 
-	public void setUser_id(Integer user_id) {
-		this.user_id = user_id;
+	/**
+	 * @param p_created the created to set
+	 */
+	public void setCreated(final Date p_created) {
+		this.created = p_created;
 	}
 
-	public Integer getFollow_id() {
-		return follow_id;
+	/**
+	 * @param p_userId the userId to set
+	 */
+	public void setUserId(final Integer p_userId) {
+		this.userId = p_userId;
 	}
 
-	public void setFollow_id(Integer follow_id) {
-		this.follow_id = follow_id;
+	/**
+	 * @param p_followId the followId to set
+	 */
+	public void setFollowId(final Integer p_followId) {
+		this.followId = p_followId;
 	}
-
-	// public Set<User> getUser_follower() {
-	// return user_follower;
-	// }
-	//
-	// public void setUser_follower(Set<User> user_follower) {
-	// this.user_follower = user_follower;
-	// }
-	//
-	// public Set<User> getUser_followed() {
-	// return user_followed;
-	// }
-	//
-	// public void setUser_followed(Set<User> user_followed) {
-	// this.user_followed = user_followed;
-	// }
 
 }

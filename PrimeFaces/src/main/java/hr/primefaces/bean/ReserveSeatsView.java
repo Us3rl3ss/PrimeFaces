@@ -27,121 +27,110 @@ import javax.faces.event.ComponentSystemEvent;
 
 import org.primefaces.context.RequestContext;
 
-import com.google.gson.Gson;
-
 @ManagedBean(name = "reserveSeatsMB")
 @ViewScoped
 public class ReserveSeatsView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String SET_SEATS_JS = "ReserveSeats.setSeats();";
+
 	@ManagedProperty(value = "#{userSession}")
-	UserSession userSession;
+	private UserSession userSession;
 
 	@ManagedProperty(value = "#{TheaterService}")
-	ITheaterService theaterService;
-	
+	private ITheaterService theaterService;
+
 	@ManagedProperty(value = "#{MovieService}")
-	IMovieService movieService;
+	private IMovieService movieService;
 
 	@ManagedProperty(value = "#{ProjectionService}")
-	IProjectionService projectionService;
+	private IProjectionService projectionService;
 
 	@ManagedProperty(value = "#{navigationController}")
-	NavigationControllerBean navigationController;
+	private NavigationControllerBean navigationController;
 
 	private Projection projection;
 	private List<CinemaSeats> cinemaSeatsList;
 	private List<String> selectedCinemaSeatsList;
 	private List<String> savedCinemaSeatsList;
-	
 	private List<String> savedCinemaSeatsByCurrUserList;
-	
 	private String projectionStart;
 	private String projectionEnd;
 
 	@PostConstruct
 	public void init() {
 
-		if (projection != null) {
-			
-			Movie tempMovie = projection.getMovie();
-			
-			List<Actor> actorList = movieService.getAllMovieActors(tempMovie);
-			List<Genre> genreList = movieService.getAllMovieGenres(tempMovie);
-			
-			projection.getMovie().setActorList(actorList);
-			projection.getMovie().setListOfActorsText(getListOfActorsText(actorList));
-			
-			projection.getMovie().setGenreList(genreList);
-			projection.getMovie().setListOfGenresText(getListOfGenresText(genreList));
-			
-			int numberOfSeats = projection.getCinema().getNumber_of_seats();
-			int numberOfFreeSeats = projectionService.getProjectionReservedSeatsByProjection(projection).size();
+		if (getProjection() != null) {
 
-			String numberOfFreeSeatsText = numberOfFreeSeats + "/" + numberOfSeats;
+			final Movie tempMovie = getProjection().getMovie();
 
-			projection.setNumberOfFreeSeatsText(numberOfFreeSeatsText);
-			
-			projectionStart = DateConverter.covertDateToString(projection.getStart_time(), DateConverter.HH_mm);
-			projectionEnd = DateConverter.covertDateToString(projection.getEnd_time(), DateConverter.HH_mm);
-			
+			final List<Actor> actorList = getMovieService().getAllMovieActors(tempMovie);
+			final List<Genre> genreList = getMovieService().getAllMovieGenres(tempMovie);
+
+			getProjection().getMovie().setActorList(actorList);
+			getProjection().getMovie().setListOfActorsText(getListOfActorsText(actorList));
+
+			getProjection().getMovie().setGenreList(genreList);
+			getProjection().getMovie().setListOfGenresText(getListOfGenresText(genreList));
+
+			final int numberOfSeats = getProjection().getCinema().getNumberOfSeats();
+			final int numberOfFreeSeats = getProjectionService().getProjectionReservedSeatsByProjection(getProjection()).size();
+
+			final String numberOfFreeSeatsText = numberOfFreeSeats + "/" + numberOfSeats;
+
+			getProjection().setNumberOfFreeSeatsText(numberOfFreeSeatsText);
+
+			setProjectionStart(DateConverter.covertDateToString(getProjection().getStartTime(), DateConverter.HH_mm));
+			setProjectionEnd(DateConverter.covertDateToString(getProjection().getEndTime(), DateConverter.HH_mm));
+
 			setSeats();
 			setSelectedSeats();
-			
-			RequestContext.getCurrentInstance().execute("ReserveSeats.setSeats()");
+
+			RequestContext.getCurrentInstance().execute(SET_SEATS_JS);
 		}
 	}
-	
-	public void sendDataToJS() {
-		
-		Gson gson = new Gson();
-		Projection p = new Projection();
-		p.setId(5);
-		String res = gson.toJson(p);
-		
-		String call = "ReserveSeats.setSeats(" + res + ")";
-		RequestContext.getCurrentInstance().execute(call);
-	}
 
+	/**
+	 * reserveSeats
+	 * @return
+	 */
 	public String reserveSeats() {
-		
-		if (userSession.getUser() != null) {
-			
-			List<ProjectionReservedSeats> seatsToSaveList = new ArrayList<ProjectionReservedSeats>();
-			
-			List<String> cinemaSeatIdToSaveList = getNewReservations(
-					this.selectedCinemaSeatsList, this.savedCinemaSeatsList);
-			
-			Iterator<String> iter = cinemaSeatIdToSaveList.iterator();
-			
+
+		if (getUserSession().getUser() != null) {
+
+			final List<ProjectionReservedSeats> seatsToSaveList = new ArrayList<ProjectionReservedSeats>();
+
+			final List<String> cinemaSeatIdToSaveList = getNewReservations(getSelectedCinemaSeatsList(), getSavedCinemaSeatsList());
+
+			final Iterator<String> iter = cinemaSeatIdToSaveList.iterator();
+
 			while (iter.hasNext()) {
-				
-				CinemaSeats cinemaSeats = new CinemaSeats();
+
+				final CinemaSeats cinemaSeats = new CinemaSeats();
 				cinemaSeats.setId(Integer.parseInt(iter.next()));
-				
-				ProjectionReservedSeats prs = new ProjectionReservedSeats();
-				prs.setProjection(this.projection);
-				prs.setCinema_seats(cinemaSeats);
-				prs.setUser(userSession.getUser());
-				
+
+				final ProjectionReservedSeats prs = new ProjectionReservedSeats();
+				prs.setProjection(getProjection());
+				prs.setCinemaSeats(cinemaSeats);
+				prs.setUser(getUserSession().getUser());
+
 				seatsToSaveList.add(prs);
 			}
-			
+
 			if (seatsToSaveList.size() > 0) {
-				
-				Iterator<ProjectionReservedSeats> saveIter = seatsToSaveList
-						.iterator();
-				
+
+				final Iterator<ProjectionReservedSeats> saveIter = seatsToSaveList.iterator();
+
 				while (saveIter.hasNext()) {
-					
-					ProjectionReservedSeats prs = saveIter.next();
-					projectionService.addProjectionReservedSeats(prs);
+
+					final ProjectionReservedSeats prs = saveIter.next();
+					getProjectionService().addProjectionReservedSeats(prs);
 				}
 			}
-			
+
 			MessageUtil.info("Rezervacija je uspješna!");
-			return navigationController.doViewProjection();
+			return getNavigationController().doViewProjection();
 		}
 		else {
 			MessageUtil.info("Da biste rezervirali mjesto morate imati korisnički račun i biti prijavljeni u sustav!");
@@ -149,104 +138,117 @@ public class ReserveSeatsView implements Serializable {
 		}
 	}
 
-	private List<String> getNewReservations(
-			List<String> selectedCinemaSeatsList,
-			List<String> savedCinemaSeatsList) {
+	/**
+	 * getNewReservations
+	 * @param p_selectedCinemaSeatsList
+	 * @param p_savedCinemaSeatsList
+	 * @return
+	 */
+	private List<String> getNewReservations(final List<String> p_selectedCinemaSeatsList,
+			final List<String> p_savedCinemaSeatsList) {
 
-		List<String> result = new ArrayList<String>();
+		final List<String> result = new ArrayList<String>();
 
-		Iterator<String> iterSelected = selectedCinemaSeatsList.iterator();
+		final Iterator<String> iterSelected = p_selectedCinemaSeatsList.iterator();
 
 		while (iterSelected.hasNext()) {
 
-			String tempSelected = iterSelected.next();
+			final String tempSelected = iterSelected.next();
 
 			boolean inList = false;
-			for (int i = 0; i < savedCinemaSeatsList.size(); i++) {
+			for (int i = 0; i < p_savedCinemaSeatsList.size(); i++) {
 
-				String tempSaved = savedCinemaSeatsList.get(i);
+				final String tempSaved = p_savedCinemaSeatsList.get(i);
 
-				if (tempSelected.equals(tempSaved))
+				if (tempSelected.equals(tempSaved)) {
 					inList = true;
+				}
 			}
 
-			if (!inList)
+			if (!inList) {
 				result.add(tempSelected);
+			}
 		}
 
 		return result;
 	}
 
-	public void pullValuesFromFlash(ComponentSystemEvent e) {
-		
-		Flash flash = FacesContext.getCurrentInstance().getExternalContext()
-				.getFlash();
+	/**
+	 * pullValuesFromFlash
+	 * @param p_e
+	 */
+	public void pullValuesFromFlash(final ComponentSystemEvent p_e) {
 
-		Projection flashProjection = (Projection) flash.get("projection");
+		final Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+		final Projection flashProjection = (Projection) flash.get("projection");
+		setProjection(getProjectionService().getProjectionById(flashProjection.getId()));
 
-		projection = projectionService.getProjectionById(flashProjection.getId());
-		
 		init();
 	}
 
+	/**
+	 * setSeats
+	 */
 	public void setSeats() {
 
-		this.setCinemaSeatsList(theaterService
-				.getCinemaSeatsByCinemaId(projection.getCinema().getId()));
+		this.setCinemaSeatsList(getTheaterService().getCinemaSeatsByCinemaId(getProjection().getCinema().getId()));
 	}
 
+	/**
+	 * setSelectedSeats
+	 */
 	public void setSelectedSeats() {
 
-		List<ProjectionReservedSeats> prsList = projectionService
-				.getProjectionReservedSeatsByProjection(this.projection);
+		final List<ProjectionReservedSeats> prsList = getProjectionService().getProjectionReservedSeatsByProjection(getProjection());
+		final Iterator<ProjectionReservedSeats> iter = prsList.iterator();
 
-		Iterator<ProjectionReservedSeats> iter = prsList.iterator();
-
-		selectedCinemaSeatsList = new ArrayList<String>();
-		savedCinemaSeatsList = new ArrayList<String>();
+		setSelectedCinemaSeatsList(new ArrayList<String>());
+		setSavedCinemaSeatsList(new ArrayList<String>());
 
 		while (iter.hasNext()) {
 
-			ProjectionReservedSeats prs = iter.next();
+			final ProjectionReservedSeats prs = iter.next();
+			final String cinemaSeatId = prs.getCinemaSeats().getId() + "";
 
-			String cinemaSeatId = prs.getCinema_seats().getId() + "";
-
-			selectedCinemaSeatsList.add(cinemaSeatId);
-			savedCinemaSeatsList.add(cinemaSeatId);
+			getSelectedCinemaSeatsList().add(cinemaSeatId);
+			getSavedCinemaSeatsList().add(cinemaSeatId);
 		}
 	}
-	
+
+	/**
+	 * setSavedCinemaSeatsByCurrUserList
+	 */
 	public void setSavedCinemaSeatsByCurrUserList() {
 
-		List<ProjectionReservedSeats> prsList = projectionService
-				.getProjectionReservedSeatsByProjectionAndUser(this.projection, userSession.getUser());
-
-		Iterator<ProjectionReservedSeats> iter = prsList.iterator();
+		final List<ProjectionReservedSeats> prsList = getProjectionService()
+				.getProjectionReservedSeatsByProjectionAndUser(getProjection(), getUserSession().getUser());
+		final Iterator<ProjectionReservedSeats> iter = prsList.iterator();
 
 		while (iter.hasNext()) {
 
-			ProjectionReservedSeats prs = iter.next();
+			final ProjectionReservedSeats prs = iter.next();
+			final String cinemaSeatId = prs.getCinemaSeats().getId() + "";
 
-			String cinemaSeatId = prs.getCinema_seats().getId() + "";
-
-			savedCinemaSeatsByCurrUserList.add(cinemaSeatId);
+			getSavedCinemaSeatsByCurrUserList().add(cinemaSeatId);
 		}
 	}
 
 	/**
 	 * getListOfActorsText
+	 * @param p_actorList
+	 * @return
 	 */
-	public String getListOfActorsText(List<Actor> actorList) {
+	public String getListOfActorsText(final List<Actor> p_actorList) {
 
 		String result = "";
 
-		if (actorList.size() > 0) {
+		if (p_actorList.size() > 0) {
 
-			Iterator<Actor> iter = actorList.iterator();
+			final Iterator<Actor> iter = p_actorList.iterator();
 
 			while (iter.hasNext()) {
 
-				Actor a = iter.next();
+				final Actor a = iter.next();
 
 				result += a.getFirstname() + " " + a.getLastname();
 				result += ", ";
@@ -255,26 +257,29 @@ public class ReserveSeatsView implements Serializable {
 			result = result.substring(0, result.length() - 2);
 		}
 
-		if (result.length() == 0)
+		if (result.length() == 0) {
 			result = "-";
+		}
 
 		return result;
 	}
-	
+
 	/**
 	 * getListOfGenresText
+	 * @param p_genreList
+	 * @return
 	 */
-	public String getListOfGenresText(List<Genre> genreList) {
+	public String getListOfGenresText(final List<Genre> p_genreList) {
 
 		String result = "";
 
-		if (genreList.size() > 0) {
+		if (p_genreList.size() > 0) {
 
-			Iterator<Genre> iter = genreList.iterator();
+			final Iterator<Genre> iter = p_genreList.iterator();
 
 			while (iter.hasNext()) {
 
-				Genre g = iter.next();
+				final Genre g = iter.next();
 
 				result += g.getName();
 				result += ", ";
@@ -283,104 +288,22 @@ public class ReserveSeatsView implements Serializable {
 			result = result.substring(0, result.length() - 2);
 		}
 
-		if (result.length() == 0)
+		if (result.length() == 0) {
 			result = "-";
+		}
 
 		return result;
 	}
 
-	public void spremi() {
-	}
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
 
-	public void pretrazi() {
-	}
-
-	public Projection getProjection() {
-		return projection;
-	}
-
-	public void setProjection(Projection projection) {
-		this.projection = projection;
-	}
-
-	public List<CinemaSeats> getCinemaSeatsList() {
-		return cinemaSeatsList;
-	}
-
-	public void setCinemaSeatsList(List<CinemaSeats> cinemaSeatsList) {
-		this.cinemaSeatsList = cinemaSeatsList;
-	}
-
-	public List<String> getSelectedCinemaSeatsList() {
-		return selectedCinemaSeatsList;
-	}
-
-	public void setSelectedCinemaSeatsList(List<String> selectedCinemaSeatsList) {
-		this.selectedCinemaSeatsList = selectedCinemaSeatsList;
-	}
-
-	public List<String> getSavedCinemaSeatsList() {
-		return savedCinemaSeatsList;
-	}
-
-	public void setSavedCinemaSeatsList(List<String> savedCinemaSeatsList) {
-		this.savedCinemaSeatsList = savedCinemaSeatsList;
-	}
-
+	/**
+	 * @return the userSession
+	 */
 	public UserSession getUserSession() {
 		return userSession;
-	}
-
-	public void setUserSession(UserSession userSession) {
-		this.userSession = userSession;
-	}
-
-	public List<String> getSavedCinemaSeatsByCurrUserList() {
-		return savedCinemaSeatsByCurrUserList;
-	}
-
-	public void setSavedCinemaSeatsByCurrUserList(List<String> savedCinemaSeatsByCurrUserList) {
-		this.savedCinemaSeatsByCurrUserList = savedCinemaSeatsByCurrUserList;
-	}
-
-	public IMovieService getMovieService() {
-		return movieService;
-	}
-
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
-	}
-
-	public IProjectionService getProjectionService() {
-		return projectionService;
-	}
-
-	public void setProjectionService(IProjectionService projectionService) {
-		this.projectionService = projectionService;
-	}
-
-	public NavigationControllerBean getNavigationController() {
-		return navigationController;
-	}
-
-	public void setNavigationController(NavigationControllerBean navigationController) {
-		this.navigationController = navigationController;
-	}
-
-	public String getProjectionStart() {
-		return projectionStart;
-	}
-
-	public void setProjectionStart(String projectionStart) {
-		this.projectionStart = projectionStart;
-	}
-
-	public String getProjectionEnd() {
-		return projectionEnd;
-	}
-
-	public void setProjectionEnd(String projectionEnd) {
-		this.projectionEnd = projectionEnd;
 	}
 
 	/**
@@ -391,10 +314,157 @@ public class ReserveSeatsView implements Serializable {
 	}
 
 	/**
-	 * @param theaterService the theaterService to set
+	 * @return the movieService
 	 */
-	public void setTheaterService(ITheaterService theaterService) {
-		this.theaterService = theaterService;
+	public IMovieService getMovieService() {
+		return movieService;
+	}
+
+	/**
+	 * @return the projectionService
+	 */
+	public IProjectionService getProjectionService() {
+		return projectionService;
+	}
+
+	/**
+	 * @return the navigationController
+	 */
+	public NavigationControllerBean getNavigationController() {
+		return navigationController;
+	}
+
+	/**
+	 * @return the projection
+	 */
+	public Projection getProjection() {
+		return projection;
+	}
+
+	/**
+	 * @return the cinemaSeatsList
+	 */
+	public List<CinemaSeats> getCinemaSeatsList() {
+		return cinemaSeatsList;
+	}
+
+	/**
+	 * @return the selectedCinemaSeatsList
+	 */
+	public List<String> getSelectedCinemaSeatsList() {
+		return selectedCinemaSeatsList;
+	}
+
+	/**
+	 * @return the savedCinemaSeatsList
+	 */
+	public List<String> getSavedCinemaSeatsList() {
+		return savedCinemaSeatsList;
+	}
+
+	/**
+	 * @return the savedCinemaSeatsByCurrUserList
+	 */
+	public List<String> getSavedCinemaSeatsByCurrUserList() {
+		return savedCinemaSeatsByCurrUserList;
+	}
+
+	/**
+	 * @return the projectionStart
+	 */
+	public String getProjectionStart() {
+		return projectionStart;
+	}
+
+	/**
+	 * @return the projectionEnd
+	 */
+	public String getProjectionEnd() {
+		return projectionEnd;
+	}
+
+	/**
+	 * @param p_userSession the userSession to set
+	 */
+	public void setUserSession(final UserSession p_userSession) {
+		this.userSession = p_userSession;
+	}
+
+	/**
+	 * @param p_theaterService the theaterService to set
+	 */
+	public void setTheaterService(final ITheaterService p_theaterService) {
+		this.theaterService = p_theaterService;
+	}
+
+	/**
+	 * @param p_movieService the movieService to set
+	 */
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
+	}
+
+	/**
+	 * @param p_projectionService the projectionService to set
+	 */
+	public void setProjectionService(final IProjectionService p_projectionService) {
+		this.projectionService = p_projectionService;
+	}
+
+	/**
+	 * @param p_navigationController the navigationController to set
+	 */
+	public void setNavigationController(final NavigationControllerBean p_navigationController) {
+		this.navigationController = p_navigationController;
+	}
+
+	/**
+	 * @param p_projection the projection to set
+	 */
+	public void setProjection(final Projection p_projection) {
+		this.projection = p_projection;
+	}
+
+	/**
+	 * @param p_cinemaSeatsList the cinemaSeatsList to set
+	 */
+	public void setCinemaSeatsList(final List<CinemaSeats> p_cinemaSeatsList) {
+		this.cinemaSeatsList = p_cinemaSeatsList;
+	}
+
+	/**
+	 * @param p_selectedCinemaSeatsList the selectedCinemaSeatsList to set
+	 */
+	public void setSelectedCinemaSeatsList(final List<String> p_selectedCinemaSeatsList) {
+		this.selectedCinemaSeatsList = p_selectedCinemaSeatsList;
+	}
+
+	/**
+	 * @param p_savedCinemaSeatsList the savedCinemaSeatsList to set
+	 */
+	public void setSavedCinemaSeatsList(final List<String> p_savedCinemaSeatsList) {
+		this.savedCinemaSeatsList = p_savedCinemaSeatsList;
+	}
+
+	/**
+	 * @param p_savedCinemaSeatsByCurrUserList the savedCinemaSeatsByCurrUserList to set
+	 */
+	public void setSavedCinemaSeatsByCurrUserList(final List<String> p_savedCinemaSeatsByCurrUserList) {
+		this.savedCinemaSeatsByCurrUserList = p_savedCinemaSeatsByCurrUserList;
+	}
+
+	/**
+	 * @param p_projectionStart the projectionStart to set
+	 */
+	public void setProjectionStart(final String p_projectionStart) {
+		this.projectionStart = p_projectionStart;
+	}
+
+	/**
+	 * @param p_projectionEnd the projectionEnd to set
+	 */
+	public void setProjectionEnd(final String p_projectionEnd) {
+		this.projectionEnd = p_projectionEnd;
 	}
 
 }

@@ -1,11 +1,9 @@
 package hr.primefaces.service.impl;
 
 import hr.primefaces.dao.ICinemaDAO;
-import hr.primefaces.dao.ICinemaMovieDAO;
 import hr.primefaces.dao.ITheaterDAO;
 import hr.primefaces.dao.impl.CinemaSeatsDAO;
 import hr.primefaces.model.Cinema;
-import hr.primefaces.model.CinemaMovie;
 import hr.primefaces.model.CinemaSeats;
 import hr.primefaces.model.Theater;
 import hr.primefaces.service.ITheaterService;
@@ -27,7 +25,6 @@ public class TheaterService implements ITheaterService, Serializable {
 
 	ITheaterDAO theaterDAO;
 	ICinemaDAO cinemaDAO;
-	ICinemaMovieDAO cinemaMovieDAO;
 	CinemaSeatsDAO cinemaSeatsDAO;
 	
 	/**
@@ -122,56 +119,16 @@ public class TheaterService implements ITheaterService, Serializable {
 	public List<Cinema> getCinemaByName(String name) {
 		return getCinemaDAO().getCinemaByName(name);
 	}
-	
+
 	/**
 	 * ################# END OF - CINEMA #################
 	 */
 
-	/**
-	 * ################# CINEMA MOVIE #################
-	 */
-	
-	@Transactional(readOnly = false)
-	@Override
-	public void addCinemaMovie(CinemaMovie cinemaCinemaMovie) {
-		getCinemaMovieDAO().addCinemaMovie(cinemaCinemaMovie);
-	}
-
-	@Transactional(readOnly = false)
-	@Override
-	public void deleteCinemaMovie(CinemaMovie cinemaCinemaMovie) {
-		getCinemaMovieDAO().deleteCinemaMovie(cinemaCinemaMovie);
-	}
-
-	@Transactional(readOnly = false)
-	@Override
-	public void updateCinemaMovie(CinemaMovie cinemaCinemaMovie) {
-		getCinemaMovieDAO().updateCinemaMovie(cinemaCinemaMovie);
-	}
-
-	@Override
-	public CinemaMovie getCinemaMovieById(int id) {
-		return getCinemaMovieDAO().getCinemaMovieById(id);
-	}
-
-	@Override
-	public List<CinemaMovie> getCinemaMovies() {
-		return getCinemaMovieDAO().getCinemaMovies();
-	}
-
-	@Override
-	public List<CinemaMovie> getCinemaMovieByName(String name) {
-		return getCinemaMovieDAO().getCinemaMovieByName(name);
-	}
-	
-	/**
-	 * ################# END OF - CINEMA MOVIE #################
-	 */
 
 	/**
 	 * ################# CINEMA SEATS #################
 	 */
-	
+
 	@Transactional(readOnly = false)
 	@Override
 	public void addCinemaSeats(CinemaSeats cinemaSeats) {
@@ -233,13 +190,6 @@ public class TheaterService implements ITheaterService, Serializable {
 	}
 
 	/**
-	 * @return the cinemaMovieDAO
-	 */
-	public ICinemaMovieDAO getCinemaMovieDAO() {
-		return cinemaMovieDAO;
-	}
-
-	/**
 	 * @return the cinemaSeatsDAO
 	 */
 	public CinemaSeatsDAO getCinemaSeatsDAO() {
@@ -258,13 +208,6 @@ public class TheaterService implements ITheaterService, Serializable {
 	 */
 	public void setCinemaDAO(ICinemaDAO cinemaDAO) {
 		this.cinemaDAO = cinemaDAO;
-	}
-
-	/**
-	 * @param cinemaMovieDAO the cinemaMovieDAO to set
-	 */
-	public void setCinemaMovieDAO(ICinemaMovieDAO cinemaMovieDAO) {
-		this.cinemaMovieDAO = cinemaMovieDAO;
 	}
 
 	/**

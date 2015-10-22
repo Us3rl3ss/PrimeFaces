@@ -25,7 +25,7 @@
 						converter="#{theaterConverter}">
 						<f:selectItems value="#{addProjectionMB.theaterList}" var="theater"
 							itemValue="#{theater}" itemLabel="#{theater.name}" />
-						<f:ajax listener="#{addProjectionMB.postaviCinemaList}" />
+						<f:ajax listener="#{addProjectionMB.prepareCinemaList}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel for="cinema" value="Kino dvorana:" />
@@ -33,7 +33,7 @@
 						converter="#{cinemaConverter}">
 						<f:selectItems value="#{addProjectionMB.cinemaList}" var="cinema"
 							itemValue="#{cinema}" itemLabel="#{cinema.name}" />
-						<f:ajax listener="#{addProjectionMB.postaviProjectionList}" />
+						<f:ajax listener="#{addProjectionMB.prepareProjectionList}" />
 					</p:selectOneMenu>
 
 				</p:panelGrid>
@@ -63,9 +63,9 @@
 			            <p:outputLabel for="to" value="Do:" />
 			            <p:calendar id="to" value="#{addProjectionMB.projection.end_time}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
 			 
-			            <p:commandButton id="addButton" value="Spremi" actionListener="#{addProjectionMB.spremi}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{!addProjectionMB.forUpdate}" />
-			            <p:commandButton id="updateButton" value="Ažuriraj" actionListener="#{addProjectionMB.uredi}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" />
-			            <p:commandButton id="deleteButton" value="Obriši" actionListener="#{addProjectionMB.obrisi}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" />
+			            <p:commandButton id="addButton" value="Spremi" actionListener="#{addProjectionMB.save}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{!addProjectionMB.forUpdate}" />
+			            <p:commandButton id="updateButton" value="Ažuriraj" actionListener="#{addProjectionMB.edit}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" />
+			            <p:commandButton id="deleteButton" value="Obriši" actionListener="#{addProjectionMB.delete}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" />
 			            
 			        </h:panelGrid>
 			    </p:dialog>  

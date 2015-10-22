@@ -20,123 +20,160 @@ public class UserSession implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String NAV_COMPONENT = ":leftNavForm :upperNavForm";
+
 	@ManagedProperty(value = "#{navigationController}")
-	NavigationControllerBean navigationControllerMB;
+	private NavigationControllerBean navigationControllerMB;
 
 	@ManagedProperty(value = "#{UserService}")
-	IUserService userService;
+	private IUserService userService;
 
+	private User user;
+	private boolean isLogged = false;
+	private String userRole;
 	private String username;
 	private String password;
 
-	private User user;
-	
-	private boolean isLogged = false;
-	private String userRole;
-
 	public String login() {
 
-		user = userService.getUserByDistinctUsername(username);
+		setUser(getUserService().getUserByDistinctUsername(getUsername()));
 
-		if (user != null) {
+		if (getUser() != null) {
 
-			if (user.getPassword().equals(password)) {
-				FacesContext context = FacesContext.getCurrentInstance();
+			if (getUser().getPassword().equals(getPassword())) {
 
-				context.addMessage(null, new FacesMessage(
-						Messages.SUCCESSFUL_LOGIN_MSG));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(Messages.SUCCESSFUL_LOGIN_MSG));
 
-				isLogged = true;
-				userRole = user.getRole().getCode();
-				
-				RequestContext.getCurrentInstance().update(":leftNavForm :upperNavForm");
+				setLogged(true);
+				setUserRole(getUser().getRole().getCode());
 
-				return navigationControllerMB.doViewHome();
-			} else {
-				FacesContext context = FacesContext.getCurrentInstance();
+				RequestContext.getCurrentInstance().update(NAV_COMPONENT);
+				return getNavigationControllerMB().doViewHome();
+			}
+			else {
 
-				context.addMessage(null, new FacesMessage(
-						Messages.WRONG_PASSWORD_MSG));
-				
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(Messages.WRONG_PASSWORD_MSG));
 				return "";
 			}
+		}
+		else {
 
-		} else {
-			FacesContext context = FacesContext.getCurrentInstance();
-
-			context.addMessage(null, new FacesMessage(
-					Messages.USER_DONT_EXIST_MSG));
-			
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(Messages.USER_DONT_EXIST_MSG));
 			return "";
 		}
 	}
 
 	public String logout() {
-		
+
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		
-		isLogged = false;
-		userRole = null;
-		
-		RequestContext.getCurrentInstance().update(":leftNavForm :upperNavForm");
-		
-		return navigationControllerMB.doViewHome();
+
+		setLogged(false);
+		setUserRole(null);
+
+		RequestContext.getCurrentInstance().update(NAV_COMPONENT);
+		return getNavigationControllerMB().doViewHome();
 	}
 
-	public String getUsername() {
-		return username;
-	}
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public IUserService getUserService() {
-		return userService;
-	}
-
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
+	/**
+	 * @return the navigationControllerMB
+	 */
 	public NavigationControllerBean getNavigationControllerMB() {
 		return navigationControllerMB;
 	}
 
-	public void setNavigationControllerMB(
-			NavigationControllerBean navigationControllerMB) {
-		this.navigationControllerMB = navigationControllerMB;
+	/**
+	 * @return the userService
+	 */
+	public IUserService getUserService() {
+		return userService;
 	}
 
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
+	}
+
+	/**
+	 * @return the isLogged
+	 */
 	public boolean isLogged() {
 		return isLogged;
 	}
 
-	public void setLogged(boolean isLogged) {
-		this.isLogged = isLogged;
-	}
-
+	/**
+	 * @return the userRole
+	 */
 	public String getUserRole() {
 		return userRole;
 	}
 
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
 	}
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param p_navigationControllerMB the navigationControllerMB to set
+	 */
+	public void setNavigationControllerMB(final NavigationControllerBean p_navigationControllerMB) {
+		this.navigationControllerMB = p_navigationControllerMB;
+	}
+
+	/**
+	 * @param p_userService the userService to set
+	 */
+	public void setUserService(final IUserService p_userService) {
+		this.userService = p_userService;
+	}
+
+	/**
+	 * @param p_user the user to set
+	 */
+	public void setUser(final User p_user) {
+		this.user = p_user;
+	}
+
+	/**
+	 * @param p_isLogged the isLogged to set
+	 */
+	public void setLogged(final boolean p_isLogged) {
+		this.isLogged = p_isLogged;
+	}
+
+	/**
+	 * @param p_userRole the userRole to set
+	 */
+	public void setUserRole(final String p_userRole) {
+		this.userRole = p_userRole;
+	}
+
+	/**
+	 * @param p_username the username to set
+	 */
+	public void setUsername(final String p_username) {
+		this.username = p_username;
+	}
+
+	/**
+	 * @param p_password the password to set
+	 */
+	public void setPassword(final String p_password) {
+		this.password = p_password;
+	}
+
 }
