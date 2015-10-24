@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -19,64 +20,56 @@ public class UserMovieReviewDAO implements IUserMovieReviewDAO, Serializable {
 
 	private SessionFactory sessionFactory;
 
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
+	private final String GET_USER_MOVIE_REVIEW_BY_USER_AND_MOVIE = "from UserMovieReview where user_id = :user_id and movie_id = :movie_id";
+	private final String GET_ALL_MOVIE_REVIEWS = "from UserMovieReview where movie_id = :movie_id";
+	private final String GET_USER_MOVIE_REVIEW_BY_USER = "from UserMovieReview umr join umr.movie where user_id = :user_id order by umr.created desc";
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
+	@Override
+	public void addUserMovieReview(final UserMovieReview p_userMovieReview) {
+		getSessionFactory().getCurrentSession().save(p_userMovieReview);
 	}
 
 	@Override
-	public void addUserMovieReview(UserMovieReview userMovieReview) {
-		getSessionFactory().getCurrentSession().save(userMovieReview);
+	public void deleteUserMovieReview(final UserMovieReview p_userMovieReview) {
+		getSessionFactory().getCurrentSession().delete(p_userMovieReview);
 	}
 
 	@Override
-	public void deleteUserMovieReview(UserMovieReview userMovieReview) {
-		getSessionFactory().getCurrentSession().delete(userMovieReview);
+	public void updateUserMovieReview(final UserMovieReview p_userMovieReview) {
+		getSessionFactory().getCurrentSession().update(p_userMovieReview);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void updateUserMovieReview(UserMovieReview userMovieReview) {
-		getSessionFactory().getCurrentSession().update(userMovieReview);
+	public List<UserMovieReview> getUserMovieReviewByUserAndMovie(final User p_user, final Movie p_movie) {
+
+		final Query query = getSessionFactory().getCurrentSession().createQuery(GET_USER_MOVIE_REVIEW_BY_USER_AND_MOVIE);
+		query.setParameter("user_id", p_user.getId());
+		query.setParameter("movie_id", p_movie.getId());
+		return query.list();
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<UserMovieReview> getUserMovieReviewByUserAndMovie(User user, Movie movie) {
+	public List<UserMovieReview> getAllMovieReviews(final Movie p_movie) {
 
-		String query = "from UserMovieReview " + "where user_id = :userId " + "and movie_id = :movieId";
-
-		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("userId", user.getId()).setParameter("movieId", movie.getId())
-				.list();
-		return list;
+		final Query query = getSessionFactory().getCurrentSession().createQuery(GET_ALL_MOVIE_REVIEWS);
+		query.setParameter("movie_id", p_movie.getId());
+		return query.list();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<UserMovieReview> getAllMovieReviews(Movie movie) {
+	public List<UserMovieReview> getUserMovieReviewByUser(final User p_user) {
 
-		String query = "from UserMovieReview " + "where movie_id = :movieId";
+		final List<Object[]> list = getSessionFactory().getCurrentSession().createQuery(GET_USER_MOVIE_REVIEW_BY_USER)
+				.setParameter("user_id", p_user.getId()).list();
 
-		List list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("movieId", movie.getId()).list();
-		return list;
-	}
-
-	@Override
-	public List<UserMovieReview> getUserMovieReviewByUser(User user) {
-
-		String query = "from UserMovieReview umr " + "join umr.movie " + "where user_id = :userId " + "order by umr.created desc";
-
-		List<Object[]> list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("userId", user.getId()).list();
-
-		List<UserMovieReview> result = new ArrayList<UserMovieReview>();
+		final List<UserMovieReview> result = new ArrayList<UserMovieReview>();
 		for (Object[] arr : list) {
 
-			UserMovieReview umr = (UserMovieReview) arr[0];
-			Movie m = (Movie) arr[1];
+			final UserMovieReview umr = (UserMovieReview) arr[0];
+			final Movie m = (Movie) arr[1];
 
 			umr.setMovie(m);
 
@@ -84,6 +77,24 @@ public class UserMovieReviewDAO implements IUserMovieReviewDAO, Serializable {
 		}
 
 		return result;
+	}
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the sessionFactory
+	 */
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	/**
+	 * @param p_sessionFactory the sessionFactory to set
+	 */
+	public void setSessionFactory(final SessionFactory p_sessionFactory) {
+		this.sessionFactory = p_sessionFactory;
 	}
 
 }

@@ -11,17 +11,18 @@ import java.util.List;
 
 public interface ITheaterDAO {
 
-	public void addTheater(Theater theater);
+	void addTheater(Theater p_theater);
 
-	public void updateTheater(Theater theater);
+	void updateTheater(Theater p_theater);
 
-	public void deleteTheater(Theater theater);
+	void deleteTheater(Theater p_theater);
 
-	public Theater getTheaterById(int id);
-	
-	public List<Theater> getTheaterByName(String username);
+	Theater getTheaterById(int p_id);
 
-	public List<Theater> getTheaters();
+	List<Theater> getTheaterByName(String p_username);
 
-	public Theater getTheaterByLatLng(Double lat, Double lng);
+	List<Theater> getTheaters();
+
+	Theater getTheaterByLatLng(Double p_lat, Double p_lng);
+
 }

@@ -8,15 +8,16 @@ import java.util.List;
 
 public interface IUserMovieRateDAO {
 
-	public void addUserMovieRate(UserMovieRate userMovieRate);
+	void addUserMovieRate(UserMovieRate p_userMovieRate);
 
-	public void updateUserMovieRate(UserMovieRate userMovieRate);
+	void updateUserMovieRate(UserMovieRate p_userMovieRate);
 
-	public void deleteUserMovieRate(UserMovieRate userMovieRate);
-	
-	public List<UserMovieRate> getUserMovieRateByUserAndMovie(User user, Movie movie);
-	
-	public Double getAverageRateByMovie(Movie movie);
-	
-	public List<UserMovieRate> getUserMovieRateByUser(User user);
+	void deleteUserMovieRate(UserMovieRate p_userMovieRate);
+
+	List<UserMovieRate> getUserMovieRateByUserAndMovie(User p_user, Movie p_movie);
+
+	Double getAverageRateByMovie(Movie p_movie);
+
+	List<UserMovieRate> getUserMovieRateByUser(User p_user);
+
 }

@@ -6,23 +6,24 @@ import java.util.List;
 
 public interface IUserDAO {
 
-	public void addUser(User user);
+	void addUser(User p_user);
 
-	public void updateUser(User user);
+	void updateUser(User p_user);
 
-	public void deleteUser(User user);
+	void deleteUser(User p_user);
 
-	public User getUserById(int id);
+	User getUserById(int p_id);
 
-	public User getUserByDistinctUsername(String username);
+	User getUserByDistinctUsername(String p_username);
 
-	public List<User> getUsers();
+	List<User> getUsers();
 
-	public List<User> getUserByUsername(String input);
-	
-	public List<User> getUserFollow(User loginUser, User currUser);
-	
-	public List<User> getUserFollowByUser(User loginUser);
-	
-	public List<User> getUserFollowByFollower(User currUser);
+	List<User> getUserByUsername(String p_input);
+
+	List<User> getUserFollow(User p_loginUser, User p_currUser);
+
+	List<User> getUserFollowByUser(User p_loginUser);
+
+	List<User> getUserFollowByFollower(User p_currUser);
+
 }

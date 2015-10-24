@@ -6,26 +6,42 @@ public class MovieFavorite {
 
 	private Movie movie;
 	private int favoriteNumber;
-	
-	public MovieFavorite(Movie movie, int favoriteNumber) {
-		this.movie = movie;
-		this.favoriteNumber = favoriteNumber;
+
+	public MovieFavorite(final Movie p_movie, final int p_favoriteNumber) {
+		this.movie = p_movie;
+		this.favoriteNumber = p_favoriteNumber;
 	}
 
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the movie
+	 */
 	public Movie getMovie() {
 		return movie;
 	}
 
-	public void setMovie(Movie movie) {
-		this.movie = movie;
-	}
-
+	/**
+	 * @return the favoriteNumber
+	 */
 	public int getFavoriteNumber() {
 		return favoriteNumber;
 	}
 
-	public void setFavoriteNumber(int favoriteNumber) {
-		this.favoriteNumber = favoriteNumber;
+	/**
+	 * @param p_movie the movie to set
+	 */
+	public void setMovie(final Movie p_movie) {
+		this.movie = p_movie;
+	}
+
+	/**
+	 * @param p_favoriteNumber the favoriteNumber to set
+	 */
+	public void setFavoriteNumber(final int p_favoriteNumber) {
+		this.favoriteNumber = p_favoriteNumber;
 	}
 
 }

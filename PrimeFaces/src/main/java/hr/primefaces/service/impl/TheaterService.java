@@ -23,35 +23,35 @@ public class TheaterService implements ITheaterService, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	ITheaterDAO theaterDAO;
-	ICinemaDAO cinemaDAO;
-	CinemaSeatsDAO cinemaSeatsDAO;
-	
+	private ITheaterDAO theaterDAO;
+	private ICinemaDAO cinemaDAO;
+	private CinemaSeatsDAO cinemaSeatsDAO;
+
 	/**
 	 * ################# THEATER #################
 	 */
 
 	@Transactional(readOnly = false)
 	@Override
-	public void addTheater(Theater theater) {
-		getTheaterDAO().addTheater(theater);
+	public void addTheater(final Theater p_theater) {
+		getTheaterDAO().addTheater(p_theater);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteTheater(Theater theater) {
-		getTheaterDAO().deleteTheater(theater);
+	public void deleteTheater(final Theater p_theater) {
+		getTheaterDAO().deleteTheater(p_theater);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateTheater(Theater theater) {
-		getTheaterDAO().updateTheater(theater);
+	public void updateTheater(final Theater p_theater) {
+		getTheaterDAO().updateTheater(p_theater);
 	}
 
 	@Override
-	public Theater getTheaterById(int id) {
-		return getTheaterDAO().getTheaterById(id);
+	public Theater getTheaterById(final int p_id) {
+		return getTheaterDAO().getTheaterById(p_id);
 	}
 
 	@Override
@@ -60,70 +60,61 @@ public class TheaterService implements ITheaterService, Serializable {
 	}
 
 	@Override
-	public List<Theater> getTheaterByName(String name) {
-		return getTheaterDAO().getTheaterByName(name);
+	public List<Theater> getTheaterByName(final String p_name) {
+		return getTheaterDAO().getTheaterByName(p_name);
 	}
 
 	@Override
-	public Theater getTheaterByLatLng(Double lat, Double lng) {
-		return getTheaterDAO().getTheaterByLatLng(lat, lng);
+	public Theater getTheaterByLatLng(final Double p_lat, final Double p_lng) {
+		return getTheaterDAO().getTheaterByLatLng(p_lat, p_lng);
 	}
-	
-	/**
-	 * ################# END OF - THEATER #################
-	 */
-	
+
 	/**
 	 * ################# CINEMA #################
 	 */
-	
+
 	@Transactional(readOnly = false)
 	@Override
-	public void addCinema(Cinema cinema) {
-		getCinemaDAO().addCinema(cinema);
+	public void addCinema(final Cinema p_cinema) {
+		getCinemaDAO().addCinema(p_cinema);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteCinema(Cinema cinema) {
-		getCinemaDAO().deleteCinema(cinema);
+	public void deleteCinema(final Cinema p_cinema) {
+		getCinemaDAO().deleteCinema(p_cinema);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateCinema(Cinema cinema) {
-		getCinemaDAO().updateCinema(cinema);
+	public void updateCinema(final Cinema p_cinema) {
+		getCinemaDAO().updateCinema(p_cinema);
 	}
 
 	@Override
-	public Cinema getCinemaById(int id) {
-		return getCinemaDAO().getCinemaById(id);
+	public Cinema getCinemaById(final int p_id) {
+		return getCinemaDAO().getCinemaById(p_id);
 	}
 
 	@Override
 	public List<Cinema> getCinemas() {
 		return getCinemaDAO().getCinemas();
 	}
-	
+
 	@Override
-	public List<Cinema> getCinemaByTheater(Theater theater) {
-		return getCinemaDAO().getCinemaByTheater(theater);
+	public List<Cinema> getCinemaByTheater(final Theater p_theater) {
+		return getCinemaDAO().getCinemaByTheater(p_theater);
 	}
 
 	@Override
-	public Cinema getCinemaByTheaterAndName(Theater theater, String name) {
-		return getCinemaDAO().getCinemaByTheaterAndName(theater, name);
+	public Cinema getCinemaByTheaterAndName(final Theater p_theater, final String p_name) {
+		return getCinemaDAO().getCinemaByTheaterAndName(p_theater, p_name);
 	}
 
 	@Override
-	public List<Cinema> getCinemaByName(String name) {
-		return getCinemaDAO().getCinemaByName(name);
+	public List<Cinema> getCinemaByName(final String p_name) {
+		return getCinemaDAO().getCinemaByName(p_name);
 	}
-
-	/**
-	 * ################# END OF - CINEMA #################
-	 */
-
 
 	/**
 	 * ################# CINEMA SEATS #################
@@ -131,25 +122,25 @@ public class TheaterService implements ITheaterService, Serializable {
 
 	@Transactional(readOnly = false)
 	@Override
-	public void addCinemaSeats(CinemaSeats cinemaSeats) {
-		getCinemaSeatsDAO().addCinemaSeats(cinemaSeats);
+	public void addCinemaSeats(final CinemaSeats p_cinemaSeats) {
+		getCinemaSeatsDAO().addCinemaSeats(p_cinemaSeats);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteCinemaSeats(CinemaSeats cinemaSeats) {
-		getCinemaSeatsDAO().deleteCinemaSeats(cinemaSeats);
+	public void deleteCinemaSeats(final CinemaSeats p_cinemaSeats) {
+		getCinemaSeatsDAO().deleteCinemaSeats(p_cinemaSeats);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateCinemaSeats(CinemaSeats cinemaSeats) {
-		getCinemaSeatsDAO().updateCinemaSeats(cinemaSeats);
+	public void updateCinemaSeats(final CinemaSeats p_cinemaSeats) {
+		getCinemaSeatsDAO().updateCinemaSeats(p_cinemaSeats);
 	}
 
 	@Override
-	public CinemaSeats getCinemaSeatsById(int id) {
-		return getCinemaSeatsDAO().getCinemaSeatsById(id);
+	public CinemaSeats getCinemaSeatsById(final int p_id) {
+		return getCinemaSeatsDAO().getCinemaSeatsById(p_id);
 	}
 
 	@Override
@@ -158,19 +149,15 @@ public class TheaterService implements ITheaterService, Serializable {
 	}
 
 	@Override
-	public List<CinemaSeats> getCinemaSeatsByName(String name) {
-		return getCinemaSeatsDAO().getCinemaSeatsByName(name);
+	public List<CinemaSeats> getCinemaSeatsByName(final String p_name) {
+		return getCinemaSeatsDAO().getCinemaSeatsByName(p_name);
 	}
-	
+
 	@Override
-	public List<CinemaSeats> getCinemaSeatsByCinemaId(int cinemaId) {
-		return getCinemaSeatsDAO().getCinemaSeatsByCinemaId(cinemaId);
+	public List<CinemaSeats> getCinemaSeatsByCinemaId(final int p_cinemaId) {
+		return getCinemaSeatsDAO().getCinemaSeatsByCinemaId(p_cinemaId);
 	}
-	
-	/**
-	 * ################# END OF - CINEMA SEATS #################
-	 */
-	
+
 	/**
 	 * ################# GETTERS AND SETTERS #################
 	 */
@@ -197,24 +184,24 @@ public class TheaterService implements ITheaterService, Serializable {
 	}
 
 	/**
-	 * @param theaterDAO the theaterDAO to set
+	 * @param p_theaterDAO the theaterDAO to set
 	 */
-	public void setTheaterDAO(ITheaterDAO theaterDAO) {
-		this.theaterDAO = theaterDAO;
+	public void setTheaterDAO(final ITheaterDAO p_theaterDAO) {
+		this.theaterDAO = p_theaterDAO;
 	}
 
 	/**
-	 * @param cinemaDAO the cinemaDAO to set
+	 * @param p_cinemaDAO the cinemaDAO to set
 	 */
-	public void setCinemaDAO(ICinemaDAO cinemaDAO) {
-		this.cinemaDAO = cinemaDAO;
+	public void setCinemaDAO(final ICinemaDAO p_cinemaDAO) {
+		this.cinemaDAO = p_cinemaDAO;
 	}
 
 	/**
-	 * @param cinemaSeatsDAO the cinemaSeatsDAO to set
+	 * @param p_cinemaSeatsDAO the cinemaSeatsDAO to set
 	 */
-	public void setCinemaSeatsDAO(CinemaSeatsDAO cinemaSeatsDAO) {
-		this.cinemaSeatsDAO = cinemaSeatsDAO;
+	public void setCinemaSeatsDAO(final CinemaSeatsDAO p_cinemaSeatsDAO) {
+		this.cinemaSeatsDAO = p_cinemaSeatsDAO;
 	}
 
 }

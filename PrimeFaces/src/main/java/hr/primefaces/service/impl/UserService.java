@@ -27,49 +27,48 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService implements IUserService, Serializable  {
 
 	private static final long serialVersionUID = 1L;
-	
-	IUserDAO userDAO;
-	IUserMovieReviewDAO userMovieReviewDAO;
-	IUserMovieRateDAO userMovieRateDAO;
-	IUserFollowingDAO userFollowingDAO;
-	IUserFavoriteMovieDAO userFavoriteMovieDAO;
 
-	
+	private IUserDAO userDAO;
+	private IUserMovieReviewDAO userMovieReviewDAO;
+	private IUserMovieRateDAO userMovieRateDAO;
+	private IUserFollowingDAO userFollowingDAO;
+	private IUserFavoriteMovieDAO userFavoriteMovieDAO;
+
 	/**
 	 * ################# USER #################
 	 */
-	
-	@Transactional(readOnly = false)
-	@Override
-	public void addUser(User user) {
-		getUserDAO().addUser(user);
-	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteUser(User user) {
-		getUserDAO().deleteUser(user);
+	public void addUser(final User p_user) {
+		getUserDAO().addUser(p_user);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateUser(User user) {
-		getUserDAO().updateUser(user);
+	public void deleteUser(final User p_user) {
+		getUserDAO().deleteUser(p_user);
+	}
+
+	@Transactional(readOnly = false)
+	@Override
+	public void updateUser(final User p_user) {
+		getUserDAO().updateUser(p_user);
 	}
 
 	@Override
-	public User getUserById(int id) {
-		return getUserDAO().getUserById(id);
+	public User getUserById(final int p_id) {
+		return getUserDAO().getUserById(p_id);
 	}
 
 	@Override
-	public User getUserByDistinctUsername(String username) {
-		return getUserDAO().getUserByDistinctUsername(username);
+	public User getUserByDistinctUsername(final String p_username) {
+		return getUserDAO().getUserByDistinctUsername(p_username);
 	}
-	
+
 	@Override
-	public List<User> getUserByUsername(String username) {
-		return getUserDAO().getUserByUsername(username);
+	public List<User> getUserByUsername(final String p_username) {
+		return getUserDAO().getUserByUsername(p_username);
 	}
 
 	@Override
@@ -78,174 +77,153 @@ public class UserService implements IUserService, Serializable  {
 	}
 
 	@Override
-	public List<User> getUserFollow(User loginUser, User currUser) {
-		return getUserDAO().getUserFollow(loginUser, currUser);
+	public List<User> getUserFollow(final User p_loginUser, final User p_currUser) {
+		return getUserDAO().getUserFollow(p_loginUser, p_currUser);
 	}
 
 	@Override
-	public List<User> getUserFollowByUser(User loginUser) {
-		return getUserDAO().getUserFollowByUser(loginUser);
+	public List<User> getUserFollowByUser(final User p_loginUser) {
+		return getUserDAO().getUserFollowByUser(p_loginUser);
 	}
-	
+
 	@Override
-	public List<User> getUserFollowByFollower(User currUser) {
-		return getUserDAO().getUserFollowByFollower(currUser);
+	public List<User> getUserFollowByFollower(final User p_currUser) {
+		return getUserDAO().getUserFollowByFollower(p_currUser);
 	}
-	
-	/**
-	 * ################# END OF - USER #################
-	 */
-	
-	
+
 	/**
 	 * ################# USER MOVIE REVIEW #################
 	 */
-	
-	@Transactional(readOnly = false)
-	@Override
-	public void addUserMovieReview(UserMovieReview userMovieReview) {
-		getUserMovieReviewDAO().addUserMovieReview(userMovieReview);
-	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteUserMovieReview(UserMovieReview userMovieReview) {
-		getUserMovieReviewDAO().deleteUserMovieReview(userMovieReview);
+	public void addUserMovieReview(final UserMovieReview p_userMovieReview) {
+		getUserMovieReviewDAO().addUserMovieReview(p_userMovieReview);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateUserMovieReview(UserMovieReview userMovieReview) {
-		getUserMovieReviewDAO().updateUserMovieReview(userMovieReview);
+	public void deleteUserMovieReview(final UserMovieReview p_userMovieReview) {
+		getUserMovieReviewDAO().deleteUserMovieReview(p_userMovieReview);
 	}
 
-	public List<UserMovieReview> getUserMovieReviewByUserAndMovie(User user, Movie movie) {
-		return getUserMovieReviewDAO().getUserMovieReviewByUserAndMovie(user, movie);
+	@Transactional(readOnly = false)
+	@Override
+	public void updateUserMovieReview(final UserMovieReview p_userMovieReview) {
+		getUserMovieReviewDAO().updateUserMovieReview(p_userMovieReview);
 	}
 
-	public List<UserMovieReview> getAllMovieReviews(Movie movie) {
-		return getUserMovieReviewDAO().getAllMovieReviews(movie);
+	public List<UserMovieReview> getUserMovieReviewByUserAndMovie(final User p_user, final Movie p_movie) {
+		return getUserMovieReviewDAO().getUserMovieReviewByUserAndMovie(p_user, p_movie);
 	}
-	
-	public List<UserMovieReview> getUserMovieReviewByUser(User user) {
-		return getUserMovieReviewDAO().getUserMovieReviewByUser(user);
+
+	public List<UserMovieReview> getAllMovieReviews(final Movie p_movie) {
+		return getUserMovieReviewDAO().getAllMovieReviews(p_movie);
 	}
-	
-	/**
-	 * ################# END OF - USER MOVIE REVIEW #################
-	 */
-	
+
+	public List<UserMovieReview> getUserMovieReviewByUser(final User p_user) {
+		return getUserMovieReviewDAO().getUserMovieReviewByUser(p_user);
+	}
+
 	/**
 	 * ################# USER MOVIE RATE #################
 	 */
-	
-	@Transactional(readOnly = false)
-	@Override
-	public void addUserMovieRate(UserMovieRate userMovieRate) {
-		getUserMovieRateDAO().addUserMovieRate(userMovieRate);
-	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteUserMovieRate(UserMovieRate userMovieRate) {
-		getUserMovieRateDAO().deleteUserMovieRate(userMovieRate);
+	public void addUserMovieRate(final UserMovieRate p_userMovieRate) {
+		getUserMovieRateDAO().addUserMovieRate(p_userMovieRate);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateUserMovieRate(UserMovieRate userMovieRate) {
-		getUserMovieRateDAO().updateUserMovieRate(userMovieRate);
+	public void deleteUserMovieRate(final UserMovieRate p_userMovieRate) {
+		getUserMovieRateDAO().deleteUserMovieRate(p_userMovieRate);
 	}
 
-	public List<UserMovieRate> getUserMovieRateByUserAndMovie(User user, Movie movie) {
-		return getUserMovieRateDAO().getUserMovieRateByUserAndMovie(user, movie);
+	@Transactional(readOnly = false)
+	@Override
+	public void updateUserMovieRate(final UserMovieRate p_userMovieRate) {
+		getUserMovieRateDAO().updateUserMovieRate(p_userMovieRate);
 	}
 
-	public Double getAverageRateByMovie(Movie movie) {
-		return getUserMovieRateDAO().getAverageRateByMovie(movie);
+	public List<UserMovieRate> getUserMovieRateByUserAndMovie(final User p_user, final Movie p_movie) {
+		return getUserMovieRateDAO().getUserMovieRateByUserAndMovie(p_user, p_movie);
 	}
-	
-	public List<UserMovieRate> getUserMovieRateByUser(User user) {
-		return getUserMovieRateDAO().getUserMovieRateByUser(user);
+
+	public Double getAverageRateByMovie(final Movie p_movie) {
+		return getUserMovieRateDAO().getAverageRateByMovie(p_movie);
 	}
-	
-	/**
-	 * ################# END OF - USER MOVIE RATE #################
-	 */
-	
+
+	public List<UserMovieRate> getUserMovieRateByUser(final User p_user) {
+		return getUserMovieRateDAO().getUserMovieRateByUser(p_user);
+	}
+
 	/**
 	 * ################# USER FOLLOWING #################
 	 */
-	
+
 	@Transactional(readOnly = false)
 	@Override
-	public void addUserFollowing(UserFollowing userFollowing) {
-		getUserFollowingDAO().addUserFollowing(userFollowing);
+	public void addUserFollowing(final UserFollowing p_userFollowing) {
+		getUserFollowingDAO().addUserFollowing(p_userFollowing);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteUserFollowing(UserFollowing userFollowing) {
-		getUserFollowingDAO().deleteUserFollowing(userFollowing);
+	public void deleteUserFollowing(final UserFollowing p_userFollowing) {
+		getUserFollowingDAO().deleteUserFollowing(p_userFollowing);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateUserFollowing(UserFollowing userFollowing) {
-		getUserFollowingDAO().updateUserFollowing(userFollowing);
+	public void updateUserFollowing(final UserFollowing p_userFollowing) {
+		getUserFollowingDAO().updateUserFollowing(p_userFollowing);
 	}
-	
+
 	@Override
-	public UserFollowing getUserFriends(User user, User user2) {
-		return getUserFollowingDAO().getUserFriends(user, user2);
+	public UserFollowing getUserFriends(final User p_user, final User p_user2) {
+		return getUserFollowingDAO().getUserFriends(p_user, p_user2);
 	}
-	
-	/**
-	 * ################# END OF - USER FOLLOWING #################
-	 */
-	
+
 	/**
 	 * ################# USER FAVORITE MOVIE #################
 	 */
-	
+
 	@Transactional(readOnly = false)
 	@Override
-	public void addUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie) {
-		getUserFavoriteMovieDAO().addUserFavoriteMovie(userFavoriteMovie);
+	public void addUserFavoriteMovie(final UserFavoriteMovie p_userFavoriteMovie) {
+		getUserFavoriteMovieDAO().addUserFavoriteMovie(p_userFavoriteMovie);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie) {
-		getUserFavoriteMovieDAO().deleteUserFavoriteMovie(userFavoriteMovie);
+	public void deleteUserFavoriteMovie(final UserFavoriteMovie p_userFavoriteMovie) {
+		getUserFavoriteMovieDAO().deleteUserFavoriteMovie(p_userFavoriteMovie);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie) {
-		getUserFavoriteMovieDAO().updateUserFavoriteMovie(userFavoriteMovie);
+	public void updateUserFavoriteMovie(final UserFavoriteMovie p_userFavoriteMovie) {
+		getUserFavoriteMovieDAO().updateUserFavoriteMovie(p_userFavoriteMovie);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public UserFavoriteMovie getMovieInUserFavorites(User user, Movie movie) {
-		return getUserFavoriteMovieDAO().getMovieInUserFavorites(user, movie);
-	}
-	
-	@Transactional(readOnly = false)
-	@Override
-	public List<UserFavoriteMovie> getUserFavoriteMovieByUser(User user) {
-		return getUserFavoriteMovieDAO().getUserFavoriteMovieByUser(user);
+	public UserFavoriteMovie getMovieInUserFavorites(final User p_user, final Movie p_movie) {
+		return getUserFavoriteMovieDAO().getMovieInUserFavorites(p_user, p_movie);
 	}
 
-	/**
-	 * ################# END OF - USER FAVORITE MOVIE #################
-	 */
-	
+	@Transactional(readOnly = false)
+	@Override
+	public List<UserFavoriteMovie> getUserFavoriteMovieByUser(final User p_user) {
+		return getUserFavoriteMovieDAO().getUserFavoriteMovieByUser(p_user);
+	}
+
 	/**
 	 * ################# GETTERS AND SETTERS #################
 	 */
-	
+
 	/**
 	 * @return the userDAO
 	 */
@@ -282,37 +260,37 @@ public class UserService implements IUserService, Serializable  {
 	}
 
 	/**
-	 * @param userDAO the userDAO to set
+	 * @param p_userDAO the userDAO to set
 	 */
-	public void setUserDAO(IUserDAO userDAO) {
-		this.userDAO = userDAO;
+	public void setUserDAO(final IUserDAO p_userDAO) {
+		this.userDAO = p_userDAO;
 	}
 
 	/**
-	 * @param userMovieReviewDAO the userMovieReviewDAO to set
+	 * @param p_userMovieReviewDAO the userMovieReviewDAO to set
 	 */
-	public void setUserMovieReviewDAO(IUserMovieReviewDAO userMovieReviewDAO) {
-		this.userMovieReviewDAO = userMovieReviewDAO;
+	public void setUserMovieReviewDAO(final IUserMovieReviewDAO p_userMovieReviewDAO) {
+		this.userMovieReviewDAO = p_userMovieReviewDAO;
 	}
 
 	/**
-	 * @param userMovieRateDAO the userMovieRateDAO to set
+	 * @param p_userMovieRateDAO the userMovieRateDAO to set
 	 */
-	public void setUserMovieRateDAO(IUserMovieRateDAO userMovieRateDAO) {
-		this.userMovieRateDAO = userMovieRateDAO;
+	public void setUserMovieRateDAO(final IUserMovieRateDAO p_userMovieRateDAO) {
+		this.userMovieRateDAO = p_userMovieRateDAO;
 	}
 
 	/**
-	 * @param userFollowingDAO the userFollowingDAO to set
+	 * @param p_userFollowingDAO the userFollowingDAO to set
 	 */
-	public void setUserFollowingDAO(IUserFollowingDAO userFollowingDAO) {
-		this.userFollowingDAO = userFollowingDAO;
+	public void setUserFollowingDAO(final IUserFollowingDAO p_userFollowingDAO) {
+		this.userFollowingDAO = p_userFollowingDAO;
 	}
 
 	/**
-	 * @param userFavoriteMovieDAO the userFavoriteMovieDAO to set
+	 * @param p_userFavoriteMovieDAO the userFavoriteMovieDAO to set
 	 */
-	public void setUserFavoriteMovieDAO(IUserFavoriteMovieDAO userFavoriteMovieDAO) {
-		this.userFavoriteMovieDAO = userFavoriteMovieDAO;
+	public void setUserFavoriteMovieDAO(final IUserFavoriteMovieDAO p_userFavoriteMovieDAO) {
+		this.userFavoriteMovieDAO = p_userFavoriteMovieDAO;
 	}
 }

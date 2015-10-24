@@ -32,7 +32,6 @@ public class AddressComponent {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
-     * 
      * @return
      *     The longName
      */
@@ -42,17 +41,15 @@ public class AddressComponent {
     }
 
     /**
-     * 
-     * @param longName
+     * @param p_longName
      *     The long_name
      */
     @JsonProperty("long_name")
-    public void setLongName(String longName) {
-        this.longName = longName;
+    public void setLongName(final String p_longName) {
+        this.longName = p_longName;
     }
 
     /**
-     * 
      * @return
      *     The shortName
      */
@@ -62,17 +59,15 @@ public class AddressComponent {
     }
 
     /**
-     * 
-     * @param shortName
+     * @param p_shortName
      *     The short_name
      */
     @JsonProperty("short_name")
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setShortName(final String p_shortName) {
+        this.shortName = p_shortName;
     }
 
     /**
-     * 
      * @return
      *     The types
      */
@@ -82,13 +77,12 @@ public class AddressComponent {
     }
 
     /**
-     * 
-     * @param types
+     * @param p_types
      *     The types
      */
     @JsonProperty("types")
-    public void setTypes(List<String> types) {
-        this.types = types;
+    public void setTypes(final List<String> p_types) {
+        this.types = p_types;
     }
 
     @JsonAnyGetter
@@ -97,8 +91,8 @@ public class AddressComponent {
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
+    public void setAdditionalProperty(final String p_name, final Object p_value) {
+        this.additionalProperties.put(p_name, p_value);
     }
 
 }

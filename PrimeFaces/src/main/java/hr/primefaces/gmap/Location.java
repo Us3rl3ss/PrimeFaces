@@ -1,4 +1,3 @@
-
 package hr.primefaces.gmap;
 
 import java.util.HashMap;
@@ -13,75 +12,66 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
-@JsonPropertyOrder({
-    "lat",
-    "lng"
-})
+@JsonPropertyOrder({ "lat", "lng" })
 public class Location {
 
-    @JsonProperty("lat")
-    private Double lat;
-    @JsonProperty("lng")
-    private Double lng;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    
-    public Location () {
-    }
-    
-    public Location (Double lat, Double lng) {
-    	this.lat = lat;
-    	this.lng = lng;
-    }
+	@JsonProperty("lat")
+	private Double lat;
+	@JsonProperty("lng")
+	private Double lng;
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    /**
-     * 
-     * @return
-     *     The lat
-     */
-    @JsonProperty("lat")
-    public Double getLat() {
-        return lat;
-    }
+	public Location() {
+	}
 
-    /**
-     * 
-     * @param lat
-     *     The lat
-     */
-    @JsonProperty("lat")
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
+	public Location(final Double p_lat, final Double p_lng) {
+		this.lat = p_lat;
+		this.lng = p_lng;
+	}
 
-    /**
-     * 
-     * @return
-     *     The lng
-     */
-    @JsonProperty("lng")
-    public Double getLng() {
-        return lng;
-    }
+	/**
+	 * @return The lat
+	 */
+	@JsonProperty("lat")
+	public Double getLat() {
+		return lat;
+	}
 
-    /**
-     * 
-     * @param lng
-     *     The lng
-     */
-    @JsonProperty("lng")
-    public void setLng(Double lng) {
-        this.lng = lng;
-    }
+	/**
+	 * @param p_lat
+	 *            The lat
+	 */
+	@JsonProperty("lat")
+	public void setLat(final Double p_lat) {
+		this.lat = p_lat;
+	}
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
+	/**
+	 * @return The lng
+	 */
+	@JsonProperty("lng")
+	public Double getLng() {
+		return lng;
+	}
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+	/**
+	 * @param p_lng
+	 *            The lng
+	 */
+	@JsonProperty("lng")
+	public void setLng(final Double p_lng) {
+		this.lng = p_lng;
+	}
+
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
+
+	@JsonAnySetter
+	public void setAdditionalProperty(final String p_name, final Object p_value) {
+		this.additionalProperties.put(p_name, p_value);
+	}
 
 }

@@ -19,26 +19,41 @@ public class GenreConverter implements Converter {
 	@ManagedProperty("#{MovieService}")
 	private IMovieService movieService;
 
-	public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
+	/**
+	 * getAsObject
+	 */
+	public Object getAsObject(final FacesContext p_fc, final UIComponent p_uic, final String p_value) {
 
-		if (value != null && value.trim().length() > 0) {
+		if (p_value != null && p_value.trim().length() > 0) {
+
 			try {
-				return movieService.getGenreById(Integer.parseInt(value));
-			} catch (NumberFormatException e) {
+				return getMovieService().getGenreById(Integer.parseInt(p_value));
+			}
+			catch (NumberFormatException e) {
 				throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid object."));
 			}
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
 
-	public String getAsString(FacesContext fc, UIComponent uic, Object object) {
-		if (object != null) {
-			return String.valueOf(((Genre) object).getId());
-		} else {
+	/**
+	 * getAsString
+	 */
+	public String getAsString(final FacesContext p_fc, final UIComponent p_uic, final Object p_object) {
+
+		if (p_object != null) {
+			return String.valueOf(((Genre) p_object).getId());
+		}
+		else {
 			return null;
 		}
 	}
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
 
 	/**
 	 * @return the movieService
@@ -48,11 +63,11 @@ public class GenreConverter implements Converter {
 	}
 
 	/**
-	 * @param movieService
+	 * @param p_movieService
 	 *            the movieService to set
 	 */
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
 	}
 
 }

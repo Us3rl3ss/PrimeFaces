@@ -7,68 +7,57 @@ import hr.primefaces.model.Movie;
 import java.util.List;
 
 public interface IMovieService {
-	
+
 	/**
 	 * ################# MOVIE #################
 	 */
 
-	public void addMovie(Movie movie);
+	void addMovie(Movie p_movie);
 
-	public void updateMovie(Movie movie);
+	void updateMovie(Movie p_movie);
 
-	public void deleteMovie(Movie movie);
+	void deleteMovie(Movie p_movie);
 
-	public Movie getMovieById(int id);
-	
-	public List<Movie> getMovieByName(String name);
+	Movie getMovieById(int p_id);
 
-	public List<Movie> getMovies();
+	List<Movie> getMovieByName(String p_name);
 
-	public List<Actor> getAllMovieActors(Movie movie);
-	
-	public List<Genre> getAllMovieGenres(Movie movie);
-	
-	/**
-	 * ################# END OF - MOVIE #################
-	 */
-	
+	List<Movie> getMovies();
+
+	List<Actor> getAllMovieActors(Movie p_movie);
+
+	List<Genre> getAllMovieGenres(Movie p_movie);
+
 	/**
 	 * ################# ACTOR #################
 	 */
-	
-	public void addActor(Actor actor);
-	
-	public void updateActor(Actor actor);
 
-	public void deleteActor(Actor actor);
-	
-	public Actor getActorById(int id);
-	
-	public List<Actor> getActorByName(String name);
-	
-	public List<Actor> getActors();
-	
-	/**
-	 * ################# END OF - ACTOR #################
-	 */
-	
+	void addActor(Actor p_actor);
+
+	void updateActor(Actor p_actor);
+
+	void deleteActor(Actor p_actor);
+
+	Actor getActorById(int p_id);
+
+	List<Actor> getActorByName(String p_name);
+
+	List<Actor> getActors();
+
 	/**
 	 * ################# GENRE #################
 	 */
-	
-	public void addGenre(Genre genre);
 
-	public void updateGenre(Genre genre);
+	void addGenre(Genre p_genre);
 
-	public void deleteGenre(Genre genre);
+	void updateGenre(Genre p_genre);
 
-	public Genre getGenreById(int id);
+	void deleteGenre(Genre p_genre);
 
-	public List<Genre> getGenreByName(String name);
+	Genre getGenreById(int p_id);
 
-	public List<Genre> getGenres();
-	
-	/**
-	 * ################# END OF - GENRE #################
-	 */
+	List<Genre> getGenreByName(String p_name);
+
+	List<Genre> getGenres();
+
 }

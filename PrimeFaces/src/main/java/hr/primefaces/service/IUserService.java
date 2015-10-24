@@ -15,102 +15,82 @@ public interface IUserService {
 	 * ################# USER #################
 	 */
 
-	public void addUser(User user);
+	void addUser(User p_user);
 
-	public void updateUser(User user);
+	void updateUser(User p_user);
 
-	public void deleteUser(User user);
+	void deleteUser(User p_user);
 
-	public User getUserById(int id);
+	User getUserById(int p_id);
 
-	public User getUserByDistinctUsername(String username);
+	User getUserByDistinctUsername(String p_username);
 
-	public List<User> getUsers();
+	List<User> getUsers();
 
-	public List<User> getUserByUsername(String input);
+	List<User> getUserByUsername(String p_input);
 
-	public List<User> getUserFollow(User loginUser, User currUser);
+	List<User> getUserFollow(User p_loginUser, User p_currUser);
 
-	public List<User> getUserFollowByUser(User loginUser);
+	List<User> getUserFollowByUser(User p_loginUser);
 
-	public List<User> getUserFollowByFollower(User currUser);
+	List<User> getUserFollowByFollower(User p_currUser);
 
 	/**
 	 * ################# END OF - USER #################
 	 */
 
-	/**
-	 * ################# USER MOVIE REVIEW #################
-	 */
+	void addUserMovieReview(UserMovieReview p_userMovieReview);
 
-	public void addUserMovieReview(UserMovieReview userMovieReview);
+	void updateUserMovieReview(UserMovieReview p_userMovieReview);
 
-	public void updateUserMovieReview(UserMovieReview userMovieReview);
+	void deleteUserMovieReview(UserMovieReview p_userMovieReview);
 
-	public void deleteUserMovieReview(UserMovieReview userMovieReview);
+	List<UserMovieReview> getUserMovieReviewByUserAndMovie(User p_user, Movie p_movie);
 
-	public List<UserMovieReview> getUserMovieReviewByUserAndMovie(User user, Movie movie);
+	List<UserMovieReview> getAllMovieReviews(Movie p_movie);
 
-	public List<UserMovieReview> getAllMovieReviews(Movie movie);
-
-	public List<UserMovieReview> getUserMovieReviewByUser(User user);
-
-	/**
-	 * ################# END OF - USER MOVIE REVIEW #################
-	 */
+	List<UserMovieReview> getUserMovieReviewByUser(User p_user);
 
 	/**
 	 * ################# USER MOVIE RATE #################
-	 * 
 	 */
 
-	public void addUserMovieRate(UserMovieRate userMovieRate);
+	void addUserMovieRate(UserMovieRate p_userMovieRate);
 
-	public void updateUserMovieRate(UserMovieRate userMovieRate);
+	void updateUserMovieRate(UserMovieRate p_userMovieRate);
 
-	public void deleteUserMovieRate(UserMovieRate userMovieRate);
+	void deleteUserMovieRate(UserMovieRate p_userMovieRate);
 
-	public List<UserMovieRate> getUserMovieRateByUserAndMovie(User user, Movie movie);
+	List<UserMovieRate> getUserMovieRateByUserAndMovie(User p_user, Movie p_movie);
 
-	public Double getAverageRateByMovie(Movie movie);
+	Double getAverageRateByMovie(Movie p_movie);
 
-	public List<UserMovieRate> getUserMovieRateByUser(User user);
-
-	/**
-	 * ################# END OF - USER MOVIE RATE #################
-	 */
+	List<UserMovieRate> getUserMovieRateByUser(User p_user);
 
 	/**
 	 * ################# USER FOLLOWING #################
 	 */
 
-	public void addUserFollowing(UserFollowing userFollowing);
+	void addUserFollowing(UserFollowing p_userFollowing);
 
-	public void updateUserFollowing(UserFollowing userFollowing);
+	void updateUserFollowing(UserFollowing p_userFollowing);
 
-	public void deleteUserFollowing(UserFollowing userFollowing);
+	void deleteUserFollowing(UserFollowing p_userFollowing);
 
-	public UserFollowing getUserFriends(User user, User user2);
-
-	/**
-	 * ################# END OF - USER FOLLOWING #################
-	 */
+	UserFollowing getUserFriends(User p_user, User p_user2);
 
 	/**
 	 * ################# USER FAVORITE MOVIE #################
 	 */
 
-	public void addUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie);
+	void addUserFavoriteMovie(UserFavoriteMovie p_userFavoriteMovie);
 
-	public void updateUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie);
+	void updateUserFavoriteMovie(UserFavoriteMovie p_userFavoriteMovie);
 
-	public void deleteUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie);
+	void deleteUserFavoriteMovie(UserFavoriteMovie p_userFavoriteMovie);
 
-	public UserFavoriteMovie getMovieInUserFavorites(User user, Movie movie);
+	UserFavoriteMovie getMovieInUserFavorites(User p_user, Movie p_movie);
 
-	public List<UserFavoriteMovie> getUserFavoriteMovieByUser(User user);
+	List<UserFavoriteMovie> getUserFavoriteMovieByUser(User p_user);
 
-	/**
-	 * ################# END OF - USER FAVORITE MOVIE #################
-	 */
 }

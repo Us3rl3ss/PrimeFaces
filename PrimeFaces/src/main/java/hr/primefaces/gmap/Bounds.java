@@ -27,7 +27,6 @@ public class Bounds {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
-     * 
      * @return
      *     The northeast
      */
@@ -37,17 +36,15 @@ public class Bounds {
     }
 
     /**
-     * 
-     * @param northeast
+     * @param p_northeast
      *     The northeast
      */
     @JsonProperty("northeast")
-    public void setNortheast(Northeast northeast) {
-        this.northeast = northeast;
+    public void setNortheast(final Northeast p_northeast) {
+        this.northeast = p_northeast;
     }
 
     /**
-     * 
      * @return
      *     The southwest
      */
@@ -57,13 +54,12 @@ public class Bounds {
     }
 
     /**
-     * 
-     * @param southwest
+     * @param p_southwest
      *     The southwest
      */
     @JsonProperty("southwest")
-    public void setSouthwest(Southwest southwest) {
-        this.southwest = southwest;
+    public void setSouthwest(final Southwest p_southwest) {
+        this.southwest = p_southwest;
     }
 
     @JsonAnyGetter
@@ -72,8 +68,8 @@ public class Bounds {
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
+    public void setAdditionalProperty(final String p_name, final Object p_value) {
+        this.additionalProperties.put(p_name, p_value);
     }
 
 }

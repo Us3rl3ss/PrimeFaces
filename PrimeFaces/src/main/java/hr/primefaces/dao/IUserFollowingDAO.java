@@ -5,11 +5,12 @@ import hr.primefaces.model.UserFollowing;
 
 public interface IUserFollowingDAO {
 
-	public void addUserFollowing(UserFollowing userFollowing);
+	void addUserFollowing(UserFollowing p_userFollowing);
 
-	public void updateUserFollowing(UserFollowing userFollowing);
+	void updateUserFollowing(UserFollowing p_userFollowing);
 
-	public void deleteUserFollowing(UserFollowing userFollowing);
+	void deleteUserFollowing(UserFollowing p_userFollowing);
 
-	public UserFollowing getUserFriends(User user, User user2);
+	UserFollowing getUserFriends(User p_user, User p_user2);
+
 }

@@ -1,4 +1,3 @@
-
 package hr.primefaces.gmap;
 
 import java.util.HashMap;
@@ -13,67 +12,58 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
-@JsonPropertyOrder({
-    "northeast",
-    "southwest"
-})
+@JsonPropertyOrder({ "northeast", "southwest" })
 public class Viewport {
 
-    @JsonProperty("northeast")
-    private Northeast_ northeast;
-    @JsonProperty("southwest")
-    private Southwest_ southwest;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	@JsonProperty("northeast")
+	private Northeast_ northeast;
+	@JsonProperty("southwest")
+	private Southwest_ southwest;
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    /**
-     * 
-     * @return
-     *     The northeast
-     */
-    @JsonProperty("northeast")
-    public Northeast_ getNortheast() {
-        return northeast;
-    }
+	/**
+	 * @return The northeast
+	 */
+	@JsonProperty("northeast")
+	public Northeast_ getNortheast() {
+		return northeast;
+	}
 
-    /**
-     * 
-     * @param northeast
-     *     The northeast
-     */
-    @JsonProperty("northeast")
-    public void setNortheast(Northeast_ northeast) {
-        this.northeast = northeast;
-    }
+	/**
+	 * @param p_northeast
+	 *            The northeast
+	 */
+	@JsonProperty("northeast")
+	public void setNortheast(final Northeast_ p_northeast) {
+		this.northeast = p_northeast;
+	}
 
-    /**
-     * 
-     * @return
-     *     The southwest
-     */
-    @JsonProperty("southwest")
-    public Southwest_ getSouthwest() {
-        return southwest;
-    }
+	/**
+	 * @return The southwest
+	 */
+	@JsonProperty("southwest")
+	public Southwest_ getSouthwest() {
+		return southwest;
+	}
 
-    /**
-     * 
-     * @param southwest
-     *     The southwest
-     */
-    @JsonProperty("southwest")
-    public void setSouthwest(Southwest_ southwest) {
-        this.southwest = southwest;
-    }
+	/**
+	 * @param p_southwest
+	 *            The southwest
+	 */
+	@JsonProperty("southwest")
+	public void setSouthwest(final Southwest_ p_southwest) {
+		this.southwest = p_southwest;
+	}
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+	@JsonAnySetter
+	public void setAdditionalProperty(final String p_name, final Object p_value) {
+		this.additionalProperties.put(p_name, p_value);
+	}
 
 }

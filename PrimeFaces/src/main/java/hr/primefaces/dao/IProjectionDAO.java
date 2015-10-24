@@ -9,25 +9,26 @@ import java.util.List;
 
 public interface IProjectionDAO {
 
-	public void addProjection(Projection projection);
+	void addProjection(Projection p_projection);
 
-	public void updateProjection(Projection projection);
+	void updateProjection(Projection p_projection);
 
-	public void deleteProjection(Projection projection);
+	void deleteProjection(Projection p_projection);
 
-	public Projection getProjectionById(int id);
+	Projection getProjectionById(int p_id);
 
-	public List<Projection> getProjections();
-	
-	public List<Projection> getProjectionsByTheater(Theater theater);
-	
-	public List<Projection> getProjectionsByCinema(Cinema cinema);
-	
-	public List<Projection> getProjectionsForReservation(Theater theater, Date datumProjekcije);
-	
-	public List<Projection> getDistinctMovieProjections(Projection projection);
-	
-	public Projection getProjectionByCinemaStartEnd(Cinema cinema, Date start, Date end);
-	
-	public List<Projection> getProjectionByCinemaBetweenStartEnd(Cinema cinema, Date start, Date end);
+	List<Projection> getProjections();
+
+	List<Projection> getProjectionsByTheater(Theater p_theater);
+
+	List<Projection> getProjectionsByCinema(Cinema p_cinema);
+
+	List<Projection> getProjectionsForReservation(Theater p_theater, Date p_datumProjekcije);
+
+	List<Projection> getDistinctMovieProjections(Projection p_projection);
+
+	Projection getProjectionByCinemaStartEnd(Cinema p_cinema, Date p_start, Date p_end);
+
+	List<Projection> getProjectionByCinemaBetweenStartEnd(Cinema p_cinema, Date p_start, Date p_end);
+
 }

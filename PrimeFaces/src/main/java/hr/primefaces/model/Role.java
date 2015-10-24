@@ -34,6 +34,10 @@ public class Role implements Serializable {
 	}
 
 	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
 	 * @return the id
 	 */
 	public Integer getId() {

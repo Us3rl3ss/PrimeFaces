@@ -3,7 +3,7 @@ package hibernate;
 
 public class HibernateTest {
 
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 
 //		SessionFactory sf = new Configuration().configure()
 //				.buildSessionFactory();
@@ -50,5 +50,5 @@ public class HibernateTest {
 //		s.save(c);
 //		s.getTransaction().commit();
 //		s.close();
-	}
+//	}
 }

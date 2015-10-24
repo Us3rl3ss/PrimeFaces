@@ -1,25 +1,22 @@
 package hr.primefaces.util;
 
-public class Check {
-	
+public final class Check {
+
+	private Check(){}
+
 	/**
 	 * isNullOrEmpthy
+	 * @param p_temp
+	 * @return
 	 */
-	public static boolean isNullOrEmpthy(String temp) {
+	public static boolean isNullOrEmpthy(final String p_temp) {
 
-		if (temp != null) {
-			
-			if (temp.equals("")) {
-				
-				return true;
-			}
-			else {
+		if (p_temp != null) {
 
-				return false;
-			}
-		} 
+			return "".equals(p_temp);
+		}
 		else {
-			
+
 			return true;
 		}
 	}

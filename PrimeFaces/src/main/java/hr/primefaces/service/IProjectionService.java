@@ -15,53 +15,46 @@ public interface IProjectionService {
 	 * ################# PROJECTION #################
 	 */
 
-	public void addProjection(Projection projection);
+	void addProjection(Projection p_projection);
 
-	public void updateProjection(Projection projection);
+	void updateProjection(Projection p_projection);
 
-	public void deleteProjection(Projection projection);
+	void deleteProjection(Projection p_projection);
 
-	public Projection getProjectionById(int id);
+	Projection getProjectionById(int p_id);
 
-	public List<Projection> getProjections();
+	List<Projection> getProjections();
 
-	public List<Projection> getProjectionsByTheater(Theater theater);
+	List<Projection> getProjectionsByTheater(Theater p_theater);
 
-	public List<Projection> getProjectionsByCinema(Cinema cinema);
+	List<Projection> getProjectionsByCinema(Cinema p_cinema);
 
-	public List<Projection> getProjectionsForReservation(Theater theater, Date datumProjekcije);
+	List<Projection> getProjectionsForReservation(Theater p_theater, Date p_datumProjekcije);
 
-	public List<Projection> getDistinctMovieProjections(Projection projection);
+	List<Projection> getDistinctMovieProjections(Projection p_projection);
 
-	public Projection getProjectionByCinemaStartEnd(Cinema cinema, Date start, Date end);
+	Projection getProjectionByCinemaStartEnd(Cinema p_cinema, Date p_start, Date p_end);
 
-	public List<Projection> getProjectionByCinemaBetweenStartEnd(Cinema cinema, Date start, Date end);
-
-	/**
-	 * ################# END OF - PROJECTION #################
-	 */
+	List<Projection> getProjectionByCinemaBetweenStartEnd(Cinema p_cinema, Date p_start, Date p_end);
 
 	/**
 	 * ################# PROJECTION RESERVED SEATS #################
 	 */
 
-	public void addProjectionReservedSeats(ProjectionReservedSeats projectionReservedSeats);
+	void addProjectionReservedSeats(ProjectionReservedSeats p_projectionReservedSeats);
 
-	public void updateProjectionReservedSeats(ProjectionReservedSeats projectionReservedSeats);
+	void updateProjectionReservedSeats(ProjectionReservedSeats p_projectionReservedSeats);
 
-	public void deleteProjectionReservedSeats(ProjectionReservedSeats projectionReservedSeats);
+	void deleteProjectionReservedSeats(ProjectionReservedSeats p_projectionReservedSeats);
 
-	public ProjectionReservedSeats getProjectionReservedSeatsById(int id);
+	ProjectionReservedSeats getProjectionReservedSeatsById(int p_id);
 
-	public List<ProjectionReservedSeats> getProjectionReservedSeatsByName(String name);
+	List<ProjectionReservedSeats> getProjectionReservedSeatsByName(String p_name);
 
-	public List<ProjectionReservedSeats> getProjectionReservedSeats();
+	List<ProjectionReservedSeats> getProjectionReservedSeats();
 
-	public List<ProjectionReservedSeats> getProjectionReservedSeatsByProjection(Projection projection);
+	List<ProjectionReservedSeats> getProjectionReservedSeatsByProjection(Projection p_projection);
 
-	public List<ProjectionReservedSeats> getProjectionReservedSeatsByProjectionAndUser(Projection projection, User user);
+	List<ProjectionReservedSeats> getProjectionReservedSeatsByProjectionAndUser(Projection p_projection, User p_user);
 
-	/**
-	 * ################# END OF - PROJECTION RESERVED SEATS #################
-	 */
 }

@@ -6,15 +6,16 @@ import java.util.List;
 
 public interface IActorDAO {
 
-	public void addActor(Actor actor);
+	void addActor(Actor p_actor);
 
-	public void updateActor(Actor actor);
+	void updateActor(Actor p_actor);
 
-	public void deleteActor(Actor actor);
+	void deleteActor(Actor p_actor);
 
-	public Actor getActorById(int id);
-	
-	public List<Actor> getActorByName(String username);
+	Actor getActorById(int p_id);
 
-	public List<Actor> getActors();
+	List<Actor> getActorByName(String p_username);
+
+	List<Actor> getActors();
+
 }

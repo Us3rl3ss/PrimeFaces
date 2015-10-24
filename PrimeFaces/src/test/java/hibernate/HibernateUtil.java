@@ -6,26 +6,40 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 @SuppressWarnings("deprecation")
-public class HibernateUtil {
+public final class HibernateUtil {
+
+	private HibernateUtil() {
+	}
+
 	private static final SessionFactory sessionFactory = buildSessionFactory();
 
-	private static SessionFactory buildSessionFactory() {
+	/**
+	 * buildSessionFactory
+	 * @return
+	 */
+	public static SessionFactory buildSessionFactory() {
+
 		try {
-			return new AnnotationConfiguration().configure(
-					new File("src/main/java/hibernate.cfg.xml"))
-					.buildSessionFactory();
-		} catch (Throwable ex) {
-			System.err.println("Initial SessionFactory creation failed." + ex);
+			return new AnnotationConfiguration().configure(new File("src/main/java/hibernate.cfg.xml")).buildSessionFactory();
+		}
+		catch (Throwable ex) {
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
 
-	public static SessionFactory getSessionFactory() {
+	/**
+	 * shutdown
+	 */
+	public static void shutdown() {
+		// Close caches and connection pools
+		getSessionfactory().close();
+	}
+
+	/**
+	 * @return the sessionfactory
+	 */
+	public static SessionFactory getSessionfactory() {
 		return sessionFactory;
 	}
 
-	public static void shutdown() {
-		// Close caches and connection pools
-		getSessionFactory().close();
-	}
 }

@@ -8,23 +8,20 @@ import java.util.List;
 
 public interface IProjectionReservedSeatsDAO {
 
-	public void addProjectionReservedSeats(
-			ProjectionReservedSeats projectionReservedSeats);
+	void addProjectionReservedSeats(ProjectionReservedSeats p_projectionReservedSeats);
 
-	public void updateProjectionReservedSeats(
-			ProjectionReservedSeats projectionReservedSeats);
+	void updateProjectionReservedSeats(ProjectionReservedSeats p_projectionReservedSeats);
 
-	public void deleteProjectionReservedSeats(
-			ProjectionReservedSeats projectionReservedSeats);
+	void deleteProjectionReservedSeats(ProjectionReservedSeats p_projectionReservedSeats);
 
-	public ProjectionReservedSeats getProjectionReservedSeatsById(int id);
+	ProjectionReservedSeats getProjectionReservedSeatsById(int p_id);
 
-	public List<ProjectionReservedSeats> getProjectionReservedSeatsByName(
-			String name);
+	List<ProjectionReservedSeats> getProjectionReservedSeatsByName(String p_name);
 
-	public List<ProjectionReservedSeats> getProjectionReservedSeats();
-	
-	public List<ProjectionReservedSeats> getProjectionReservedSeatsByProjection(Projection projection);
-	
-	public List<ProjectionReservedSeats> getProjectionReservedSeatsByProjectionAndUser(Projection projection, User user);
+	List<ProjectionReservedSeats> getProjectionReservedSeats();
+
+	List<ProjectionReservedSeats> getProjectionReservedSeatsByProjection(Projection p_projection);
+
+	List<ProjectionReservedSeats> getProjectionReservedSeatsByProjectionAndUser(Projection p_projection, User p_user);
+
 }

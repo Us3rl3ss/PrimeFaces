@@ -24,7 +24,7 @@ public final class DateConverter {
 
 		if (p_date != null) {
 
-			DateFormat df = new SimpleDateFormat(p_format);
+			final DateFormat df = new SimpleDateFormat(p_format);
 			result = df.format(p_date);
 		}
 

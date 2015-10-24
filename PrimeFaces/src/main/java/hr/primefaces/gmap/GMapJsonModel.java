@@ -1,4 +1,3 @@
-
 package hr.primefaces.gmap;
 
 import java.util.ArrayList;
@@ -15,67 +14,58 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
-@JsonPropertyOrder({
-    "results",
-    "status"
-})
+@JsonPropertyOrder({ "results", "status" })
 public class GMapJsonModel {
 
-    @JsonProperty("results")
-    private List<Result> results = new ArrayList<Result>();
-    @JsonProperty("status")
-    private String status;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	@JsonProperty("results")
+	private List<Result> results = new ArrayList<Result>();
+	@JsonProperty("status")
+	private String status;
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    /**
-     * 
-     * @return
-     *     The results
-     */
-    @JsonProperty("results")
-    public List<Result> getResults() {
-        return results;
-    }
+	/**
+	 * @return The results
+	 */
+	@JsonProperty("results")
+	public List<Result> getResults() {
+		return results;
+	}
 
-    /**
-     * 
-     * @param results
-     *     The results
-     */
-    @JsonProperty("results")
-    public void setResults(List<Result> results) {
-        this.results = results;
-    }
+	/**
+	 * @param p_results
+	 *            The results
+	 */
+	@JsonProperty("results")
+	public void setResults(final List<Result> p_results) {
+		this.results = p_results;
+	}
 
-    /**
-     * 
-     * @return
-     *     The status
-     */
-    @JsonProperty("status")
-    public String getStatus() {
-        return status;
-    }
+	/**
+	 * @return The status
+	 */
+	@JsonProperty("status")
+	public String getStatus() {
+		return status;
+	}
 
-    /**
-     * 
-     * @param status
-     *     The status
-     */
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	/**
+	 * @param p_status
+	 *            The status
+	 */
+	@JsonProperty("status")
+	public void setStatus(final String p_status) {
+		this.status = p_status;
+	}
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+	@JsonAnySetter
+	public void setAdditionalProperty(final String p_name, final Object p_value) {
+		this.additionalProperties.put(p_name, p_value);
+	}
 
 }

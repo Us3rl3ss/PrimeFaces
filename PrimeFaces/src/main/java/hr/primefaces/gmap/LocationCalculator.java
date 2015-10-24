@@ -12,53 +12,54 @@ import org.apache.commons.httpclient.util.URIUtil;
 
 import com.google.gson.Gson;
 
-public class LocationCalculator {
+public final class LocationCalculator {
 
-	public LocationCalculator() {
-	}
-	
+	private LocationCalculator() {}
+
 	/**
 	 * getLocationFromAddress
-	 * @param address
+	 * @param p_address
 	 * @return
 	 */
-	public static Result getLocationFromAddress(String address) {
+	public static Result getLocationFromAddress(final String p_address) {
 
 		Result result = new Result();
 
 		try {
-			URL url = new URL("http://maps.googleapis.com/maps/api/geocode/json?address=" + URIUtil.encodeQuery(address)
-					+ "&sensor=true");
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			final URL url = new URL("http://maps.googleapis.com/maps/api/geocode/json?address=" + URIUtil.encodeQuery(p_address) + "&sensor=true");
+			final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
 			}
-			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+			final BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-			String output = "", full = "";
+			String output = "";
+			String full = "";
 			while ((output = br.readLine()) != null) {
 				System.out.println(output);
 				full += output;
 			}
 
-			GMapJsonModel gson = new Gson().fromJson(full, GMapJsonModel.class);
-			List<Result> resultList = gson.getResults();
+			final GMapJsonModel gson = new Gson().fromJson(full, GMapJsonModel.class);
+			final List<Result> resultList = gson.getResults();
 
 			if (resultList.size() > 0) {
 
 				result = resultList.get(0);
 
-//				location = result.getGeometry().getLocation();
+				// location = result.getGeometry().getLocation();
 			}
-			
+
 			conn.disconnect();
-			
-		} catch (MalformedURLException e) {
+
+		}
+		catch (MalformedURLException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 

@@ -8,13 +8,14 @@ import java.util.List;
 
 public interface IUserFavoriteMovieDAO {
 
-	public void addUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie);
+	void addUserFavoriteMovie(UserFavoriteMovie p_userFavoriteMovie);
 
-	public void updateUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie);
+	void updateUserFavoriteMovie(UserFavoriteMovie p_userFavoriteMovie);
 
-	public void deleteUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie);
-	
-	public UserFavoriteMovie getMovieInUserFavorites(User user, Movie movie);
-	
-	public List<UserFavoriteMovie> getUserFavoriteMovieByUser(User user);
+	void deleteUserFavoriteMovie(UserFavoriteMovie p_userFavoriteMovie);
+
+	UserFavoriteMovie getMovieInUserFavorites(User p_user, Movie p_movie);
+
+	List<UserFavoriteMovie> getUserFavoriteMovieByUser(User p_user);
+
 }

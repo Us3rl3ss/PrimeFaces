@@ -3,26 +3,40 @@ package hr.primefaces.util;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-public class MessageUtil {
+public final class MessageUtil {
 
-	public static void info(String message) {
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", message));
+	private MessageUtil() {}
+
+	/**
+	 * info
+	 * @param p_message
+	 */
+	public static void info(final String p_message) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", p_message));
 	}
 
-	public static void warn(String message) {
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", message));
+	/**
+	 * warn
+	 * @param p_message
+	 */
+	public static void warn(final String p_message) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", p_message));
 	}
 
-	public static void error(String message) {
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", message));
+	/**
+	 * error
+	 * @param p_message
+	 */
+	public static void error(final String p_message) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", p_message));
 	}
 
-	public static void fatal(String message) {
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fatal!", message));
+	/**
+	 * fatal
+	 * @param p_message
+	 */
+	public static void fatal(final String p_message) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fatal!", p_message));
 	}
 
 }

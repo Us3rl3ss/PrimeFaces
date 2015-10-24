@@ -7,19 +7,20 @@ import java.util.List;
 
 public interface ICinemaDAO {
 
-	public void addCinema(Cinema cinema);
+	void addCinema(Cinema p_cinema);
 
-	public void updateCinema(Cinema cinema);
+	void updateCinema(Cinema p_cinema);
 
-	public void deleteCinema(Cinema cinema);
+	void deleteCinema(Cinema p_cinema);
 
-	public Cinema getCinemaById(int id);
+	Cinema getCinemaById(int p_id);
 
-	public List<Cinema> getCinemaByName(String name);
-	
-	public List<Cinema> getCinemas();
-	
-	public List<Cinema> getCinemaByTheater(Theater theater);
+	List<Cinema> getCinemaByName(String p_name);
 
-	public Cinema getCinemaByTheaterAndName(Theater theater, String name);
+	List<Cinema> getCinemas();
+
+	List<Cinema> getCinemaByTheater(Theater p_theater);
+
+	Cinema getCinemaByTheaterAndName(Theater p_theater, String p_name);
+
 }

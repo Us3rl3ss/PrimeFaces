@@ -22,24 +22,35 @@ public class ActorImageManagedBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{MovieService}")
-	IMovieService movieService;
+	private IMovieService movieService;
 
+	/**
+	 * getImage
+	 * @return
+	 */
 	public StreamedContent getImage() {
-		FacesContext fc = FacesContext.getCurrentInstance();
+
+		final FacesContext fc = FacesContext.getCurrentInstance();
 		if (fc.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
 			return new DefaultStreamedContent();
 		}
 
-		String actor_id = fc.getExternalContext().getRequestParameterMap().get("actor_id");
+		final String actorId = fc.getExternalContext().getRequestParameterMap().get("actor_id");
 
-		if ("".equals(actor_id))
+		if ("".equals(actorId)) {
+
 			return new DefaultStreamedContent();
+		}
 
-		Actor a = movieService.getActorById(Integer.parseInt(actor_id));
+		final Actor a = getMovieService().getActorById(Integer.parseInt(actorId));
+		final byte[] photoData = a.getImage();
 
-		byte[] photoData = a.getImage();
 		return new DefaultStreamedContent(new ByteArrayInputStream(photoData));
 	}
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
 
 	/**
 	 * @return the movieService
@@ -49,11 +60,10 @@ public class ActorImageManagedBean implements Serializable {
 	}
 
 	/**
-	 * @param movieService
-	 *            the movieService to set
+	 * @param p_movieService the movieService to set
 	 */
-	public void setMovieService(IMovieService movieService) {
-		this.movieService = movieService;
+	public void setMovieService(final IMovieService p_movieService) {
+		this.movieService = p_movieService;
 	}
 
 }

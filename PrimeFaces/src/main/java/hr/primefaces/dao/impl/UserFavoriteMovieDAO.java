@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -19,50 +20,45 @@ public class UserFavoriteMovieDAO implements IUserFavoriteMovieDAO, Serializable
 
 	private SessionFactory sessionFactory;
 
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
+	private final String GET_MOVIE_IN_USER_FAVORITES = "from UserFavoriteMovie where user_id = :user_id and movie_id = :movie_id";
+	private final String GET_USER_FAVORITE_MOVIE_BY_USER = "from UserFavoriteMovie ufm join ufm.movie where user_id = :user_id order by ufm.created desc";
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
+	@Override
+	public void addUserFavoriteMovie(final UserFavoriteMovie p_userFavoriteMovie) {
+		getSessionFactory().getCurrentSession().save(p_userFavoriteMovie);
 	}
 
 	@Override
-	public void addUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie) {
-		getSessionFactory().getCurrentSession().save(userFavoriteMovie);
+	public void deleteUserFavoriteMovie(final UserFavoriteMovie p_userFavoriteMovie) {
+		getSessionFactory().getCurrentSession().delete(p_userFavoriteMovie);
 	}
 
 	@Override
-	public void deleteUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie) {
-		getSessionFactory().getCurrentSession().delete(userFavoriteMovie);
+	public void updateUserFavoriteMovie(final UserFavoriteMovie p_userFavoriteMovie) {
+		getSessionFactory().getCurrentSession().update(p_userFavoriteMovie);
 	}
 
 	@Override
-	public void updateUserFavoriteMovie(UserFavoriteMovie userFavoriteMovie) {
-		getSessionFactory().getCurrentSession().update(userFavoriteMovie);
+	public UserFavoriteMovie getMovieInUserFavorites(final User p_user, final Movie p_movie) {
+
+		final Query query = getSessionFactory().getCurrentSession().createQuery(GET_MOVIE_IN_USER_FAVORITES);
+		query.setParameter("user_id", p_user.getId());
+		query.setParameter("movie_id", p_movie.getId());
+		return (UserFavoriteMovie) query.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public UserFavoriteMovie getMovieInUserFavorites(User user, Movie movie) {
+	public List<UserFavoriteMovie> getUserFavoriteMovieByUser(final User p_user) {
 
-		String query = "from UserFavoriteMovie " + "where user_id = :userId " + "and movie_id = :movieId";
+		final List<Object[]> list = getSessionFactory().getCurrentSession().createQuery(GET_USER_FAVORITE_MOVIE_BY_USER)
+				.setParameter("user_id", p_user.getId()).list();
 
-		return (UserFavoriteMovie) getSessionFactory().getCurrentSession().createQuery(query).setParameter("userId", user.getId()).setParameter("movieId", movie.getId())
-				.uniqueResult();
-	}
-
-	@Override
-	public List<UserFavoriteMovie> getUserFavoriteMovieByUser(User user) {
-
-		String query = "from UserFavoriteMovie ufm " + "join ufm.movie " + "where user_id = :userId " + "order by ufm.created desc";
-
-		List<Object[]> list = getSessionFactory().getCurrentSession().createQuery(query).setParameter("userId", user.getId()).list();
-
-		List<UserFavoriteMovie> result = new ArrayList<UserFavoriteMovie>();
+		final List<UserFavoriteMovie> result = new ArrayList<UserFavoriteMovie>();
 		for (Object[] arr : list) {
 
-			UserFavoriteMovie ufm = (UserFavoriteMovie) arr[0];
-			Movie m = (Movie) arr[1];
+			final UserFavoriteMovie ufm = (UserFavoriteMovie) arr[0];
+			final Movie m = (Movie) arr[1];
 
 			ufm.setMovie(m);
 
@@ -70,6 +66,24 @@ public class UserFavoriteMovieDAO implements IUserFavoriteMovieDAO, Serializable
 		}
 
 		return result;
+	}
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
+
+	/**
+	 * @return the sessionFactory
+	 */
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	/**
+	 * @param p_sessionFactory the sessionFactory to set
+	 */
+	public void setSessionFactory(final SessionFactory p_sessionFactory) {
+		this.sessionFactory = p_sessionFactory;
 	}
 
 }

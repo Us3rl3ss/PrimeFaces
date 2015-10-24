@@ -8,9 +8,10 @@ import org.primefaces.component.fileupload.FileUploadRenderer;
 public class MyFileUploadRenderer extends FileUploadRenderer {
 
 	@Override
-	public void decode(FacesContext context, UIComponent component) {
-		if (context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
-			super.decode(context, component);
+	public void decode(final FacesContext p_context, final UIComponent p_component) {
+
+		if (p_context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
+			super.decode(p_context, p_component);
 		}
 	}
 

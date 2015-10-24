@@ -6,15 +6,16 @@ import java.util.List;
 
 public interface IGenreDAO {
 
-	public void addGenre(Genre genre);
+	void addGenre(Genre p_genre);
 
-	public void updateGenre(Genre genre);
+	void updateGenre(Genre p_genre);
 
-	public void deleteGenre(Genre genre);
+	void deleteGenre(Genre p_genre);
 
-	public Genre getGenreById(int id);
+	Genre getGenreById(int p_id);
 
-	public List<Genre> getGenreByName(String name);
-	
-	public List<Genre> getGenres();
+	List<Genre> getGenreByName(String p_name);
+
+	List<Genre> getGenres();
+
 }

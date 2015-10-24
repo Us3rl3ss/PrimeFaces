@@ -8,19 +8,20 @@ import java.util.List;
 
 public interface IMovieDAO {
 
-	public void addMovie(Movie movie);
+	void addMovie(Movie p_movie);
 
-	public void updateMovie(Movie movie);
+	void updateMovie(Movie p_movie);
 
-	public void deleteMovie(Movie movie);
+	void deleteMovie(Movie p_movie);
 
-	public Movie getMovieById(int id);
+	Movie getMovieById(int p_id);
 
-	public List<Movie> getMovieByName(String name);
-	
-	public List<Movie> getMovies();
-	
-	public List<Actor> getAllMovieActors(Movie movie);
-	
-	public List<Genre> getAllMovieGenres(Movie movie);
+	List<Movie> getMovieByName(String p_name);
+
+	List<Movie> getMovies();
+
+	List<Actor> getAllMovieActors(Movie p_movie);
+
+	List<Genre> getAllMovieGenres(Movie p_movie);
+
 }

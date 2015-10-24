@@ -23,9 +23,9 @@ public class MovieService implements IMovieService, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	IMovieDAO movieDAO;
-	IActorDAO actorDAO;
-	IGenreDAO genreDAO;
+	private IMovieDAO movieDAO;
+	private IActorDAO actorDAO;
+	private IGenreDAO genreDAO;
 
 	public MovieService() {
 	}
@@ -36,25 +36,25 @@ public class MovieService implements IMovieService, Serializable {
 
 	@Transactional(readOnly = false)
 	@Override
-	public void addMovie(Movie movie) {
-		getMovieDAO().addMovie(movie);
+	public void addMovie(final Movie p_movie) {
+		getMovieDAO().addMovie(p_movie);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteMovie(Movie movie) {
-		getMovieDAO().deleteMovie(movie);
+	public void deleteMovie(final Movie p_movie) {
+		getMovieDAO().deleteMovie(p_movie);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateMovie(Movie movie) {
-		getMovieDAO().updateMovie(movie);
+	public void updateMovie(final Movie p_movie) {
+		getMovieDAO().updateMovie(p_movie);
 	}
 
 	@Override
-	public Movie getMovieById(int id) {
-		return getMovieDAO().getMovieById(id);
+	public Movie getMovieById(final int p_id) {
+		return getMovieDAO().getMovieById(p_id);
 	}
 
 	@Override
@@ -63,23 +63,19 @@ public class MovieService implements IMovieService, Serializable {
 	}
 
 	@Override
-	public List<Movie> getMovieByName(String name) {
-		return getMovieDAO().getMovieByName(name);
+	public List<Movie> getMovieByName(final String p_name) {
+		return getMovieDAO().getMovieByName(p_name);
 	}
 
 	@Override
-	public List<Actor> getAllMovieActors(Movie movie) {
-		return getMovieDAO().getAllMovieActors(movie);
+	public List<Actor> getAllMovieActors(final Movie p_movie) {
+		return getMovieDAO().getAllMovieActors(p_movie);
 	}
 
 	@Override
-	public List<Genre> getAllMovieGenres(Movie movie) {
-		return getMovieDAO().getAllMovieGenres(movie);
+	public List<Genre> getAllMovieGenres(final Movie p_movie) {
+		return getMovieDAO().getAllMovieGenres(p_movie);
 	}
-
-	/**
-	 * ################# END OF - MOVIE #################
-	 */
 
 	/**
 	 * ################# ACTOR #################
@@ -87,30 +83,30 @@ public class MovieService implements IMovieService, Serializable {
 
 	@Transactional(readOnly = false)
 	@Override
-	public void addActor(Actor actor) {
-		getActorDAO().addActor(actor);
+	public void addActor(final Actor p_actor) {
+		getActorDAO().addActor(p_actor);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteActor(Actor actor) {
-		getActorDAO().deleteActor(actor);
+	public void deleteActor(final Actor p_actor) {
+		getActorDAO().deleteActor(p_actor);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateActor(Actor actor) {
-		getActorDAO().updateActor(actor);
+	public void updateActor(final Actor p_actor) {
+		getActorDAO().updateActor(p_actor);
 	}
 
 	@Override
-	public Actor getActorById(int id) {
-		return getActorDAO().getActorById(id);
+	public Actor getActorById(final int p_id) {
+		return getActorDAO().getActorById(p_id);
 	}
 
 	@Override
-	public List<Actor> getActorByName(String name) {
-		return getActorDAO().getActorByName(name);
+	public List<Actor> getActorByName(final String p_name) {
+		return getActorDAO().getActorByName(p_name);
 	}
 
 	@Override
@@ -119,34 +115,30 @@ public class MovieService implements IMovieService, Serializable {
 	}
 
 	/**
-	 * ################# END OF - ACTOR #################
-	 */
-
-	/**
 	 * ################# GENRE #################
 	 */
 
 	@Transactional(readOnly = false)
 	@Override
-	public void addGenre(Genre genre) {
-		getGenreDAO().addGenre(genre);
+	public void addGenre(final Genre p_genre) {
+		getGenreDAO().addGenre(p_genre);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void deleteGenre(Genre genre) {
-		getGenreDAO().deleteGenre(genre);
+	public void deleteGenre(final Genre p_genre) {
+		getGenreDAO().deleteGenre(p_genre);
 	}
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateGenre(Genre genre) {
-		getGenreDAO().updateGenre(genre);
+	public void updateGenre(final Genre p_genre) {
+		getGenreDAO().updateGenre(p_genre);
 	}
 
 	@Override
-	public Genre getGenreById(int id) {
-		return getGenreDAO().getGenreById(id);
+	public Genre getGenreById(final int p_id) {
+		return getGenreDAO().getGenreById(p_id);
 	}
 
 	@Override
@@ -155,13 +147,9 @@ public class MovieService implements IMovieService, Serializable {
 	}
 
 	@Override
-	public List<Genre> getGenreByName(String name) {
-		return getGenreDAO().getGenreByName(name);
+	public List<Genre> getGenreByName(final String p_name) {
+		return getGenreDAO().getGenreByName(p_name);
 	}
-
-	/**
-	 * ################# END OF - GENRE #################
-	 */
 
 	/**
 	 * ################# GETTERS AND SETTERS #################
@@ -189,26 +177,26 @@ public class MovieService implements IMovieService, Serializable {
 	}
 
 	/**
-	 * @param movieDAO
+	 * @param p_movieDAO
 	 *            the movieDAO to set
 	 */
-	public void setMovieDAO(IMovieDAO movieDAO) {
-		this.movieDAO = movieDAO;
+	public void setMovieDAO(final IMovieDAO p_movieDAO) {
+		this.movieDAO = p_movieDAO;
 	}
 
 	/**
-	 * @param actorDAO
+	 * @param p_actorDAO
 	 *            the actorDAO to set
 	 */
-	public void setActorDAO(IActorDAO actorDAO) {
-		this.actorDAO = actorDAO;
+	public void setActorDAO(final IActorDAO p_actorDAO) {
+		this.actorDAO = p_actorDAO;
 	}
 
 	/**
-	 * @param genreDAO
+	 * @param p_genreDAO
 	 *            the genreDAO to set
 	 */
-	public void setGenreDAO(IGenreDAO genreDAO) {
-		this.genreDAO = genreDAO;
+	public void setGenreDAO(final IGenreDAO p_genreDAO) {
+		this.genreDAO = p_genreDAO;
 	}
 }

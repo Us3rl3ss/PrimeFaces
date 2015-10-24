@@ -16,67 +16,56 @@ public interface ITheaterService {
 	 * ################# THEATER #################
 	 */
 
-	public void addTheater(Theater theater);
+	void addTheater(Theater p_theater);
 
-	public void updateTheater(Theater theater);
+	void updateTheater(Theater p_theater);
 
-	public void deleteTheater(Theater theater);
+	void deleteTheater(Theater p_theater);
 
-	public Theater getTheaterById(int id);
+	Theater getTheaterById(int p_id);
 
-	public List<Theater> getTheaterByName(String name);
+	List<Theater> getTheaterByName(String p_name);
 
-	public List<Theater> getTheaters();
+	List<Theater> getTheaters();
 
-	public Theater getTheaterByLatLng(Double lat, Double lng);
-
-	/**
-	 * ################# END OF - THEATER #################
-	 */
+	Theater getTheaterByLatLng(Double p_lat, Double p_lng);
 
 	/**
 	 * ################# CINEMA #################
 	 */
 
-	public void addCinema(Cinema cinema);
+	void addCinema(Cinema p_cinema);
 
-	public void updateCinema(Cinema cinema);
+	void updateCinema(Cinema p_cinema);
 
-	public void deleteCinema(Cinema cinema);
+	void deleteCinema(Cinema p_cinema);
 
-	public Cinema getCinemaById(int id);
+	Cinema getCinemaById(int p_id);
 
-	public List<Cinema> getCinemaByName(String name);
+	List<Cinema> getCinemaByName(String p_name);
 
-	public List<Cinema> getCinemas();
+	List<Cinema> getCinemas();
 
-	public List<Cinema> getCinemaByTheater(Theater theater);
+	List<Cinema> getCinemaByTheater(Theater p_theater);
 
-	public Cinema getCinemaByTheaterAndName(Theater theater, String name);
-
-	/**
-	 * ################# END OF - CINEMA #################
-	 */
+	Cinema getCinemaByTheaterAndName(Theater p_theater, String p_name);
 
 	/**
 	 * ################# CINEMA SEATS #################
 	 */
 
-	public void addCinemaSeats(CinemaSeats cinemaSeats);
+	void addCinemaSeats(CinemaSeats p_cinemaSeats);
 
-	public void updateCinemaSeats(CinemaSeats cinemaSeats);
+	void updateCinemaSeats(CinemaSeats p_cinemaSeats);
 
-	public void deleteCinemaSeats(CinemaSeats cinemaSeats);
+	void deleteCinemaSeats(CinemaSeats p_cinemaSeats);
 
-	public CinemaSeats getCinemaSeatsById(int id);
+	CinemaSeats getCinemaSeatsById(int p_id);
 
-	public List<CinemaSeats> getCinemaSeatsByName(String name);
+	List<CinemaSeats> getCinemaSeatsByName(String p_name);
 
-	public List<CinemaSeats> getCinemaSeats();
+	List<CinemaSeats> getCinemaSeats();
 
-	public List<CinemaSeats> getCinemaSeatsByCinemaId(int cinemaId);
+	List<CinemaSeats> getCinemaSeatsByCinemaId(int p_cinemaId);
 
-	/**
-	 * ################# END OF - CINEMA SEATS #################
-	 */
 }

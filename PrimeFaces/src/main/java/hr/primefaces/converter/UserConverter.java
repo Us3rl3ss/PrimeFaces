@@ -19,39 +19,48 @@ public class UserConverter implements Converter {
 	@ManagedProperty("#{UserService}")
 	private IUserService userService;
 
-	public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
+	/**
+	 * getAsObject
+	 */
+	public Object getAsObject(final FacesContext p_fc, final UIComponent p_uic, final String p_value) {
 
-		if (value != null && value.trim().length() > 0) {
+		if (p_value != null && p_value.trim().length() > 0) {
+
 			try {
-
-				User user = (User) userService.getUserById(Integer
-						.parseInt(value));
-
-				return user;
-			} catch (NumberFormatException e) {
-				throw new ConverterException(new FacesMessage(
-						FacesMessage.SEVERITY_ERROR, "Conversion Error",
-						"Not a valid user."));
+				return getUserService().getUserById(Integer.parseInt(p_value));
 			}
-		} else {
+			catch (NumberFormatException e) {
+				throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid object."));
+			}
+		}
+		else {
 			return null;
 		}
 	}
 
-	public String getAsString(FacesContext fc, UIComponent uic, Object object) {
-		if (object != null) {
-			return String.valueOf(((User) object).getId());
-		} else {
+	/**
+	 * getAsString
+	 */
+	public String getAsString(final FacesContext p_fc, final UIComponent p_uic, final Object p_object) {
+
+		if (p_object != null) {
+			return String.valueOf(((User) p_object).getId());
+		}
+		else {
 			return null;
 		}
 	}
+
+	/**
+	 * ################# GETTERS AND SETTERS #################
+	 */
 
 	public IUserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
+	public void setUserService(final IUserService p_userService) {
+		this.userService = p_userService;
 	}
 
 }

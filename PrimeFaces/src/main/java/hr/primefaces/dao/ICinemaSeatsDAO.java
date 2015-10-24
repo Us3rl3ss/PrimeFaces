@@ -6,18 +6,18 @@ import java.util.List;
 
 public interface ICinemaSeatsDAO {
 
-	public void addCinemaSeats(CinemaSeats cinemaSeats);
+	void addCinemaSeats(CinemaSeats p_cinemaSeats);
 
-	public void updateCinemaSeats(CinemaSeats cinemaSeats);
+	void updateCinemaSeats(CinemaSeats p_cinemaSeats);
 
-	public void deleteCinemaSeats(CinemaSeats cinemaSeats);
+	void deleteCinemaSeats(CinemaSeats p_cinemaSeats);
 
-	public CinemaSeats getCinemaSeatsById(int id);
+	CinemaSeats getCinemaSeatsById(int p_id);
 
-	public List<CinemaSeats> getCinemaSeatsByName(String name);
+	List<CinemaSeats> getCinemaSeatsByName(String p_name);
 
-	public List<CinemaSeats> getCinemaSeats();
-	
-	public List<CinemaSeats> getCinemaSeatsByCinemaId(int cinemaId);
+	List<CinemaSeats> getCinemaSeats();
+
+	List<CinemaSeats> getCinemaSeatsByCinemaId(int p_cinemaId);
 
 }
