@@ -24,6 +24,7 @@ public class MovieDAO implements IMovieDAO, Serializable {
 	private final String GET_MOVIE_BY_NAME = "from Movie where name like :name";
 	private final String GET_ALL_MOVIE_ACTORS = "select actorList from Movie where movie_id = :movie_id";
 	private final String GET_ALL_MOVIE_GENRES = "select genreList from Movie where movie_id = :movie_id";
+	private final String GET_MOVIE_BY_IMDB_ID = "from Movie where imdb_id = :imdb_id";
 
 	public MovieDAO() {
 	}
@@ -84,6 +85,14 @@ public class MovieDAO implements IMovieDAO, Serializable {
 		final Query query = getSessionFactory().getCurrentSession().createQuery(GET_ALL_MOVIE_GENRES);
 		query.setParameter("movie_id", p_movie.getId());
 		return query.list();
+	}
+
+	@Override
+	public Movie getMovieByImdbId(final String p_imdbId) {
+
+		final Query query = getSessionFactory().getCurrentSession().createQuery(GET_MOVIE_BY_IMDB_ID);
+		query.setParameter("imdb_id", p_imdbId);
+		return (Movie) query.uniqueResult();
 	}
 
 	/**

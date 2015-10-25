@@ -18,7 +18,109 @@
 <!-- 			#{idleMonitorMB.redirectToStart} -->
 
 			<!-- INICIJALIZACIJA GMAPE: -->
-			<p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" widgetVar="gmap" style="width:1px;height:1px;visibility:hidden;" />
+<!-- 			TODO otkomentirati<p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" widgetVar="gmap" style="width:1px;height:1px;visibility:hidden;" /> -->
+
+			<h:form id="movieImdbSearchForm">
+
+				<p:autoComplete id="movie" minQueryLength="3" maxResults="5"
+					placeholder="Pretraži" value="#{homeMB.imdbMovie}"
+					completeMethod="#{homeMB.searchImdb}" effect="fade"
+					var="movie" itemLabel="#{movie.title}" itemValue="#{movie}"
+					converter="#{imdbMovieConverter}" forceSelection="true" queryDelay="1000">
+
+					<f:ajax event="itemSelect" listener="#{homeMB.onItemSelect}" render=":movieImdbSearchForm" />
+				
+					<p:column>
+						<h:outputText value="#{movie.title}" />
+					</p:column>
+
+					<f:facet name="itemtip">
+						<h:panelGrid columns="1" cellpadding="2">
+
+							<h:graphicImage url="#{movie.urlPoster}" width="150" height="200" />
+
+						</h:panelGrid>
+					</f:facet>
+
+				</p:autoComplete>
+	
+				<p:panelGrid columns="2">
+
+					<p:outputLabel for="name" value="Naslov:" />
+					<p:inputText id="name" value="#{homeMB.imdbMovie.title}" />
+					
+					<p:outputLabel for="year" value="Godina:" />
+					<p:inputText id="year" value="#{homeMB.imdbMovie.year}" />
+					
+					<p:outputLabel for="imdbUrl" value="IMDB url:" />
+					<p:inputText id="imdbUrl" value="#{homeMB.imdbMovie.urlIMDB}" />
+					
+					<p:outputLabel for="votes" value="Glasova:" />
+					<p:inputText id="votes" value="#{homeMB.imdbMovie.votes}" />
+					
+					<p:outputLabel for="simplePlot" value="Sadržaj:" />
+					<p:inputText id="simplePlot" value="#{homeMB.imdbMovie.simplePlot}" />
+					
+					<p:outputLabel for="runtime" value="Trajanje:" />
+					<p:inputText id="runtime" value="#{homeMB.imdbMovie.runtime}" />
+					
+					<p:outputLabel for="rating" value="IMDB ocjena:" />
+					<p:inputText id="rating" value="#{homeMB.imdbMovie.rating}" />
+					
+					<p:outputLabel for="metascore" value="Metascore:" />
+					<p:inputText id="metascore" value="#{homeMB.imdbMovie.metascore}" />
+					
+					<h:graphicImage url="#{homeMB.imdbMovie.urlPoster}" width="150" height="200" />
+					
+				</p:panelGrid>
+				
+			</h:form>
+			
+			<h:form id="movieOmdbSearchForm">
+
+				<p:panelGrid columns="2">
+
+					<p:inputText value="#{homeMB.input}" />
+					<p:commandButton value="Pretraži" action="#{homeMB.searchOmdb}" update=":movieOmdbSearchForm" />
+					
+					<p:outputLabel for="name" value="Naslov:" />
+					<p:inputText id="name" value="#{homeMB.omdb.title}" />
+					
+					<p:outputLabel for="year" value="Godina:" />
+					<p:inputText id="year" value="#{homeMB.omdb.year}" />
+					
+					<p:outputLabel for="runtime" value="Trajanje:" />
+					<p:inputText id="runtime" value="#{homeMB.omdb.runtime}" />
+					
+					<p:outputLabel for="genre" value="Žanrovi:" />
+					<p:inputText id="genre" value="#{homeMB.omdb.genre}" />
+					
+					<p:outputLabel for="director" value="Redatelj:" />
+					<p:inputText id="director" value="#{homeMB.omdb.director}" />
+					
+					<p:outputLabel for="actors" value="Glumci:" />
+					<p:inputText id="actors" value="#{homeMB.omdb.actors}" />
+					
+					<p:outputLabel for="plot" value="Sadržaj:" />
+					<p:inputText id="plot" value="#{homeMB.omdb.plot}" />
+					
+					<p:outputLabel for="awards" value="Nagrade:" />
+					<p:inputText id="awards" value="#{homeMB.omdb.awards}" />
+					
+					<p:outputLabel for="metascore" value="Metascore:" />
+					<p:inputText id="metascore" value="#{homeMB.omdb.metascore}" />
+					
+					<p:outputLabel for="imdbRating" value="IMDB rating:" />
+					<p:inputText id="imdbRating" value="#{homeMB.omdb.imdbRating}" />
+					
+					<p:outputLabel for="imdbVotes" value="IMDB broj glasova:" />
+					<p:inputText id="imdbVotes" value="#{homeMB.omdb.imdbVotes}" />
+					
+					<h:graphicImage url="#{homeMB.omdb.poster}" width="150" height="200" />
+
+				</p:panelGrid>
+				
+			</h:form>
 
 		</ui:define>
 

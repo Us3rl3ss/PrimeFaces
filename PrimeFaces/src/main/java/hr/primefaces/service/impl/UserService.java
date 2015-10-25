@@ -5,12 +5,14 @@ import hr.primefaces.dao.IUserFavoriteMovieDAO;
 import hr.primefaces.dao.IUserFollowingDAO;
 import hr.primefaces.dao.IUserMovieRateDAO;
 import hr.primefaces.dao.IUserMovieReviewDAO;
+import hr.primefaces.dao.IUserMovieWishlistDAO;
 import hr.primefaces.model.Movie;
 import hr.primefaces.model.User;
 import hr.primefaces.model.UserFavoriteMovie;
 import hr.primefaces.model.UserFollowing;
 import hr.primefaces.model.UserMovieRate;
 import hr.primefaces.model.UserMovieReview;
+import hr.primefaces.model.UserMovieWishlist;
 import hr.primefaces.service.IUserService;
 
 import java.io.Serializable;
@@ -33,6 +35,7 @@ public class UserService implements IUserService, Serializable  {
 	private IUserMovieRateDAO userMovieRateDAO;
 	private IUserFollowingDAO userFollowingDAO;
 	private IUserFavoriteMovieDAO userFavoriteMovieDAO;
+	private IUserMovieWishlistDAO userMovieWishlistDAO;
 
 	/**
 	 * ################# USER #################
@@ -221,6 +224,40 @@ public class UserService implements IUserService, Serializable  {
 	}
 
 	/**
+	 * ################# USER MOVIE WISHLIST #################
+	 */
+
+	@Transactional(readOnly = false)
+	@Override
+	public void addUserMovieWishlist(final UserMovieWishlist p_userMovieWishlist) {
+		getUserMovieWishlistDAO().addUserMovieWishlist(p_userMovieWishlist);
+	}
+
+	@Transactional(readOnly = false)
+	@Override
+	public void deleteUserMovieWishlist(final UserMovieWishlist p_userMovieWishlist) {
+		getUserMovieWishlistDAO().deleteUserMovieWishlist(p_userMovieWishlist);
+	}
+
+	@Transactional(readOnly = false)
+	@Override
+	public void updateUserMovieWishlist(final UserMovieWishlist p_userMovieWishlist) {
+		getUserMovieWishlistDAO().updateUserMovieWishlist(p_userMovieWishlist);
+	}
+
+	@Transactional(readOnly = false)
+	@Override
+	public UserMovieWishlist getMovieInUserWishlist(final User p_user, final Movie p_movie) {
+		return getUserMovieWishlistDAO().getMovieInUserWishlist(p_user, p_movie);
+	}
+
+	@Transactional(readOnly = false)
+	@Override
+	public List<UserMovieWishlist> getUserMovieWishlistByUser(final User p_user) {
+		return getUserMovieWishlistDAO().getUserMovieWishlistByUser(p_user);
+	}
+
+	/**
 	 * ################# GETTERS AND SETTERS #################
 	 */
 
@@ -260,6 +297,13 @@ public class UserService implements IUserService, Serializable  {
 	}
 
 	/**
+	 * @return the userMovieWishlistDAO
+	 */
+	public IUserMovieWishlistDAO getUserMovieWishlistDAO() {
+		return userMovieWishlistDAO;
+	}
+
+	/**
 	 * @param p_userDAO the userDAO to set
 	 */
 	public void setUserDAO(final IUserDAO p_userDAO) {
@@ -293,4 +337,12 @@ public class UserService implements IUserService, Serializable  {
 	public void setUserFavoriteMovieDAO(final IUserFavoriteMovieDAO p_userFavoriteMovieDAO) {
 		this.userFavoriteMovieDAO = p_userFavoriteMovieDAO;
 	}
+
+	/**
+	 * @param p_userMovieWishlistDAO the userMovieWishlistDAO to set
+	 */
+	public void setUserMovieWishlistDAO(final IUserMovieWishlistDAO p_userMovieWishlistDAO) {
+		this.userMovieWishlistDAO = p_userMovieWishlistDAO;
+	}
+
 }

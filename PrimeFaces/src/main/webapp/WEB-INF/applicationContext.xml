@@ -22,6 +22,7 @@
 	<bean id="UserMovieRate" class="hr.primefaces.model.UserMovieRate"/>
 	<bean id="UserMovieReview" class="hr.primefaces.model.UserMovieReview"/>
 	<bean id="UserFavoriteMovie" class="hr.primefaces.model.UserFavoriteMovie"/>
+	<bean id="UserMovieWishlist" class="hr.primefaces.model.UserMovieWishlist"/>
 	<bean id="UserFollowing" class="hr.primefaces.model.UserFollowing"/>
 	
 	
@@ -31,6 +32,7 @@
 		<property name="userMovieRateDAO" ref="UserMovieRateDAO" />
 		<property name="userMovieReviewDAO" ref="UserMovieReviewDAO" />
 		<property name="userFavoriteMovieDAO" ref="UserFavoriteMovieDAO" />
+		<property name="userMovieWishlistDAO" ref="UserMovieWishlistDAO" />
 		<property name="userFollowingDAO" ref="UserFollowingDAO" />
 	</bean>
 	
@@ -89,6 +91,9 @@
 	<bean id="UserFavoriteMovieDAO" class="hr.primefaces.dao.impl.UserFavoriteMovieDAO">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
+	<bean id="UserMovieWishlistDAO" class="hr.primefaces.dao.impl.UserMovieWishlistDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
 	<bean id="UserFollowingDAO" class="hr.primefaces.dao.impl.UserFollowingDAO">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
@@ -123,6 +128,7 @@
 				<value>hr.primefaces.model.UserMovieRate</value>
 				<value>hr.primefaces.model.UserMovieReview</value>
 				<value>hr.primefaces.model.UserFavoriteMovie</value>
+				<value>hr.primefaces.model.UserMovieWishlist</value>
 				<value>hr.primefaces.model.UserFollowing</value>
 			</list>
 		</property>

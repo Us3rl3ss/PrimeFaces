@@ -25,6 +25,7 @@
 		<mapping class="hr.primefaces.model.UserMovieRate" />
 		<mapping class="hr.primefaces.model.UserMovieReview" />
 		<mapping class="hr.primefaces.model.UserFavoriteMovie" />
+		<mapping class="hr.primefaces.model.UserMovieWishlist" />
 		<mapping class="hr.primefaces.model.UserFollowing" />
 		<mapping class="hr.primefaces.model.Role" />
 

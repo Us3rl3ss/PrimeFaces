@@ -1,5 +1,7 @@
 package hr.primefaces.bean;
 
+import hr.primefaces.imdb.ImdbAPI;
+import hr.primefaces.imdb.ImdbJsonModel;
 import hr.primefaces.model.Actor;
 import hr.primefaces.model.Genre;
 import hr.primefaces.model.Movie;
@@ -60,6 +62,15 @@ public class AutocompleteBean implements Serializable {
 	 */
 	public List<User> completeUser(final String p_input) {
 		return getUserService().getUserByUsername(p_input);
+	}
+
+	/**
+	 * completeImdbMovie
+	 * @param p_input
+	 * @return
+	 */
+	public List<ImdbJsonModel> completeImdbMovie(final String p_input){
+		return ImdbAPI.getMovieFromImdbByName(p_input);
 	}
 
 	/**

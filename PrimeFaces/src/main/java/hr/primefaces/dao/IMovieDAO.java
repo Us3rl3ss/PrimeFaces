@@ -24,4 +24,6 @@ public interface IMovieDAO {
 
 	List<Genre> getAllMovieGenres(Movie p_movie);
 
+	Movie getMovieByImdbId(String p_imdbId);
+
 }

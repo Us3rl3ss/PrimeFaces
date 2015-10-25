@@ -1,10 +1,23 @@
 package hibernate;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.apache.poi.util.IOUtils;
+
 
 public class HibernateTest {
 
-//	public static void main(String[] args) {
-
+	public static void main(String[] args) throws IOException {
+		
+		URL url = new URL("http://ia.media-imdb.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg");
+		InputStream is = url.openStream();
+		byte[] byteData = null;
+		byteData = IOUtils.toByteArray(is);
+		System.out.println(byteData);
+		
 //		SessionFactory sf = new Configuration().configure()
 //				.buildSessionFactory();
 //		Session s = sf.openSession();
@@ -50,5 +63,5 @@ public class HibernateTest {
 //		s.save(c);
 //		s.getTransaction().commit();
 //		s.close();
-//	}
+	}
 }

@@ -20,36 +20,58 @@
 
 				<p:panelGrid columns="2">
 
-					<p:outputLabel value="Film:"></p:outputLabel>
+					<p:outputLabel value="Film:" />
 					
 					<p:autoComplete id="movie" minQueryLength="3" maxResults="5"
-						placeholder="Pretraži" value="#{movieMB.movie}"
-						completeMethod="#{autocompleteMB.completeMovie}" effect="fade"
-						var="movie" itemLabel="#{movie.name}" itemValue="#{movie}"
-						converter="#{movieConverter}" forceSelection="true">
-
+						placeholder="Pretraži" value="#{movieMB.imdbMovie}"
+						completeMethod="#{autocompleteMB.completeImdbMovie}" effect="fade"
+						var="movie" itemLabel="#{movie.title}" itemValue="#{movie}"
+						converter="#{imdbMovieConverter}" forceSelection="true" queryDelay="1000">
+	
 						<f:ajax event="itemSelect" listener="#{movieMB.onItemSelect}" render=":movieInfoForm :myReviewForm :myRateForm" />
 					
 						<p:column>
-							<h:outputText value="#{movie.name}" />
+							<h:outputText value="#{movie.title}" />
 						</p:column>
-
+	
 						<f:facet name="itemtip">
 							<h:panelGrid columns="1" cellpadding="2">
-
-								<h:outputText value="#{movie.directorName}" />
-
-								<p:graphicImage value="#{movieImageMB.image}" width="100"
-									height="150">
-									<f:param value="#{movie.id}" name="movie_id" />
-								</p:graphicImage>
-
-								<h:outputText value="#{movie.yearOfCreation}" />
-
+	
+								<h:graphicImage url="#{movie.urlPoster}" width="150" height="200" />
+	
 							</h:panelGrid>
 						</f:facet>
-
+	
 					</p:autoComplete>
+					
+<!-- 					<p:autoComplete id="movie" minQueryLength="3" maxResults="5" -->
+<!-- 						placeholder="Pretraži" value="#{movieMB.movie}" -->
+<!-- 						completeMethod="#{autocompleteMB.completeMovie}" effect="fade" -->
+<!-- 						var="movie" itemLabel="#{movie.name}" itemValue="#{movie}" -->
+<!-- 						converter="#{movieConverter}" forceSelection="true"> -->
+
+<!-- 						<f:ajax event="itemSelect" listener="#{movieMB.onItemSelect}" render=":movieInfoForm :myReviewForm :myRateForm" /> -->
+					
+<!-- 						<p:column> -->
+<!-- 							<h:outputText value="#{movie.name}" /> -->
+<!-- 						</p:column> -->
+
+<!-- 						<f:facet name="itemtip"> -->
+<!-- 							<h:panelGrid columns="1" cellpadding="2"> -->
+
+<!-- 								<h:outputText value="#{movie.directorName}" /> -->
+
+<!-- 								<p:graphicImage value="#{movieImageMB.image}" width="100" -->
+<!-- 									height="150"> -->
+<!-- 									<f:param value="#{movie.id}" name="movie_id" /> -->
+<!-- 								</p:graphicImage> -->
+
+<!-- 								<h:outputText value="#{movie.yearOfCreation}" /> -->
+
+<!-- 							</h:panelGrid> -->
+<!-- 						</f:facet> -->
+
+<!-- 					</p:autoComplete> -->
 
 				</p:panelGrid>
 				
@@ -60,33 +82,76 @@
 				<p:panel header="#{movieMB.movie.name}">
 					
 					<h:panelGrid columns="1" style="width:40%; float:left;">
-						<p:graphicImage value="#{movieImageMB.image}" width="160"
-							height="240">
-							<f:param value="#{movieMB.movie.id}" name="movie_id" />
-						</p:graphicImage>
+<!-- 						<p:graphicImage value="#{movieImageMB.image}" width="160" -->
+<!-- 							height="240"> -->
+<!-- 							<f:param value="#{movieMB.movie.id}" name="movie_id" /> -->
+<!-- 						</p:graphicImage> -->
+						<h:graphicImage url="#{movieMB.movie.imdbPosterUrl}" width="150" height="200" />
 					</h:panelGrid>
 					
+					
 					<h:panelGrid columns="2" cellpadding="10">
+					
+						<h:outputLabel for="name" value="Naslov:" />
+						<h:outputText id="name" value="#{movieMB.movie.name}" />
+						
+						<h:outputLabel for="year" value="Godina:" />
+						<h:outputText id="year" value="#{movieMB.movie.yearOfCreation}" />
+						
+						<h:outputLabel for="director" value="Redatelj:" />
+						<h:outputText id="director" value="#{movieMB.movie.directorName}" />
+						
+						<h:outputLabel for="duration" value="Trajanje" />
+						<h:outputText id="duration" value="#{movieMB.movie.duration}" />
+						
+						<h:outputLabel for="info" value="Sadržaj:" />
+						<h:outputText id="info" value="#{movieMB.movie.info}" />
+						
+						<h:outputLabel for="actors" value="Glumci:" />
+						<h:outputText id="actors" value="#{movieMB.movie.actors}" />
+						
+						<h:outputLabel for="genre" value="Žanrovi:" />
+						<h:outputText id="genre" value="#{movieMB.movie.genres}" />
+						
+						<h:outputLabel for="imdbId" value="IMDB id:" />
+						<h:outputText id="imdbId" value="#{movieMB.movie.imdbId}" />
+						
+						<h:outputLabel for="metascore" value="Metascore:" />
+						<h:outputText id="metascore" value="#{movieMB.movie.metascore}" />
+						
+						<h:outputLabel for="imdbRating" value="IMDB rating:" />
+						<h:outputText id="imdbRating" value="#{movieMB.movie.imdbRating}" />
+						
+						<h:outputLabel for="similarMovies" value="Slični filmovi:" />
+						<h:outputText id="similarMovies" value="#{movieMB.movie.similarMovies}" />
+						
+						<h:outputLabel for="imdbVotes" value="IMDB broj glasova" />
+						<h:outputText id="imdbVotes" value="#{movieMB.movie.imdbVotes}" />
+						
+						<h:outputLabel for="imdbUrl" value="IMDB url:" />
+						<h:outputLink id="imdbUrl" value="#{movieMB.movie.imdbUrl}" target="_blank">
+							#{movieMB.movie.imdbUrl}
+						</h:outputLink>
+						
+<!-- 						<h:outputText value="Naslov:" /> -->
+<!-- 						<h:outputText value="#{movieMB.movie.name}" /> -->
 
-						<h:outputText value="Naslov:" />
-						<h:outputText value="#{movieMB.movie.name}" />
+<!-- 						<h:outputText value="Redatelj:" /> -->
+<!-- 						<h:outputText value="#{movieMB.movie.directorName}" /> -->
 
-						<h:outputText value="Redatelj:" />
-						<h:outputText value="#{movieMB.movie.directorName}" />
+<!-- 						<h:outputText value="Godina:" /> -->
+<!-- 						<h:outputText value="#{movieMB.movie.yearOfCreation}" /> -->
 
-						<h:outputText value="Godina:" />
-						<h:outputText value="#{movieMB.movie.yearOfCreation}" />
+<!-- 						<h:outputText value="Trajanje:" /> -->
+<!-- 						<h:outputText value="#{movieMB.movie.duration}" /> -->
 
-						<h:outputText value="Trajanje:" />
-						<h:outputText value="#{movieMB.movie.duration}" />
+<!-- 						<h:outputText value="Informacije:" /> -->
+<!-- 						<h:outputText value="#{movieMB.movie.info}" /> -->
 
-						<h:outputText value="Informacije:" />
-						<h:outputText value="#{movieMB.movie.info}" />
-
-						<h:outputText value="Ukupna ocjena:" />
-						<p:rating value="#{movieMB.averageRate}" stars="10" cancel="false" id="averageRateField"
-							readonly="#{true}">
-						</p:rating>
+<!-- 						<h:outputText value="Ukupna ocjena:" /> -->
+<!-- 						<p:rating value="#{movieMB.averageRate}" stars="10" cancel="false" id="averageRateField" -->
+<!-- 							readonly="#{true}"> -->
+<!-- 						</p:rating> -->
 
 					</h:panelGrid>
 
@@ -103,8 +168,18 @@
 						</h:commandLink>
 						<p:commandLink rendered="#{userSession.logged}" oncomplete="PF('myRate').show();"
 							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
-							<h:outputText styleClass="ui-icon ui-icon-heart" />
+							<h:outputText styleClass="ui-icon ui-icon-check" />
 						</p:commandLink>
+						<h:commandLink rendered="#{userSession.logged and movieMB.inWishlist}"
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+							<h:outputText styleClass="ui-icon  ui-icon-cancel" />
+							<f:ajax listener="#{movieMB.removeFromWishlist}" render=":movieInfoForm" />
+						</h:commandLink>
+						<h:commandLink rendered="#{userSession.logged and !movieMB.inWishlist}"
+							styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">
+							<h:outputText styleClass="ui-icon ui-icon-heart" />
+							<f:ajax listener="#{movieMB.addToWishlist}" render=":movieInfoForm" />
+						</h:commandLink>
 					</f:facet>
 
 				</p:panel>
@@ -158,7 +233,7 @@
 					<p:rating value="#{movieMB.userMovieRate.rate}" stars="10"
 						cancel="false" readonly="#{movieMB.rateDisabled}">
 						<p:ajax event="rate" listener="#{movieMB.onRate}"
-							update=":messages myRateForm :movieInfoForm:averageRateField" oncomplete="PF('myRate').hide();" />
+							update=":messages myRateForm" oncomplete="PF('myRate').hide();" />
 						<p:ajax event="cancel" listener="#{movieMB.onCancel}"
 							update=":messages :movieInfoForm myRateForm" oncomplete="PF('myRate').hide();" />
 					</p:rating>

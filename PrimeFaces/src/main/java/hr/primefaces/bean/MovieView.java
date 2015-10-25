@@ -1,12 +1,16 @@
 package hr.primefaces.bean;
 
+import hr.primefaces.imdb.ImdbJsonModel;
 import hr.primefaces.model.Movie;
 import hr.primefaces.model.User;
 import hr.primefaces.model.UserFavoriteMovie;
 import hr.primefaces.model.UserMovieRate;
 import hr.primefaces.model.UserMovieReview;
+import hr.primefaces.model.UserMovieWishlist;
 import hr.primefaces.service.IMovieService;
 import hr.primefaces.service.IUserService;
+import hr.primefaces.util.Check;
+import hr.primefaces.util.ObjectRemapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,9 +46,11 @@ public class MovieView implements Serializable {
 	private String movieInfoRenderCss;
 	private Integer averageRate;
 	private boolean inFavorites;
+	private boolean inWishlist;
 	private boolean movieInfoFormRender;
 	private boolean rateDisabled;
 	private boolean reviewDisabled;
+	private ImdbJsonModel imdbMovie;
 
 	/**
 	 * init
@@ -61,6 +67,7 @@ public class MovieView implements Serializable {
 		setMovieInfoFormRender(false);
 		setRateDisabled(false);
 		setReviewDisabled(false);
+		setImdbMovie(new ImdbJsonModel());
 	}
 
 	/**
@@ -96,10 +103,49 @@ public class MovieView implements Serializable {
 
 				setInFavorites(false);
 			}
+
+			if (isInWishlist(getUserSession().getUser(), getMovie())) {
+
+				setInWishlist(true);
+			}
+			else {
+
+				setInWishlist(false);
+			}
 		}
 
 		setAverageRate(calculateAverageRate(getMovie()));
 		setUserMovieReviewList(getAllMovieReviews(getMovie()));
+	}
+
+	/**
+	 * insertMovieFromImdb
+	 * @param p_movie
+	 * @return
+	 */
+	public Movie insertMovieFromImdb(final Movie p_movie) {
+
+		Movie result = new Movie();
+
+		if (p_movie != null) {
+
+			if (!Check.isNullOrEmpthy(p_movie.getImdbId())) {
+
+				final Movie tempMovie = getMovieService().getMovieByImdbId(p_movie.getImdbId());
+
+				if (tempMovie != null) { //film već postoji u bazi podataka
+
+					result = tempMovie;
+				}
+				else { //film ne postoji u bazi podataka
+
+					getMovieService().addMovie(p_movie);
+					result = p_movie;
+				}
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -136,6 +182,8 @@ public class MovieView implements Serializable {
 
 		if (getUserMovieReview().getReview() != null) {
 
+			setMovie(insertMovieFromImdb(getMovie()));
+
 			getUserMovieReview().setUser(getUserSession().getUser());
 			getUserMovieReview().setMovie(getMovie());
 			getUserMovieReview().setCreated(new Date());
@@ -151,6 +199,8 @@ public class MovieView implements Serializable {
 	 */
 	public void addToFavorites() {
 
+		setMovie(insertMovieFromImdb(getMovie()));
+
 		final UserFavoriteMovie ufm = new UserFavoriteMovie();
 		ufm.setMovie(getMovie());
 		ufm.setUser(getUserSession().getUser());
@@ -161,14 +211,69 @@ public class MovieView implements Serializable {
 	}
 
 	/**
+	 * addToWishlist
+	 */
+	public void addToWishlist() {
+
+		setMovie(insertMovieFromImdb(getMovie()));
+
+		final UserMovieWishlist umw = new UserMovieWishlist();
+		umw.setMovie(getMovie());
+		umw.setUser(getUserSession().getUser());
+		umw.setCreated(new Date());
+		getUserService().addUserMovieWishlist(umw);
+
+		search();
+	}
+
+	/**
 	 * removeFromFavorites
 	 */
 	public void removeFromFavorites() {
 
-		final UserFavoriteMovie ufm = getUserService().getMovieInUserFavorites(getUserSession().getUser(), getMovie());
-		getUserService().deleteUserFavoriteMovie(ufm);
+		if (getMovie() != null) {
 
-		search();
+			if (!Check.isNullOrEmpthy(getMovie().getImdbId())) {
+
+				final Movie tempMovie = getMovieService().getMovieByImdbId(getMovie().getImdbId());
+
+				if (tempMovie != null) { //film već postoji u bazi podataka
+
+					final UserFavoriteMovie ufm = getUserService().getMovieInUserFavorites(getUserSession().getUser(), tempMovie);
+
+					if (ufm != null) {
+
+						getUserService().deleteUserFavoriteMovie(ufm);
+						search();
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * removeFromWishlist
+	 */
+	public void removeFromWishlist() {
+
+		if (getMovie() != null) {
+
+			if (!Check.isNullOrEmpthy(getMovie().getImdbId())) {
+
+				final Movie tempMovie = getMovieService().getMovieByImdbId(getMovie().getImdbId());
+
+				if (tempMovie != null) { //film već postoji u bazi podataka
+
+					final UserMovieWishlist umw = getUserService().getMovieInUserWishlist(getUserSession().getUser(), tempMovie);
+
+					if (umw != null) {
+
+						getUserService().deleteUserMovieWishlist(umw);
+						search();
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -181,16 +286,27 @@ public class MovieView implements Serializable {
 
 		boolean result = false;
 
-		final List<UserMovieRate> list = getUserService().getUserMovieRateByUserAndMovie(p_user, p_movie);
+		if (p_movie != null) {
 
-		if (list.size() > 0) {
+			if (!Check.isNullOrEmpthy(p_movie.getImdbId())) {
 
-			setUserMovieRate(list.get(0));
-			result = true;
-		}
-		else {
+				final Movie tempMovie = getMovieService().getMovieByImdbId(p_movie.getImdbId());
 
-			setUserMovieRate(new UserMovieRate());
+				if (tempMovie != null) { //film već postoji u bazi podataka
+
+					final List<UserMovieRate> list = getUserService().getUserMovieRateByUserAndMovie(p_user, tempMovie);
+
+					if (list.size() > 0) {
+
+						setUserMovieRate(list.get(0));
+						result = true;
+					}
+					else {
+
+						setUserMovieRate(new UserMovieRate());
+					}
+				}
+			}
 		}
 
 		return result;
@@ -206,16 +322,27 @@ public class MovieView implements Serializable {
 
 		boolean result = false;
 
-		final List<UserMovieReview> list = getUserService().getUserMovieReviewByUserAndMovie(p_user, p_movie);
+		if (p_movie != null) {
 
-		if (list.size() > 0) {
+			if (!Check.isNullOrEmpthy(p_movie.getImdbId())) {
 
-			setUserMovieReview(list.get(0));
-			result = true;
-		}
-		else {
+				final Movie tempMovie = getMovieService().getMovieByImdbId(p_movie.getImdbId());
 
-			setUserMovieReview(new UserMovieReview());
+				if (tempMovie != null) { //film već postoji u bazi podataka
+
+					final List<UserMovieReview> list = getUserService().getUserMovieReviewByUserAndMovie(p_user, tempMovie);
+
+					if (list.size() > 0) {
+
+						setUserMovieReview(list.get(0));
+						result = true;
+					}
+					else {
+
+						setUserMovieReview(new UserMovieReview());
+					}
+				}
+			}
 		}
 
 		return result;
@@ -231,9 +358,49 @@ public class MovieView implements Serializable {
 
 		boolean result = false;
 
-		if (getUserService().getMovieInUserFavorites(p_user, p_movie) != null) {
+		if (p_movie != null) {
 
-			result = true;
+			if (!Check.isNullOrEmpthy(p_movie.getImdbId())) {
+
+				final Movie tempMovie = getMovieService().getMovieByImdbId(p_movie.getImdbId());
+
+				if (tempMovie != null) { //film već postoji u bazi podataka
+
+					if (getUserService().getMovieInUserFavorites(p_user, tempMovie) != null) {
+
+						result = true;
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * isInWishlist
+	 * @param p_user
+	 * @param p_movie
+	 * @return
+	 */
+	public boolean isInWishlist(final User p_user, final Movie p_movie) {
+
+		boolean result = false;
+
+		if (p_movie != null) {
+
+			if (!Check.isNullOrEmpthy(p_movie.getImdbId())) {
+
+				final Movie tempMovie = getMovieService().getMovieByImdbId(p_movie.getImdbId());
+
+				if (tempMovie != null) { //film već postoji u bazi podataka
+
+					if (getUserService().getMovieInUserWishlist(p_user, tempMovie) != null) {
+
+						result = true;
+					}
+				}
+			}
 		}
 
 		return result;
@@ -261,6 +428,9 @@ public class MovieView implements Serializable {
 	 */
 	public void onItemSelect(final AjaxBehaviorEvent p_event) {
 
+		//Remaping imdbJsonModel -> Movie object
+		setMovie(ObjectRemapper.imdbToMovieObj(getImdbMovie()));
+
 		search();
 		setMovieInfoRenderCss("");
 		setMovieInfoFormRender(true);
@@ -272,6 +442,8 @@ public class MovieView implements Serializable {
 	public void onRate() {
 
 		if (getUserMovieRate().getRate() > 0) {
+
+			setMovie(insertMovieFromImdb(getMovie()));
 
 			getUserMovieRate().setUser(getUserSession().getUser());
 			getUserMovieRate().setMovie(getMovie());
@@ -392,6 +564,20 @@ public class MovieView implements Serializable {
 	}
 
 	/**
+	 * @return the imdbMovie
+	 */
+	public ImdbJsonModel getImdbMovie() {
+		return imdbMovie;
+	}
+
+	/**
+	 * @return the inWishlist
+	 */
+	public boolean isInWishlist() {
+		return inWishlist;
+	}
+
+	/**
 	 * @param p_userSession the userSession to set
 	 */
 	public void setUserSession(final UserSession p_userSession) {
@@ -487,6 +673,20 @@ public class MovieView implements Serializable {
 	 */
 	public void setMovieInfoFormRender(final boolean p_movieInfoFormRender) {
 		this.movieInfoFormRender = p_movieInfoFormRender;
+	}
+
+	/**
+	 * @param p_imdbMovie the imdbMovie to set
+	 */
+	public void setImdbMovie(final ImdbJsonModel p_imdbMovie) {
+		this.imdbMovie = p_imdbMovie;
+	}
+
+	/**
+	 * @param p_inWishlist the inWishlist to set
+	 */
+	public void setInWishlist(final boolean p_inWishlist) {
+		this.inWishlist = p_inWishlist;
 	}
 
 }

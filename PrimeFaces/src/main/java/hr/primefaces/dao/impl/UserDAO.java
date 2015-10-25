@@ -19,9 +19,9 @@ public class UserDAO implements IUserDAO, Serializable {
 
 	private final String GET_USER_BY_ID = "from User where id = :user_id";
 	private final String GET_USER_BY_DISTINCT_USERNAME = "from User where username = :username";
-	private final String GET_USER_BY_USERNAME = "from User where name like :username";
+	private final String GET_USER_BY_USERNAME = "from User where username like :username";
 	private final String GET_USERS = "from User";
-	private final String GET_USER_FOLLOW = "select ufl from User u join u.userFollowList ufl where user_id = :login_user_id and follow_id = :curr_user_Id";
+	private final String GET_USER_FOLLOW = "select ufl from User u join u.userFollowList ufl where user_id = :login_user_id and follow_id = :curr_user_id";
 	private final String GET_USER_FOLLOW_BY_USER = "select ufl from User u join u.userFollowList ufl where user_id = :login_user_id";
 	private final String GET_USER_FOLLOW_BY_FOLLOWER = "select ufl from User u join u.userFollowList ufl where follow_id = :curr_user_id";
 

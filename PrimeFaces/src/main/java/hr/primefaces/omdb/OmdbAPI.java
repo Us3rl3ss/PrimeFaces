@@ -1,4 +1,4 @@
-package hr.primefaces.gmap;
+package hr.primefaces.omdb;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,28 +6,27 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 import org.apache.commons.httpclient.util.URIUtil;
 
 import com.google.gson.Gson;
 
-public final class LocationCalculator {
+public final class OmdbAPI {
 
-	private LocationCalculator() {}
+	private OmdbAPI() {}
 
 	/**
-	 * getLocationFromAddress
-	 * @param p_address
+	 * getMovieFromOmdb
+	 * @param p_movieName
 	 * @return
 	 */
-	public static Result getLocationFromAddress(final String p_address) {
+	public static OmdbJsonModel getMovieFromOmdb(final String p_movieName) {
 
-		Result result = new Result();
+		OmdbJsonModel result = new OmdbJsonModel();
 		HttpURLConnection conn = null;
 
 		try {
-			final URL url = new URL("http://maps.googleapis.com/maps/api/geocode/json?address=" + URIUtil.encodeQuery(p_address) + "&sensor=true");
+			final URL url = new URL("http://www.omdbapi.com/?t=" + URIUtil.encodeQuery(p_movieName) + "&y=&plot=full&r=json");
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
@@ -44,13 +43,7 @@ public final class LocationCalculator {
 				full += output;
 			}
 
-			final GMapJsonModel gson = new Gson().fromJson(full, GMapJsonModel.class);
-			final List<Result> resultList = gson.getResults();
-
-			if (resultList.size() > 0) {
-
-				result = resultList.get(0);
-			}
+			result = new Gson().fromJson(full, OmdbJsonModel.class);
 		}
 		catch (MalformedURLException e) {
 			e.printStackTrace();

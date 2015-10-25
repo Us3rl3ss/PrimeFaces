@@ -6,6 +6,7 @@ import hr.primefaces.model.UserFavoriteMovie;
 import hr.primefaces.model.UserFollowing;
 import hr.primefaces.model.UserMovieRate;
 import hr.primefaces.model.UserMovieReview;
+import hr.primefaces.model.UserMovieWishlist;
 
 import java.util.List;
 
@@ -92,5 +93,19 @@ public interface IUserService {
 	UserFavoriteMovie getMovieInUserFavorites(User p_user, Movie p_movie);
 
 	List<UserFavoriteMovie> getUserFavoriteMovieByUser(User p_user);
+
+	/**
+	 * ################# USER FAVORITE MOVIE #################
+	 */
+
+	void addUserMovieWishlist(UserMovieWishlist p_userMovieWishlist);
+
+	void updateUserMovieWishlist(UserMovieWishlist p_userMovieWishlist);
+
+	void deleteUserMovieWishlist(UserMovieWishlist p_userMovieWishlist);
+
+	UserMovieWishlist getMovieInUserWishlist(User p_user, Movie p_movie);
+
+	List<UserMovieWishlist> getUserMovieWishlistByUser(User p_user);
 
 }

@@ -77,6 +77,11 @@ public class MovieService implements IMovieService, Serializable {
 		return getMovieDAO().getAllMovieGenres(p_movie);
 	}
 
+	@Override
+	public Movie getMovieByImdbId(final String p_imdbId) {
+		return getMovieDAO().getMovieByImdbId(p_imdbId);
+	}
+
 	/**
 	 * ################# ACTOR #################
 	 */

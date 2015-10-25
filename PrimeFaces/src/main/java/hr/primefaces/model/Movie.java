@@ -46,6 +46,33 @@ public class Movie implements Serializable {
 	@Column(name = "info", nullable = false)
 	private String info;
 
+	@Column(name = "actors", nullable = true)
+	private String actors;
+
+	@Column(name = "genres", nullable = true)
+	private String genres;
+
+	@Column(name = "imdb_id", nullable = false)
+	private String imdbId;
+
+	@Column(name = "metascore", nullable = true)
+	private String metascore;
+
+	@Column(name = "imdb_rating", nullable = true)
+	private String imdbRating;
+
+	@Column(name = "similar_movies", nullable = true)
+	private String similarMovies;
+
+	@Column(name = "imdb_url", nullable = true)
+	private String imdbUrl;
+
+	@Column(name = "imdb_votes", nullable = true)
+	private String imdbVotes;
+
+	@Column(name = "imdb_poster_url", nullable = true)
+	private String imdbPosterUrl;
+
 	@Lob
 	@Basic(fetch = FetchType.EAGER)
 	@Column(name = "IMAGE")
@@ -72,6 +99,9 @@ public class Movie implements Serializable {
 
 	@OneToMany(targetEntity = UserFavoriteMovie.class, mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<UserFavoriteMovie> userFavoriteMovie;
+
+	@OneToMany(targetEntity = UserMovieWishlist.class, mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<UserMovieWishlist> userMovieWishlist;
 
 	@Transient
 	private String listOfActorsText;
@@ -207,6 +237,76 @@ public class Movie implements Serializable {
 	}
 
 	/**
+	 * @return the actors
+	 */
+	public String getActors() {
+		return actors;
+	}
+
+	/**
+	 * @return the genres
+	 */
+	public String getGenres() {
+		return genres;
+	}
+
+	/**
+	 * @return the imdbId
+	 */
+	public String getImdbId() {
+		return imdbId;
+	}
+
+	/**
+	 * @return the metascore
+	 */
+	public String getMetascore() {
+		return metascore;
+	}
+
+	/**
+	 * @return the imdbRating
+	 */
+	public String getImdbRating() {
+		return imdbRating;
+	}
+
+	/**
+	 * @return the similarMovies
+	 */
+	public String getSimilarMovies() {
+		return similarMovies;
+	}
+
+	/**
+	 * @return the imdbUrl
+	 */
+	public String getImdbUrl() {
+		return imdbUrl;
+	}
+
+	/**
+	 * @return the imdbVotes
+	 */
+	public String getImdbVotes() {
+		return imdbVotes;
+	}
+
+	/**
+	 * @return the imdbPosterUrl
+	 */
+	public String getImdbPosterUrl() {
+		return imdbPosterUrl;
+	}
+
+	/**
+	 * @return the userMovieWishlist
+	 */
+	public Set<UserMovieWishlist> getUserMovieWishlist() {
+		return userMovieWishlist;
+	}
+
+	/**
 	 * @param p_id the id to set
 	 */
 	public void setId(final Integer p_id) {
@@ -309,6 +409,76 @@ public class Movie implements Serializable {
 	 */
 	public void setListOfGenresText(final String p_listOfGenresText) {
 		this.listOfGenresText = p_listOfGenresText;
+	}
+
+	/**
+	 * @param p_actors the actors to set
+	 */
+	public void setActors(final String p_actors) {
+		this.actors = p_actors;
+	}
+
+	/**
+	 * @param p_genres the genres to set
+	 */
+	public void setGenres(final String p_genres) {
+		this.genres = p_genres;
+	}
+
+	/**
+	 * @param p_imdbId the imdbId to set
+	 */
+	public void setImdbId(final String p_imdbId) {
+		this.imdbId = p_imdbId;
+	}
+
+	/**
+	 * @param p_metascore the metascore to set
+	 */
+	public void setMetascore(final String p_metascore) {
+		this.metascore = p_metascore;
+	}
+
+	/**
+	 * @param p_imdbRating the imdbRating to set
+	 */
+	public void setImdbRating(final String p_imdbRating) {
+		this.imdbRating = p_imdbRating;
+	}
+
+	/**
+	 * @param p_similarMovies the similarMovies to set
+	 */
+	public void setSimilarMovies(final String p_similarMovies) {
+		this.similarMovies = p_similarMovies;
+	}
+
+	/**
+	 * @param p_imdbUrl the imdbUrl to set
+	 */
+	public void setImdbUrl(final String p_imdbUrl) {
+		this.imdbUrl = p_imdbUrl;
+	}
+
+	/**
+	 * @param p_imdbVotes the imdbVotes to set
+	 */
+	public void setImdbVotes(final String p_imdbVotes) {
+		this.imdbVotes = p_imdbVotes;
+	}
+
+	/**
+	 * @param p_imdbPosterUrl the imdbPosterUrl to set
+	 */
+	public void setImdbPosterUrl(final String p_imdbPosterUrl) {
+		this.imdbPosterUrl = p_imdbPosterUrl;
+	}
+
+	/**
+	 * @param p_userMovieWishlist the userMovieWishlist to set
+	 */
+	public void setUserMovieWishlist(final Set<UserMovieWishlist> p_userMovieWishlist) {
+		this.userMovieWishlist = p_userMovieWishlist;
 	}
 
 }
