@@ -30,6 +30,7 @@ public class MyProfileView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String REFRESH_PAGE_JS = "$(window).off('beforeunload'); location.reload();";
+//	private static final String PLACEHOLDER_IMG = "images/placeholder.png";
 
 	@ManagedProperty(value = "#{userSession}")
 	private UserSession userSession;
@@ -49,6 +50,7 @@ public class MyProfileView implements Serializable {
 	private UserFavoriteMovie selectedFavorite;
 	private Integer averageRate;
 	private String uploadedFileNames;
+//	private String filename;
 
 	@PostConstruct
 	public void init() {
@@ -59,6 +61,9 @@ public class MyProfileView implements Serializable {
 		setUserMovieRateList(getUserService().getUserMovieRateByUser(getUser()));
 		setUserMovieReviewList(getUserService().getUserMovieReviewByUser(getUser()));
 		setUserFavoriteMovieList(getUserService().getUserFavoriteMovieByUser(getUser()));
+
+//		final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+//		setTempCamPicture(PLACEHOLDER_IMG);
 	}
 
 	/**
@@ -157,6 +162,44 @@ public class MyProfileView implements Serializable {
 		}
 	}
 
+//	/**
+//	 * oncapture
+//	 * @param p_captureEvent
+//	 */
+//	public void oncapture(final CaptureEvent p_captureEvent) {
+//
+//		setFilename(getRandomImageName());
+//
+//        final byte[] data = p_captureEvent.getData();
+//
+//        final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+//        final String newFileName = servletContext.getRealPath("") + File.separator + "resources" +
+//                                    File.separator + "images" + File.separator + filename + ".jpeg";
+//
+//        FileImageOutputStream imageOutput;
+//        try {
+//            imageOutput = new FileImageOutputStream(new File(newFileName));
+//            imageOutput.write(data, 0, data.length);
+//            imageOutput.close();
+//
+//        }
+//        catch(IOException e) {
+//            throw new FacesException("Error in writing captured image.", e);
+//        }
+//
+//        RequestContext.getCurrentInstance().update(":camForm:photo");
+//    }
+//
+//	/**
+//	 * getRandomImageName
+//	 * @return
+//	 */
+//	private String getRandomImageName() {
+//
+//		final int i = (int) (Math.random() * 10000000);
+//        return String.valueOf(i);
+//    }
+
 	/**
 	 * ################# GETTERS AND SETTERS #################
 	 */
@@ -245,6 +288,13 @@ public class MyProfileView implements Serializable {
 		return uploadedFileNames;
 	}
 
+//	/**
+//	 * @return the filename
+//	 */
+//	public String getFilename() {
+//		return filename;
+//	}
+
 	/**
 	 * @param p_userSession the userSession to set
 	 */
@@ -328,5 +378,12 @@ public class MyProfileView implements Serializable {
 	public void setUploadedFileNames(final String p_uploadedFileNames) {
 		this.uploadedFileNames = p_uploadedFileNames;
 	}
+
+//	/**
+//	 * @param p_filename the filename to set
+//	 */
+//	public void setFilename(final String p_filename) {
+//		this.filename = p_filename;
+//	}
 
 }

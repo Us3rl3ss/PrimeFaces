@@ -19,81 +19,90 @@
 			<h:form id="addMovie">
 
 				<p:panelGrid columns="2">
-
-					<p:outputLabel for="name" value="Naziv filma:" />
-					<p:inputText id="name" value="#{addMovieMB.movie.name}" />
+				
+					<p:autoComplete id="movie" minQueryLength="3" maxResults="5"
+						placeholder="Pretraži" value="#{addMovieMB.imdbMovie}"
+						completeMethod="#{autocompleteMB.completeImdbMovie}" effect="fade"
+						var="movie" itemLabel="#{movie.title}" itemValue="#{movie}"
+						converter="#{imdbMovieConverter}" forceSelection="true" queryDelay="1000">
+	
+						<f:ajax event="itemSelect" listener="#{addMovieMB.onItemSelect}" render=":movieInfoForm" />
 					
-					<p:outputLabel for="director" value="Redatelj:" />
-					<p:inputText id="director"
-						value="#{addMovieMB.movie.directorName}" />
-						
-					<p:outputLabel for="year" value="Godina:" />
-					<p:inputText id="year" value="#{addMovieMB.movie.yearOfCreation}" />
-					
-					<p:outputLabel for="duration" value="Trajanje (min):" />
-					<p:inputText id="duration" value="#{addMovieMB.movie.duration}" />
-					
-					<p:outputLabel for="info" value="Informacije:" />
-					<p:inputTextarea id="info" value="#{addMovieMB.movie.info}"
-						rows="5" cols="30" counter="display" maxlength="1000"
-						counterTemplate="{0} preostalih znakova." autoResize="false" />
-						
-					<p:outputLabel />
-					<h:outputText id="display" />
-
-					<p:outputLabel for="actor" value="Glumci:" />
-					<p:autoComplete id="actor" multiple="true"
-						value="#{addMovieMB.movie.actorList}"
-						completeMethod="#{autocompleteMB.completeActor}" var="actor"
-						itemLabel="#{(actor.firstname).concat(' ').concat(actor.lastname)}"
-						itemValue="#{actor}" converter="#{actorConverter}"
-						forceSelection="true">
-						
 						<p:column>
-							<h:outputText
-								value="#{(actor.firstname).concat(' ').concat(actor.lastname)}" />
+							<h:outputText value="#{movie.title}" />
 						</p:column>
-
+	
 						<f:facet name="itemtip">
 							<h:panelGrid columns="1" cellpadding="2">
-
-								<p:graphicImage value="#{actorImageMB.image}" width="100"
-									height="150">
-									<f:param value="#{actor.id}" name="actor_id"></f:param>
-								</p:graphicImage>
-
+	
+								<h:graphicImage url="#{movie.urlPoster}" width="150" height="200" />
+	
 							</h:panelGrid>
 						</f:facet>
-
+	
 					</p:autoComplete>
-
-					<p:outputLabel for="genres" value="Žanr/ovi:" />
-					<p:autoComplete id="genres" multiple="true"
-						value="#{addMovieMB.movie.genreList}"
-						completeMethod="#{autocompleteMB.completeGenre}" var="genre"
-						itemLabel="#{genre.name}" itemValue="#{genre}"
-						converter="#{genreConverter}" forceSelection="true">
-						<p:column>
-							<h:outputText value="#{genre.name}" />
-						</p:column>
-<!-- 						<p:ajax event="itemSelect" listener="#{addMovieMB.onItemSelect}"></p:ajax> -->
-					</p:autoComplete>
-
-					<p:outputLabel for="pic" value="Naslovna slika:" />
-					<p:fileUpload id="pic"
-						fileUploadListener="#{addMovieMB.handleFileUpload}"
-						mode="advanced" dragDropSupport="true" update="uploadFilesList"
-						sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-						multiple="false" />
-
-					<p:outputLabel value="Uploadano:" />
-					<p:inputText id="uploadFilesList"
-						value="#{addMovieMB.uploadedFileNames}" readonly="#{true}" />
-
+					
+					<p:commandButton value="Spremi" action="#{addMovieMB.save}"
+						update=":messages :movieInfoForm" />
+					
 				</p:panelGrid>
+				
+			</h:form>
+					
+			<h:form id="movieInfoForm" style="#{addMovieMB.movieInfoRenderCss}">
 
-				<p:commandButton value="Spremi" action="#{addMovieMB.save}"
-					update=":messages addMovie" />
+				<p:panel header="#{movieMB.movie.name}">
+					
+					<h:panelGrid columns="1" style="width:40%; float:left;">
+						<h:graphicImage url="#{addMovieMB.movie.imdbPosterUrl}" width="150" height="200" />
+					</h:panelGrid>
+					
+					<h:panelGrid columns="2" cellpadding="10">
+					
+						<h:outputLabel for="name" value="Naslov:" />
+						<h:outputText id="name" value="#{addMovieMB.movie.name}" />
+						
+						<h:outputLabel for="year" value="Godina:" />
+						<h:outputText id="year" value="#{addMovieMB.movie.yearOfCreation}" />
+						
+						<h:outputLabel for="director" value="Redatelj:" />
+						<h:outputText id="director" value="#{addMovieMB.movie.directorName}" />
+						
+						<h:outputLabel for="duration" value="Trajanje" />
+						<h:outputText id="duration" value="#{addMovieMB.movie.duration}" />
+						
+						<h:outputLabel for="info" value="Sadržaj:" />
+						<h:outputText id="info" value="#{addMovieMB.movie.info}" />
+						
+						<h:outputLabel for="actors" value="Glumci:" />
+						<h:outputText id="actors" value="#{addMovieMB.movie.actors}" />
+						
+						<h:outputLabel for="genre" value="Žanrovi:" />
+						<h:outputText id="genre" value="#{addMovieMB.movie.genres}" />
+						
+						<h:outputLabel for="imdbId" value="IMDB id:" />
+						<h:outputText id="imdbId" value="#{addMovieMB.movie.imdbId}" />
+						
+						<h:outputLabel for="metascore" value="Metascore:" />
+						<h:outputText id="metascore" value="#{addMovieMB.movie.metascore}" />
+						
+						<h:outputLabel for="imdbRating" value="IMDB rating:" />
+						<h:outputText id="imdbRating" value="#{addMovieMB.movie.imdbRating}" />
+						
+						<h:outputLabel for="similarMovies" value="Slični filmovi:" />
+						<h:outputText id="similarMovies" value="#{addMovieMB.movie.similarMovies}" />
+						
+						<h:outputLabel for="imdbVotes" value="IMDB broj glasova" />
+						<h:outputText id="imdbVotes" value="#{addMovieMB.movie.imdbVotes}" />
+						
+						<h:outputLabel for="imdbUrl" value="IMDB url:" />
+						<h:outputLink id="imdbUrl" value="#{addMovieMB.movie.imdbUrl}" target="_blank">
+							#{addMovieMB.movie.imdbUrl}
+						</h:outputLink>
+
+					</h:panelGrid>
+
+				</p:panel>
 
 			</h:form>
 

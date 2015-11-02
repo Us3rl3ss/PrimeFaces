@@ -1,5 +1,6 @@
 package hr.primefaces.bean;
 
+import hr.primefaces.imdb.ImdbJsonModel;
 import hr.primefaces.model.Cinema;
 import hr.primefaces.model.Movie;
 import hr.primefaces.model.Projection;
@@ -7,8 +8,10 @@ import hr.primefaces.model.Theater;
 import hr.primefaces.service.IMovieService;
 import hr.primefaces.service.IProjectionService;
 import hr.primefaces.service.ITheaterService;
+import hr.primefaces.util.Check;
 import hr.primefaces.util.DateConverter;
 import hr.primefaces.util.MessageUtil;
+import hr.primefaces.util.ObjectRemapper;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.hibernate.HibernateException;
 import org.primefaces.context.RequestContext;
@@ -56,9 +60,15 @@ public class AddProjectionView implements Serializable {
 	private Date currStartDate;
 	private Date currEndDate;
 	private boolean forUpdate;
+	private String movieInfoRenderCss;
+	private boolean movieInfoFormRender;
+	private ImdbJsonModel imdbMovie;
 
 	@PostConstruct
 	public void init() {
+
+		setMovieInfoRenderCss("display:none;");
+		setMovieInfoFormRender(false);
 
 		setProjection(new Projection());
 		setEventModel(new DefaultScheduleModel());
@@ -85,9 +95,27 @@ public class AddProjectionView implements Serializable {
 	public void save() {
 
 		try {
-			getProjectionService().addProjection(getProjection());
-			MessageUtil.info("Podaci uspješno spremljeni!");
-			prepareProjectionList();
+
+			if (getProjection().getMovie() != null) {
+
+				if (!Check.isNullOrEmpthy(getProjection().getMovie().getImdbId())) {
+
+					final Movie tempMovie = getMovieService().getMovieByImdbId(getProjection().getMovie().getImdbId());
+
+					if (tempMovie != null) { //film već postoji u bazi podataka
+
+						getProjection().setMovie(tempMovie);
+					}
+					else {
+
+						getProjection().setMovie(insertMovieFromImdb(getProjection().getMovie()));
+					}
+
+					getProjectionService().addProjection(getProjection());
+					MessageUtil.info("Podaci uspješno spremljeni!");
+					prepareProjectionList();
+				}
+			}
 		}
 		catch (HibernateException hex) {
 			hex.printStackTrace();
@@ -97,6 +125,36 @@ public class AddProjectionView implements Serializable {
 			ex.printStackTrace();
 			MessageUtil.error("Došlo je do greške!");
 		}
+	}
+
+	/**
+	 * insertMovieFromImdb
+	 * @param p_movie
+	 * @return
+	 */
+	public Movie insertMovieFromImdb(final Movie p_movie) {
+
+		Movie result = new Movie();
+
+		if (p_movie != null) {
+
+			if (!Check.isNullOrEmpthy(p_movie.getImdbId())) {
+
+				final Movie tempMovie = getMovieService().getMovieByImdbId(p_movie.getImdbId());
+
+				if (tempMovie != null) { //film već postoji u bazi podataka
+
+					result = tempMovie;
+				}
+				else { //film ne postoji u bazi podataka
+
+					getMovieService().addMovie(p_movie);
+					result = p_movie;
+				}
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -137,6 +195,19 @@ public class AddProjectionView implements Serializable {
 			ex.printStackTrace();
 			MessageUtil.error("Došlo je do greške!");
 		}
+	}
+
+	/**
+	 * onItemSelect
+	 * @param p_event
+	 */
+	public void onItemSelect(final AjaxBehaviorEvent p_event) {
+
+		//Remaping imdbJsonModel -> Movie object
+		getProjection().setMovie(ObjectRemapper.imdbToMovieObj(getImdbMovie()));
+
+		setMovieInfoRenderCss("");
+		setMovieInfoFormRender(true);
 	}
 
 	/**
@@ -200,6 +271,10 @@ public class AddProjectionView implements Serializable {
 		getProjection().setEndTime(((DefaultScheduleEvent) p_selectEvent.getObject()).getEndDate());
 		setProjection(getProjectionService().getProjectionByCinemaStartEnd(getProjection().getCinema(),
 				getProjection().getStartTime(), getProjection().getEndTime()));
+		getProjection().setMovie(getMovieService().getMovieById(getProjection().getMovie().getId()));
+
+		setMovieInfoRenderCss("");
+		setMovieInfoFormRender(true);
 	}
 
 	/**
@@ -212,6 +287,9 @@ public class AddProjectionView implements Serializable {
 		getProjection().setStartTime((Date) p_selectEvent.getObject());
 		getProjection().setEndTime((Date) p_selectEvent.getObject());
 		setEvent(new DefaultScheduleEvent("", (Date) p_selectEvent.getObject(), (Date) p_selectEvent.getObject()));
+
+		setMovieInfoRenderCss("display:none;");
+		setMovieInfoFormRender(false);
 	}
 
 	/**
@@ -336,6 +414,27 @@ public class AddProjectionView implements Serializable {
 	}
 
 	/**
+	 * @return the movieInfoRenderCss
+	 */
+	public String getMovieInfoRenderCss() {
+		return movieInfoRenderCss;
+	}
+
+	/**
+	 * @return the movieInfoFormRender
+	 */
+	public boolean isMovieInfoFormRender() {
+		return movieInfoFormRender;
+	}
+
+	/**
+	 * @return the imdbMovie
+	 */
+	public ImdbJsonModel getImdbMovie() {
+		return imdbMovie;
+	}
+
+	/**
 	 * @param p_projectionService the projectionService to set
 	 */
 	public void setProjectionService(final IProjectionService p_projectionService) {
@@ -417,6 +516,27 @@ public class AddProjectionView implements Serializable {
 	 */
 	public void setForUpdate(final boolean p_forUpdate) {
 		this.forUpdate = p_forUpdate;
+	}
+
+	/**
+	 * @param p_movieInfoRenderCss the movieInfoRenderCss to set
+	 */
+	public void setMovieInfoRenderCss(final String p_movieInfoRenderCss) {
+		this.movieInfoRenderCss = p_movieInfoRenderCss;
+	}
+
+	/**
+	 * @param p_movieInfoFormRender the movieInfoFormRender to set
+	 */
+	public void setMovieInfoFormRender(final boolean p_movieInfoFormRender) {
+		this.movieInfoFormRender = p_movieInfoFormRender;
+	}
+
+	/**
+	 * @param p_imdbMovie the imdbMovie to set
+	 */
+	public void setImdbMovie(final ImdbJsonModel p_imdbMovie) {
+		this.imdbMovie = p_imdbMovie;
 	}
 
 }

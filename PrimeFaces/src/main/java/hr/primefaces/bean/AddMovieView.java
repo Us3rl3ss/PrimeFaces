@@ -1,9 +1,11 @@
 package hr.primefaces.bean;
 
+import hr.primefaces.imdb.ImdbJsonModel;
 import hr.primefaces.model.Genre;
 import hr.primefaces.model.Movie;
 import hr.primefaces.service.IMovieService;
 import hr.primefaces.util.MessageUtil;
+import hr.primefaces.util.ObjectRemapper;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.poi.util.IOUtils;
 import org.hibernate.HibernateException;
@@ -31,12 +34,17 @@ public class AddMovieView implements Serializable {
 	private List<Movie> movieList;
 	private List<Genre> genreList;
 	private String uploadedFileNames;
+	private String movieInfoRenderCss;
+	private boolean movieInfoFormRender;
+	private ImdbJsonModel imdbMovie;
 
 	@PostConstruct
 	public void init() {
 
 		setMovie(new Movie());
 		setUploadedFileNames("");
+		setMovieInfoRenderCss("display:none;");
+		setMovieInfoFormRender(false);
 	}
 
 	/**
@@ -57,6 +65,19 @@ public class AddMovieView implements Serializable {
 			ex.printStackTrace();
 			MessageUtil.error("Došlo je do greške!");
 		}
+	}
+
+	/**
+	 * onItemSelect
+	 * @param p_event
+	 */
+	public void onItemSelect(final AjaxBehaviorEvent p_event) {
+
+		//Remaping imdbJsonModel -> Movie object
+		setMovie(ObjectRemapper.imdbToMovieObj(getImdbMovie()));
+
+		setMovieInfoRenderCss("");
+		setMovieInfoFormRender(true);
 	}
 
 	/**
@@ -122,6 +143,27 @@ public class AddMovieView implements Serializable {
 	}
 
 	/**
+	 * @return the movieInfoRenderCss
+	 */
+	public String getMovieInfoRenderCss() {
+		return movieInfoRenderCss;
+	}
+
+	/**
+	 * @return the movieInfoFormRender
+	 */
+	public boolean isMovieInfoFormRender() {
+		return movieInfoFormRender;
+	}
+
+	/**
+	 * @return the imdbMovie
+	 */
+	public ImdbJsonModel getImdbMovie() {
+		return imdbMovie;
+	}
+
+	/**
 	 * @param p_movieService the movieService to set
 	 */
 	public void setMovieService(final IMovieService p_movieService) {
@@ -154,6 +196,27 @@ public class AddMovieView implements Serializable {
 	 */
 	public void setUploadedFileNames(final String p_uploadedFileNames) {
 		this.uploadedFileNames = p_uploadedFileNames;
+	}
+
+	/**
+	 * @param p_movieInfoRenderCss the movieInfoRenderCss to set
+	 */
+	public void setMovieInfoRenderCss(final String p_movieInfoRenderCss) {
+		this.movieInfoRenderCss = p_movieInfoRenderCss;
+	}
+
+	/**
+	 * @param p_movieInfoFormRender the movieInfoFormRender to set
+	 */
+	public void setMovieInfoFormRender(final boolean p_movieInfoFormRender) {
+		this.movieInfoFormRender = p_movieInfoFormRender;
+	}
+
+	/**
+	 * @param p_imdbMovie the imdbMovie to set
+	 */
+	public void setImdbMovie(final ImdbJsonModel p_imdbMovie) {
+		this.imdbMovie = p_imdbMovie;
 	}
 
 }

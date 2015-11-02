@@ -40,37 +40,114 @@
 
 				<p:schedule id="schedule" value="#{addProjectionMB.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
  
-		            <p:ajax event="dateSelect" listener="#{addProjectionMB.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-		            <p:ajax event="eventSelect" listener="#{addProjectionMB.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+		            <p:ajax event="dateSelect" listener="#{addProjectionMB.onDateSelect}" update=":movieSearchForm :movieInfoForm" oncomplete="PF('eventDialog').show();" />
+		            <p:ajax event="eventSelect" listener="#{addProjectionMB.onEventSelect}" update=":movieSearchForm :movieInfoForm" oncomplete="PF('eventDialog').show();" />
 		            <p:ajax event="eventMove" listener="#{addProjectionMB.onEventMove}" update=":messages" />
 		            <p:ajax event="eventResize" listener="#{addProjectionMB.onEventResize}" update=":messages" />
 		 
 		        </p:schedule>
 		        
-		        <p:dialog widgetVar="eventDialog" header="Projekcija" modal="true" appendTo="@(body)">
-			        <h:panelGrid id="eventDetails" columns="2">
-			            
+	        </h:form>
+		        
+	        <p:dialog widgetVar="eventDialog" header="Projekcija" modal="true" appendTo="@(body)" width="1000">
+	        
+		        <h:form id="movieSearchForm">
+
+					<p:panelGrid columns="6">
+		            
 			            <p:outputLabel for="movie" value="Film:" />
-						<p:selectOneMenu id="movie" value="#{addProjectionMB.projection.movie}"
-							converter="#{movieConverter}" filter="true">
-							<f:selectItems value="#{addProjectionMB.movieList}" var="movie"
-								itemValue="#{movie}" itemLabel="#{movie.name}" />
-						</p:selectOneMenu>
-			 
-			            <p:outputLabel for="from" value="Od:" />
+						<p:autoComplete id="movie" minQueryLength="3" maxResults="5"
+							placeholder="Pretraži" value="#{addProjectionMB.imdbMovie}"
+							completeMethod="#{autocompleteMB.completeImdbMovie}" effect="fade"
+							var="movie" itemLabel="#{movie.title}" itemValue="#{movie}"
+							converter="#{imdbMovieConverter}" forceSelection="true" queryDelay="1000">
+		
+							<f:ajax event="itemSelect" listener="#{addProjectionMB.onItemSelect}" render=":movieInfoForm" />
+						
+							<p:column>
+								<h:outputText value="#{movie.title}" />
+							</p:column>
+		
+							<f:facet name="itemtip">
+								<h:panelGrid columns="1" cellpadding="2">
+									<h:graphicImage url="#{movie.urlPoster}" width="150" height="200" />
+								</h:panelGrid>
+							</f:facet>
+		
+						</p:autoComplete>
+						
+						<p:outputLabel for="from" value="Od:" />
 			            <p:calendar id="from" value="#{addProjectionMB.projection.startTime}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
 			 
 			            <p:outputLabel for="to" value="Do:" />
 			            <p:calendar id="to" value="#{addProjectionMB.projection.endTime}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
 			 
-			            <p:commandButton id="addButton" value="Spremi" actionListener="#{addProjectionMB.save}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{!addProjectionMB.forUpdate}" />
-			            <p:commandButton id="updateButton" value="Ažuriraj" actionListener="#{addProjectionMB.edit}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" />
-			            <p:commandButton id="deleteButton" value="Obriši" actionListener="#{addProjectionMB.delete}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" />
-			            
-			        </h:panelGrid>
-			    </p:dialog>  
-			
-			</h:form>
+			            <p:commandButton id="addButton" value="Spremi" actionListener="#{addProjectionMB.save}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{!addProjectionMB.forUpdate}" update=":movieInfoForm" />
+			            <p:commandButton id="updateButton" value="Ažuriraj" actionListener="#{addProjectionMB.edit}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" update=":movieInfoForm" />
+			            <p:commandButton id="deleteButton" value="Obriši" actionListener="#{addProjectionMB.delete}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" rendered="#{addProjectionMB.forUpdate}" update=":movieInfoForm" />
+						
+					</p:panelGrid>
+					
+				</h:form>
+					
+				<h:form id="movieInfoForm" style="#{addProjectionMB.movieInfoRenderCss}">
+
+					<p:panel header="#{addProjectionMB.projection.movie.name}">
+						
+						<h:panelGrid columns="1" style="width:40%; float:left;">
+							<h:graphicImage url="#{addProjectionMB.projection.movie.imdbPosterUrl}" width="150" height="200" />
+						</h:panelGrid>
+						
+						<h:panelGrid columns="2" cellpadding="10">
+						
+							<h:outputLabel for="name" value="Naslov:" />
+							<h:outputText id="name" value="#{addProjectionMB.projection.movie.name}" />
+							
+							<h:outputLabel for="year" value="Godina:" />
+							<h:outputText id="year" value="#{addProjectionMB.projection.movie.yearOfCreation}" />
+							
+							<h:outputLabel for="director" value="Redatelj:" />
+							<h:outputText id="director" value="#{addProjectionMB.projection.movie.directorName}" />
+							
+							<h:outputLabel for="duration" value="Trajanje" />
+							<h:outputText id="duration" value="#{addProjectionMB.projection.movie.duration}" />
+							
+							<h:outputLabel for="info" value="Sadržaj:" />
+							<h:outputText id="info" value="#{addProjectionMB.projection.movie.info}" />
+							
+							<h:outputLabel for="actors" value="Glumci:" />
+							<h:outputText id="actors" value="#{addProjectionMB.projection.movie.actors}" />
+							
+							<h:outputLabel for="genre" value="Žanrovi:" />
+							<h:outputText id="genre" value="#{addProjectionMB.projection.movie.genres}" />
+							
+							<h:outputLabel for="imdbId" value="IMDB id:" />
+							<h:outputText id="imdbId" value="#{addProjectionMB.projection.movie.imdbId}" />
+							
+							<h:outputLabel for="metascore" value="Metascore:" />
+							<h:outputText id="metascore" value="#{addProjectionMB.projection.movie.metascore}" />
+							
+							<h:outputLabel for="imdbRating" value="IMDB rating:" />
+							<h:outputText id="imdbRating" value="#{addProjectionMB.projection.movie.imdbRating}" />
+							
+							<h:outputLabel for="similarMovies" value="Slični filmovi:" />
+							<h:outputText id="similarMovies" value="#{addProjectionMB.projection.movie.similarMovies}" />
+							
+							<h:outputLabel for="imdbVotes" value="IMDB broj glasova" />
+							<h:outputText id="imdbVotes" value="#{addProjectionMB.projection.movie.imdbVotes}" />
+							
+							<h:outputLabel for="imdbUrl" value="IMDB url:" />
+							<h:outputLink id="imdbUrl" value="#{addProjectionMB.projection.movie.imdbUrl}" target="_blank">
+								#{addProjectionMB.projection.movie.imdbUrl}
+							</h:outputLink>
+	
+						</h:panelGrid>
+	
+					</p:panel>
+	
+				</h:form>
+		        
+		    </p:dialog>  
 			
 		</ui:define>
 		
